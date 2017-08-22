@@ -1,0 +1,10 @@
+#ifndef NDEC_EVOLUTIONARYNETWORK_H
+#define NDEC_EVOLUTIONARYNETWORK_H
+
+
+class EvolutionaryNetwork {
+
+};
+
+
+#endif //NDEC_EVOLUTIONARYNETWORK_H
