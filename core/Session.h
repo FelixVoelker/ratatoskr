@@ -24,6 +24,11 @@ class BreedingOperator;
 class Session {
 
 protected:
+    unsigned int _generations = 200; // Maximum number of generations to evolve.
+
+    unsigned int _evalthreads  = 1; // Number of used threads during evaluation phase.
+    unsigned int _varythreads = 1; // Number of used threads during variation phase.
+
     Problem &_problem;
 
     /**
@@ -36,11 +41,6 @@ protected:
     BreedingOperator *_pipeline;
 
 public:
-    unsigned int generations = 200; // Maximum number of generations to evolve.
-
-    unsigned int evalthreads  = 1;
-    unsigned int breedthreads = 1;
-
     explicit Session(Problem &problem);
     ~Session();
 
@@ -57,6 +57,14 @@ public:
     virtual void featuremap(FeatureMap &featuremap_prototype) = 0;
     virtual void individual(Individual &individual_prototype) = 0;
     virtual void pipeline(BreedingOperator &pipeline_prototype) = 0;
+
+    unsigned int generations();
+    unsigned int evalthreads();
+    unsigned int varythreads();
+
+    void generations(unsigned int generations);
+    void evalthreads(unsigned int evalthreads);
+    void varythreads(unsigned int varythreads);
 
 };
 

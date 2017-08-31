@@ -14,9 +14,10 @@ class Individual;
  */
 class Problem {
 
-public:
-    unsigned int popsize; // Size of the population.
+protected:
+    unsigned int _popsize; // Size of the population.
 
+public:
     explicit Problem(unsigned int popsize);
 
     /**
@@ -24,6 +25,10 @@ public:
      * @param individual Individual to be evaluated.
      */
     virtual void evaluate(Individual &individual) = 0;
+
+    unsigned int popsize();
+
+    void popsize(unsigned int popsize);
 
 };
 

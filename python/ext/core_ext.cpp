@@ -1,84 +1,63 @@
 #include <boost/python.hpp>
-#include "../../core/evaluation/Problem.h"
-#include "../../core/Session.h"
+#include <boost/python/suite/indexing/vector_indexing_suite.hpp>
+#include "wrapper/core/ProblemWrapper.h"
+#include "wrapper/core/SessionWrapper.h"
+#include "wrapper/core/FeatureMapWrapper.h"
+#include "wrapper/core/FitnessWrapper.h"
 #include "../../core/EvolutionarySystem.h"
-
+#include "wrapper/core/IndividualWrapper.h"
 
 using namespace boost::python;
 
-struct ProblemWrapper : Problem, wrapper<Problem> {
-
-    explicit ProblemWrapper(unsigned int popsize) : Problem(popsize) {}
-
-    void evaluate(Individual &individual) {
-        this->get_override("evaluate")(individual);
-    }
-};
-
-struct SessionWrapper : Session, wrapper<Session> {
-
-private:
-    void builder(Builder &builder_prototype) {}
-    void fitness(Fitness &fitness_prototype) {}
-    void featuremap(FeatureMap &featuremap_prototype) {}
-    void individual(Individual &individual_prototype) {}
-    void pipeline(BreedingOperator &pipeline_prototype) {}
-
-public:
-    explicit SessionWrapper(shared_ptr<Problem> problem) : Session(*problem) {}
-
-};
-
-class SystemWrapper : public EvolutionarySystem {
-
-public:
-    explicit SystemWrapper(shared_ptr<Session> session) : EvolutionarySystem(*session) {}
-
-};
-
 BOOST_PYTHON_MODULE(core) {
-    class_<ProblemWrapper, boost::noncopyable>("Problem", init<unsigned int>())
-            .def_readwrite("popsize", &Problem::popsize)
-            .def("evaluate", pure_virtual(&Problem::evaluate));
-    class_<SessionWrapper, boost::noncopyable>("Session", init<shared_ptr<Problem>>());
-    class_<SystemWrapper>("EvolutionarySystem", init<shared_ptr<Session>>())
-            .def("run", &EvolutionarySystem::run);
-    /*class_<ProblemWrapper, boost::noncopyable>("Problem")
-            //.def_readwrite("popsize", &Problem::popsize)
-            .def("evaluate", pure_virtual(&Problem::evaluate));*/
+    class_<std::vector<float>>("std::vector<float>")
+            .def(vector_indexing_suite<std::vector<float>>());
 
-    /*class_<Session>("Session", init<Problem>())
-            .def_readwrite("generations", &Session::generations)
-            .def_readwrite("evalthreads", &Session::evalthreads)
-            .def_readwrite("breedthreads", &Session::breedthreads)
-            .def("builder", pure_virtual(&Session::builder))
-            .def("fitness", pure_virtual(&Session::fitness))
-            .def("featuremap", pure_virtual(&Session::featuremap))
-            .def("individual", pure_virtual(&Session::individual))
-            .def("pipeline", pure_virtual(&Session::pipeline));
+    class_<FeatureMapWrapper, boost::noncopyable>("FeatureMap", init<boost::shared_ptr<Session>>())
+            .def("clone", pure_virtual(&FeatureMap::clone), return_value_policy<manage_new_object>());
 
-    class_<EvolutionarySystem>("EvolutionarySystem", init<Session>())
-            .def("run", &EvolutionarySystem::run);
-
-    class_<Builder>("Builder", init<Session>())
-            .def("initialize", pure_virtual(&Builder::initialize));
-
-    class_<FeatureMap>("FeatureMap", init<Session>());
-
-    class_<Fitness>("Fitness", init<Session>())
+    class_<FitnessWrapper, boost::noncopyable>("Fitness", init<boost::shared_ptr<Session>>())
             .def("isideal", pure_virtual(&Fitness::isIdeal))
-            .def(pure_virtual(self < self))
-            .def(pure_virtual(self <= self))
-            .def(pure_virtual(self > self))
-            .def(pure_virtual(self >= self))
-            .def(pure_virtual(self == self));
+            .def("operator<", pure_virtual(&Fitness::operator<))
+            .def("operator<=", pure_virtual(&Fitness::operator<=))
+            .def("operator>", pure_virtual(&Fitness::operator>))
+            .def("operator>=", pure_virtual(&Fitness::operator>=))
+            .def("operator==", pure_virtual(&Fitness::operator==));
 
-    class_<Individual>("Individual", init<Session>())
-            .def("tostring", &Individual::toString);
+    class_<IndividualWrapper, boost::noncopyable>("Individual", init<boost::shared_ptr<Session>>())
+            .add_property("evaluated",
+                          static_cast<bool(Individual::*)()>(&Individual::evaluated),
+                          static_cast<void(Individual::*)(bool)>(&Individual::evaluated))
+            .def("tostring", pure_virtual(&Individual::toString))
+            .def("fitness", &Individual::getFitness, return_value_policy<reference_existing_object>())
+            .def("featuremap", &Individual::getFeaturemap, return_value_policy<reference_existing_object>())
+            .def("clone", pure_virtual(&Individual::clone), return_value_policy<manage_new_object>());
 
-    class_<BreedingOperator, bases(VariationSource)>("BreedingOperator", init<Session>())
-            .def("breed", pure_virtual(&BreedingOperator::breed));
+    class_<ProblemWrapper, boost::noncopyable>("Problem", init<unsigned int>())
+            .add_property("popsize",
+                          static_cast<unsigned int(Problem::*)()>(&Problem::popsize),
+                          static_cast<void(Problem::*)(unsigned int)>(&Problem::popsize))
+            .def("evaluate", pure_virtual(&Problem::evaluate));
 
-    class_<SelectionOperator, bases(VariationSource)>("SelectionOperator", init<Session>())
-            .def("select", pure_virtual(&SelectionOperator::select));*/
+    //TODO: Add pure virtual functions
+    class_<SessionWrapper, boost::noncopyable>("Session", init<boost::shared_ptr<Problem>>())
+            .add_property("generations",
+                          static_cast<unsigned int(Session::*)()>(&Session::generations),
+                          static_cast<void(Session::*)(unsigned int)>(&Session::generations))
+            .add_property("evalthreads",
+                          static_cast<unsigned int(Session::*)()>(&Session::evalthreads),
+                          static_cast<void(Session::*)(unsigned int)>(&Session::evalthreads))
+            .add_property("varythreads",
+                          static_cast<unsigned int(Session::*)()>(&Session::varythreads),
+                          static_cast<void(Session::*)(unsigned int)>(&Session::varythreads));
+            //.def("builder", &builder);
+
+    class_<Statistics>("Statistics", init<Session &>())
+            .add_property("best_fitnesses", &Statistics::bestFitnesses)
+            .add_property("average_fitnesses", &Statistics::averageFitnesses)
+            .add_property("worst_fitnesses", &Statistics::worstFitnesses);
+
+    class_<EvolutionarySystem>("EvolutionarySystem", init<Session &>())
+            .add_property("statistics", &EvolutionarySystem::getStatistics)
+            .def("run", &EvolutionarySystem::run);
 }

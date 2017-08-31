@@ -1,10 +1,9 @@
 #include "BitVectorCrossover.h"
 #include "BitVectorIndividual.h"
-#include "NDGASession.h"
 
 unsigned long BitVectorCrossover::expectedSources() { return 2; }
 
-BitVectorCrossover::BitVectorCrossover(Session &session)
+BitVectorCrossover::BitVectorCrossover(NDGASession &session)
         : BreedingOperator(session) {
     prob = dynamic_cast<NDGASession &>(session).xover_rate;
     genes = dynamic_cast<NDGAProblem &>(session.problem()).genes;
@@ -25,8 +24,8 @@ vector<Individual *> BitVectorCrossover::breed(vector<Individual *> parents, Ran
             offspring2->getChromosome().at(k) = parent1->getChromosome().at(k);
         }
 
-        offspring1->evaluated = false;
-        offspring2->evaluated = false;
+        offspring1->evaluated(false);
+        offspring2->evaluated(false);
     }
 
     vector<Individual *> offsprings(2);

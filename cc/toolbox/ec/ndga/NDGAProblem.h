@@ -1,8 +1,9 @@
 #ifndef NDEC_NDGAPROBLEM_H
 #define NDEC_NDGAPROBLEM_H
 
-#include "../../../../core/evaluation/Problem.h"
 
+#include "../../../../core/evaluation/Problem.h"
+#include "../../../../core/representation/Individual.h"
 
 /**
  * The blueprint class for all problems to be solved by conventional Neuro-Dynamic Genetic Algorithms.

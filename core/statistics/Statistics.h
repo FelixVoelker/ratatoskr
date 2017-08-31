@@ -24,7 +24,9 @@ public:
 
     void record(Population &pop, unsigned int generation);
 
-    void print();
+    vector<float> bestFitnesses();
+    vector<float> averageFitnesses();
+    vector<float> worstFitnesses();
 };
 
 

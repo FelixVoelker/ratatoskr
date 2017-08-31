@@ -39,6 +39,8 @@ public:
 
     void run();
 
+    Statistics getStatistics();
+
 };
 
 

@@ -4,9 +4,9 @@
 using namespace boost::python;
 
 Statistics::Statistics(Session &session) {
-    best_fitnesses = vector<float>(session.generations + 1);
-    average_fitnesses = vector<float>(session.generations + 1);
-    worst_fitnesses = vector<float>(session.generations + 1);
+    best_fitnesses = vector<float>(session.generations() + 1);
+    average_fitnesses = vector<float>(session.generations() + 1);
+    worst_fitnesses = vector<float>(session.generations() + 1);
 }
 
 void Statistics::record(Population &pop, unsigned int generation) {
@@ -23,41 +23,14 @@ float Statistics::averageFitness(Population &pop) {
     return total_fitness / individuals.size();
 }
 
-void Statistics::print() {
-    Py_Initialize();
-    object main_module = import("__main__");
-    object main_namespace = main_module.attr("__dict__");
+vector<float> Statistics::bestFitnesses() {
+    return best_fitnesses;
+}
 
-    list best_fitness;
-    for (float f : this->best_fitnesses)
-        best_fitness.append(f);
-    main_namespace["best_fitness"] = best_fitness;
+vector<float> Statistics::averageFitnesses() {
+    return average_fitnesses;
+}
 
-    list average_fitness;
-    for (float f : this->average_fitnesses)
-        average_fitness.append(f);
-    main_namespace["average_fitness"] = average_fitness;
-
-    list worst_fitness;
-    for (float f : this->worst_fitnesses)
-        worst_fitness.append(f);
-    main_namespace["worst_fitness"] = worst_fitness;
-
-    exec("import numpy as np\n"
-            "import matplotlib.pyplot as plt"
-            "\n"
-            "generations = np.arange(len(best_fitness))\n"
-            "best = np.array(best_fitness)\n"
-            "average = np.array(average_fitness)\n"
-            "worst = np.array(worst_fitness)\n"
-            "\n"
-            "plt.plot(generations, best, label='Best')\n"
-            "plt.plot(generations, average, label='Average')\n"
-            "plt.plot(generations, worst, label='Worst')\n"
-            "plt.xlabel('Generation')\n"
-            "plt.xlim(0, generations.shape[0])\n"
-            "plt.ylabel('Fitness Value')\n"
-            "plt.legend()\n"
-            "plt.show()",
-         main_namespace);
+vector<float> Statistics::worstFitnesses() {
+    return worst_fitnesses;
 }

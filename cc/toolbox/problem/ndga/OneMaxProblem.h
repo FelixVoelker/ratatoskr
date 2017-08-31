@@ -10,6 +10,7 @@ public:
     OneMaxProblem(unsigned int pop_size, unsigned int genes);
 
     void evaluate(Individual &individual) override;
+
 };
 
 

@@ -3,6 +3,7 @@
 
 
 #include "../../../../core/variation/BreedingOperator.h"
+#include "NDGASession.h"
 
 /**
  * Represents the One Point Crossover as described in "Melanie Mitchell: An Introduction to Genetic Algorithms (1996)."
@@ -20,7 +21,7 @@ protected:
     unsigned long expectedSources() override;
 
 public:
-    explicit BitVectorCrossover(Session &session);
+    explicit BitVectorCrossover(NDGASession &session);
 
     /**
      * Performs a one point crossover of two parents with a probability pc.

@@ -17,13 +17,11 @@
 class Individual : public Prototype {
 
 protected:
+    bool _evaluated = false;
+
     Fitness    **fitness;
     FeatureMap **featuremap;
 
-public:
-    bool evaluated = false;
-
-protected:
     Individual(Individual &obj);
 
 public:
@@ -36,8 +34,12 @@ public:
      */
     virtual string toString() = 0;
 
-    Fitness &    getFitness();
+    Fitness    & getFitness();
     FeatureMap & getFeaturemap();
+
+    bool evaluated();
+
+    void evaluated(bool evaluated);
 
 };
 

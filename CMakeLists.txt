@@ -40,8 +40,36 @@ set(CC_API
         cc/toolbox/ec/ndga/RandomBitVectorBuilder.cpp cc/toolbox/ec/ndga/RandomBitVectorBuilder.h
         cc/toolbox/problem/ndga/OneMaxProblem.cpp cc/toolbox/problem/ndga/OneMaxProblem.h)
 
-set(PYTHON_API
-        python/wrapper/core_wrapper.cpp python/wrapper/core_wrapper.h)
+add_library(ndec_cc SHARED ${CORE_SOURCES} ${CC_API})
+target_link_libraries(ndec_cc ${Boost_LIBRARIES} ${PYTHON_LIBRARIES})
+
+add_executable(ndec_cc_debug cc/main.cpp)
+target_link_libraries(ndec_cc_debug ndec_cc)
+
+set(PYTHON_API_CORE
+        python/ext/wrapper/core/FeatureMapWrapper.cpp python/ext/wrapper/core/FeatureMapWrapper.h
+        python/ext/wrapper/core/FitnessWrapper.cpp python/ext/wrapper/core/FitnessWrapper.h
+        python/ext/wrapper/core/IndividualWrapper.cpp python/ext/wrapper/core/IndividualWrapper.h
+        python/ext/wrapper/core/ProblemWrapper.cpp python/ext/wrapper/core/ProblemWrapper.h
+        python/ext/wrapper/core/SessionWrapper.cpp python/ext/wrapper/core/SessionWrapper.h
+        python/ext/core_ext.cpp)
+
+set(PYTHON_API_NDGA
+        python/ext/wrapper/ndga/ProblemWrapper.cpp python/ext/wrapper/ndga/ProblemWrapper.h
+        python/ext/ndga_ext.cpp)
+
+add_library(core SHARED ${PYTHON_API_CORE})
+target_link_libraries(core ndec_cc)
+set_target_properties(core PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/python/ratatoskr PREFIX "")
+#set_target_properties(core PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/python/ratatoskr SUFFIX ".pyd")
+
+add_library(ndga SHARED ${PYTHON_API_NDGA})
+target_link_libraries(ndga core)
+set_target_properties(ndga PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/python/ratatoskr PREFIX "")
+#set_target_properties(ndga PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/python/ratatoskr SUFFIX ".pyd")
+
+add_custom_target(ndec_py)
+add_dependencies(ndec_py core ndga)
 
 set(UNIT_SOURCES
         unit/TestComponents.cpp unit/TestComponents.h
@@ -49,17 +77,6 @@ set(UNIT_SOURCES
         unit/common.cpp
         unit/ndga.cpp
         catch.hpp)
-
-add_library(ndec_cc SHARED ${CORE_SOURCES} ${CC_API})
-target_link_libraries(ndec_cc ${Boost_LIBRARIES} ${PYTHON_LIBRARIES})
-
-add_library(core SHARED python/ext/core_ext.cpp)
-target_link_libraries(core ndec_cc)
-set_target_properties(core PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/python/ndec PREFIX "")
-
-add_library(ndga SHARED python/ext/ndga_ext.cpp)
-target_link_libraries(ndga ndec_cc)
-set_target_properties(ndga PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/python/ndec PREFIX "")
 
 add_executable(Unit ${UNIT_SOURCES})
 target_link_libraries(Unit ndec_cc)

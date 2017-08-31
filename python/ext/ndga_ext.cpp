@@ -1,31 +1,36 @@
 #include <boost/python.hpp>
+#include <boost/python/suite/indexing/vector_indexing_suite.hpp>
 #include "../../cc/toolbox/problem/ndga/OneMaxProblem.h"
-#include "../../cc/toolbox/ec/ndga/NDGASession.h"
 #include "../../cc/toolbox/ec/ndga/BitVectorIndividual.h"
-
+#include "../../cc/toolbox/ec/ndga/FeatureVector.h"
+#include "../../cc/toolbox/ec/common/RawFitness.h"
+#include "wrapper/ndga/ProblemWrapper.h"
 
 using namespace boost::python;
 
-class SessionWrapper : public NDGASession {
-
-public:
-    explicit SessionWrapper(shared_ptr<NDGAProblem> problem) : NDGASession(*problem) {}
-
-};
-
-
 BOOST_PYTHON_MODULE(ndga) {
-    class_<ProblemWrapper, boost::noncopyable>("NDGAProblem", init<unsigned int, unsigned int>())
-            .def("evaluate", pure_virtual(&Problem::evaluate));
-    class_<OneMaxProblem, bases<ProblemWrapper>>("OneMaxProblem", init<unsigned int, unsigned int>());
-    implicitly_convertible<shared_ptr<OneMaxProblem>, shared_ptr<NDGAProblem>>();
+    class_<std::vector<unsigned int>>("std::vector<unsigned int>")
+            .def(vector_indexing_suite<std::vector<unsigned int>>());
 
-    class_<SessionWrapper>("NDGASession", init<shared_ptr<NDGAProblem>>());
-    implicitly_convertible<shared_ptr<NDGASession>, shared_ptr<Session>>();
-            //.def("xoverrate", &SessionWrapper::xover_rate)
-            //.def("mutationrate", &SessionWrapper::mutation_rate);
+    class_<FeatureVector, bases<FeatureMap>>("FeatureVector", init<NDGASession &>());
 
-    class_<BitVectorIndividual>("BitVectorIndividual", init<shared_ptr<Session>>())
-            .def("chromosome", &BitVectorIndividual::getChromosome);
+    class_<RawFitness, bases<Fitness>>("RawFitness", init<NDGASession &>())
+            .add_property("fitness", &RawFitness::getFitness, &RawFitness::setFitness);
 
+    class_<BitVectorIndividual, bases<Individual>, boost::noncopyable>("BitVectorIndividual", init<NDGASession &>())
+            .def("chromosome", &BitVectorIndividual::getChromosome, return_value_policy<reference_existing_object>());
+
+    class_<ProblemWrapper, bases<Problem>, boost::noncopyable>("NDGAProblem", init<unsigned int, unsigned int>())
+            .add_property("popsize",
+                          static_cast<unsigned int(NDGAProblem::*)()>(&NDGAProblem::popsize),
+                          static_cast<void(NDGAProblem::*)(unsigned int)>(&NDGAProblem::popsize))
+            .def_readwrite("genes", &NDGAProblem::genes)
+            .def("evaluate", pure_virtual(&NDGAProblem::evaluate));
+
+    class_<NDGASession, bases<Session>>("NDGASession", init<NDGAProblem &>())
+            .def_readwrite("mutationrate", &NDGASession::mutation_rate)
+            .def_readwrite("xoverrate", &NDGASession::xover_rate);
+
+    /** Problems **/
+    class_<OneMaxProblem, bases<NDGAProblem>>("OneMaxProblem", init<unsigned int, unsigned int>());
 }

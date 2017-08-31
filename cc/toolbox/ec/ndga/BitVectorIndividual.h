@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "../../../../core/representation/Individual.h"
+#include "NDGASession.h"
 
 using namespace std;
 
@@ -17,12 +18,13 @@ using namespace std;
  */
 class BitVectorIndividual : public Individual {
 
-private:
+protected:
     vector<unsigned int> chromosome;
 
-public:
-    explicit BitVectorIndividual(Session &session);
     BitVectorIndividual(BitVectorIndividual &obj);
+
+public:
+    explicit BitVectorIndividual(NDGASession &session);
 
     /**
      * Returns the bit string representation of the chromosome.

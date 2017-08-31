@@ -3,8 +3,8 @@
 
 
 #include <random>
-
 #include "../../../../core/initialization/Builder.h"
+#include "NDGASession.h"
 
 /**
  * A bit vector builder that uses a uniform random distribution to sample the genes of a BitVectorIndividual's
@@ -24,7 +24,7 @@ private:
     void initialize(Individual &ind) override;
 
 public:
-    explicit RandomBitVectorBuilder(Session &session);
+    explicit RandomBitVectorBuilder(NDGASession &session);
 
 };
 

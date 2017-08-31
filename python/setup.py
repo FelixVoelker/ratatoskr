@@ -1,11 +1,17 @@
-#!/bin/bin/env python
+from setuptools import setup, find_packages
 
-from setuptools import setup, Extension
+setup(
+    name='ratatoskr',
+    version='0.1',
+    include_package_dir=True,
+    packages=find_packages(),
+    package_data={
+        '': ['*.so'],
+    },
 
-setup(name='ndec',
-      version='0.1',
-      ext_modules=[
-          Extension('ndga.problem',
-                    ['ext/ndga/problem_ext.cpp'])
-      ]
-      )
+    author='Felix Voelker',
+    author_email='ratatoskr-engine@googlemail.com',
+    description=('Python-API for the Ratatoskr C++ engine.'),
+    license='Apache 2.0',
+    url='https://github.com/ratatoscr/ratatoskr',
+)

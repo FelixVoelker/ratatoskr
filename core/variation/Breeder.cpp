@@ -3,7 +3,7 @@
 #include "Breeder.h"
 
 Breeder::Breeder(Session &session) : Singleton(session) {
-    breedthreads = session.breedthreads;
+    breedthreads = session.varythreads();
     random = vector<Randomizer>(breedthreads);
     variation_pipeline = session.pipeline();
 }

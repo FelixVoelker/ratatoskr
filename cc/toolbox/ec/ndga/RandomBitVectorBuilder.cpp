@@ -5,7 +5,7 @@
 #include "../../../../core/util/Randomizer.h"
 
 
-RandomBitVectorBuilder::RandomBitVectorBuilder(Session &session) : Builder(session) {}
+RandomBitVectorBuilder::RandomBitVectorBuilder(NDGASession &session) : Builder(session) {}
 
 void RandomBitVectorBuilder::initialize(Individual &ind) {
     Randomizer r;

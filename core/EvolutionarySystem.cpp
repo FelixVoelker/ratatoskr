@@ -7,7 +7,7 @@ EvolutionarySystem::EvolutionarySystem(Session &session)
           evaluator(Evaluator(session)),
           breeder(Breeder(session)),
           statistics(Statistics(session)) {
-    GENERATIONS = session.generations;
+    GENERATIONS = session.generations();
 }
 
 EvolutionarySystem::~EvolutionarySystem() {}
@@ -20,11 +20,14 @@ void EvolutionarySystem::run() {
 
         statistics.record(population, generation);
 
-        /*if (population.bestIndividual()->getFitness().isIdeal())
-            break;*/
+//        /*if (population.bestIndividual()->getFitness().isIdeal())
+//            break;*/
         breeder.breedPopulation(population);
     }
     evaluator.evaluatePopulation(population);
     statistics.record(population, GENERATIONS);
-    statistics.print();
+}
+
+Statistics EvolutionarySystem::getStatistics() {
+    return statistics;
 }

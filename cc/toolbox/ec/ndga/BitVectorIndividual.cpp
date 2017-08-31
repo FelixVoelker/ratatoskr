@@ -1,8 +1,7 @@
 #include <iostream>
 #include "BitVectorIndividual.h"
-#include "NDGAProblem.h"
 
-BitVectorIndividual::BitVectorIndividual(Session &session) : Individual(session) {
+BitVectorIndividual::BitVectorIndividual(NDGASession &session) : Individual(session) {
     unsigned int genes = dynamic_cast<NDGAProblem *>(&session.problem())->genes;
     this->chromosome = vector<unsigned int>(genes);
 }

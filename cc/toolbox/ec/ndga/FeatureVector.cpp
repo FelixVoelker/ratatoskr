@@ -1,7 +1,6 @@
 #include "FeatureVector.h"
-#include "BitVectorIndividual.h"
 
-FeatureVector::FeatureVector(Session &session) : FeatureMap(session) {}
+FeatureVector::FeatureVector(NDGASession &session) : FeatureMap(session) {}
 
 vector<float> FeatureVector::compute(vector<unsigned int> &chromosome) {
     vector<float> features(chromosome.size());

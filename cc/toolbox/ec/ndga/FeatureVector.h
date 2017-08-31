@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "../../../../core/representation/FeatureMap.h"
+#include "NDGASession.h"
 
 using namespace std;
 
@@ -18,7 +19,7 @@ using namespace std;
 class FeatureVector : public FeatureMap {
 
 public:
-    explicit FeatureVector(Session &session);
+    explicit FeatureVector(NDGASession &session);
 
     /**
      * Returns the bit vector as a vector of floats.

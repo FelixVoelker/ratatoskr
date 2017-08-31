@@ -4,7 +4,7 @@
 Population::Population(Session &session) : Singleton(session) {
     builder = session.builder();
     individuals = vector<Individual *>();
-    individuals.reserve(session.problem().popsize);
+    individuals.reserve(session.problem().popsize());
 }
 
 Population::~Population() {

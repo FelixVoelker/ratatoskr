@@ -26,3 +26,11 @@ Fitness & Individual::getFitness() {
 FeatureMap & Individual::getFeaturemap() {
     return **featuremap;
 }
+
+bool Individual::evaluated() {
+    return _evaluated;
+}
+
+void Individual::evaluated(bool evaluated) {
+    this->_evaluated = evaluated;
+}
