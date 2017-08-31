@@ -6,6 +6,7 @@ features will be listed in this document.
 
 ## Current Features (v0.1)
 * Core-Engine
+   * Supports traditional Evolutionary Computation only
    * Programmable representations, initialization, evaluation, variation and sessions
    * Statistics: Recoring of the best, average and worst fitness of each generation
 * C++-API
