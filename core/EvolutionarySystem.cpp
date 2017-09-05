@@ -1,31 +1,42 @@
-#include <iostream>
 #include "EvolutionarySystem.h"
-#include "../cc/toolbox/ec/common/RawFitness.h"
 
 EvolutionarySystem::EvolutionarySystem(Session &session)
         : population(Population(session)),
           evaluator(Evaluator(session)),
           breeder(Breeder(session)),
-          statistics(Statistics(session)) {
+          statistics(Statistics(session)),
+          replayer(Replayer(session)) {
+    EPOCHS = session.epochs();
+    EPISODES = session.episodes();
     GENERATIONS = session.generations();
 }
 
 EvolutionarySystem::~EvolutionarySystem() {}
 
-
-void EvolutionarySystem::run() {
+void EvolutionarySystem::evolve(int epoch) {
     population.populate();
     for (unsigned int generation = 0; generation < GENERATIONS; generation++) {
         evaluator.evaluatePopulation(population);
 
-        statistics.record(population, generation);
+        statistics.record(population, epoch, generation);
 
-//        /*if (population.bestIndividual()->getFitness().isIdeal())
-//            break;*/
-        breeder.breedPopulation(population);
+        if (population.bestIndividual()->getRelevance().getFitness().isIdeal())
+            break;
+
+        vector<Individual *> &parents = breeder.breedPopulation(population, epoch);
+        replayer.replay(population, parents);
     }
     evaluator.evaluatePopulation(population);
-    statistics.record(population, GENERATIONS);
+    statistics.record(population, epoch, GENERATIONS);
+}
+
+
+void EvolutionarySystem::run() {
+    for (int epoch = 0; epoch < EPOCHS; epoch++) {
+        for (int episode = 0; episode < EPISODES; episode++) {
+            evolve(epoch);
+        }
+    }
 }
 
 Statistics EvolutionarySystem::getStatistics() {

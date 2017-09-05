@@ -43,7 +43,7 @@ public:
     /**
      * Performs the breeding operation on parent individuals and deletes them afterwards.
      */
-    vector<Individual *> perform(Population &pop, vector<Individual *> parents, Randomizer &random) override;
+    vector<Individual *> perform(Population &pop, vector<Individual *> parents, unsigned int epoch, Randomizer &random) override;
 };
 
 

@@ -1,30 +1,26 @@
 #include "Individual.h"
 
 Individual::Individual(Individual &obj) : Prototype(obj) {
-    fitness = new Fitness*;
-    *fitness = dynamic_cast<Fitness *>(obj.getFitness().clone());
-    featuremap = new FeatureMap*;
-    *featuremap = dynamic_cast<FeatureMap *>(obj.getFeaturemap().clone());
+    relevance = dynamic_cast<Relevance *>(obj.getRelevance().clone());
+    featuremap = dynamic_cast<FeatureMap *>(obj.getFeaturemap().clone());
 }
 
 Individual::Individual(Session &session) : Prototype(session) {
-    fitness = session.fitness();
+    relevance = session.relevance();
     featuremap = session.featuremap();
 }
 
 Individual::~Individual() {
-    delete *fitness;
-    delete fitness;
-    delete *featuremap;
+    delete relevance;
     delete featuremap;
 }
 
-Fitness & Individual::getFitness() {
-    return **fitness;
+Relevance & Individual::getRelevance() {
+    return *relevance;
 }
 
 FeatureMap & Individual::getFeaturemap() {
-    return **featuremap;
+    return *featuremap;
 }
 
 bool Individual::evaluated() {

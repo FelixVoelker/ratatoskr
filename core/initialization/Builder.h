@@ -19,7 +19,7 @@
 class Builder : public Singleton {
 
 protected:
-    Individual **prototype;
+    Individual *prototype;
 
     /**
     * Initializes an individual according to the builder's strategy.

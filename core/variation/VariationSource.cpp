@@ -24,12 +24,12 @@ void VariationSource::connect(vector<VariationSource *> sources) {
     }
 }
 
-vector<Individual *> VariationSource::vary(Population &pop, Randomizer &random) {
+vector<Individual *> VariationSource::vary(Population &pop, unsigned int epoch, Randomizer &random) {
     vector<Individual *> parents;
     for (auto &source : sources) {
-        vector<Individual *> p  = source->vary(pop, random);
+        vector<Individual *> p  = source->vary(pop, epoch, random);
         parents.insert(parents.end(), p.begin(), p.end());
     }
 
-    return perform(pop, parents, random);
+    return perform(pop, parents, epoch, random);
 }

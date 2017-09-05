@@ -6,6 +6,7 @@
 #include "util/Randomizer.h"
 #include "variation/Breeder.h"
 #include "statistics/Statistics.h"
+#include "experience/Replayer.h"
 
 
 /**
@@ -18,20 +19,19 @@
 class EvolutionarySystem {
 
 private:
-
-
     Population population;
 
     Evaluator evaluator;
     Breeder   breeder;
+    Replayer  replayer;
 
     Statistics statistics;
 
-    bool train = false;
-    int EPOCHS              = 100;
-    int TRAINING_EPISODES   = 100000;
-    int TESTING_EPISODES    = 1000;
+    unsigned int EPOCHS;
+    unsigned int EPISODES;
     unsigned int GENERATIONS;
+
+    void evolve(int epoch);
 
 public:
     explicit EvolutionarySystem(Session &session);

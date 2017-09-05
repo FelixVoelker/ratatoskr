@@ -1,21 +1,15 @@
 #include <thread>
-#include <iostream>
-#include <boost/python.hpp>
 #include "Evaluator.h"
-
-using namespace boost::python;
+#include "../../cc/ec/common/RawRelevance.h"
 
 Evaluator::Evaluator(Session &session) : Singleton(session), problem(session.problem()) {
+    network = session.network();
     evalthreads = session.evalthreads();
 }
 
 void Evaluator::evaluateChunk(vector<Individual *> &individuals, unsigned int offset, unsigned int size) {
     for (unsigned int k = offset; k < offset + size; k++) {
-        try {
-            problem.evaluate(*individuals.at(k));
-        } catch(const error_already_set&) {
-            PyErr_Print();
-        }
+        problem.evaluate(*individuals.at(k));
     }
 
 }
@@ -38,5 +32,10 @@ void Evaluator::evaluatePopulation(Population &pop) {
 
     for (int k = 0; k < threads.size(); k++) {
         threads.at(k).join();
+    }
+
+    vector<float> cost = network->output(pop);
+    for (int k = 0; k < pop.getIndividuals().size(); k++) {
+        dynamic_cast<RawRelevance &>(pop.getIndividuals().at(k)->getRelevance()).cost(cost.at(k));
     }
 }

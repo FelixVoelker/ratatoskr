@@ -17,7 +17,7 @@
 class Population : public Singleton {
 
 private:
-    Builder **builder;
+    Builder *builder;
 
     vector<Individual *> individuals;
 
@@ -42,11 +42,6 @@ public:
      * This creates entirely fresh individuals.
      */
     void populate();
-
-    /**
-     * Deletes all individuals within the population.
-     */
-    void changeGeneration();
 
     vector<Individual *> & getIndividuals();
 

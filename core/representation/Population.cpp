@@ -15,7 +15,7 @@ Population::~Population() {
 Individual* Population::bestIndividual() {
     Individual *best_individual = individuals.at(0);
     for (int k = 1; k < individuals.size(); k++) {
-        if (individuals.at(k)->getFitness() > best_individual->getFitness()) {
+        if (individuals.at(k)->getRelevance().getFitness() > best_individual->getRelevance().getFitness()) {
             best_individual = individuals.at(k);
         }
     }
@@ -25,7 +25,7 @@ Individual* Population::bestIndividual() {
 Individual* Population::worstIndividual() {
     Individual *worst_individual = individuals.at(0);
     for (int k = 1; k < individuals.size(); k++) {
-        if (individuals.at(k)->getFitness() < worst_individual->getFitness()) {
+        if (individuals.at(k)->getRelevance().getFitness() < worst_individual->getRelevance().getFitness()) {
             worst_individual = individuals.at(k);
         }
     }
@@ -35,7 +35,7 @@ Individual* Population::worstIndividual() {
 void Population::populate() {
     individuals.clear();
     for (int k = 0; k < individuals.capacity(); k++) {
-        individuals.push_back((*builder)->build());
+        individuals.push_back(builder->build());
     }
 }
 

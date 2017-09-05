@@ -1,12 +1,13 @@
 #include "Session.h"
-#include "initialization/Builder.h"
+#include "evaluation/EvolutionaryNetwork.h"
 #include "variation/BreedingOperator.h"
 
 Session::Session(Problem &problem) : _problem(problem) {}
 
 Session::~Session() {
-    delete _builder;
     delete _individual;
+    delete _builder;
+    delete _network;
     delete _pipeline;
 }
 
@@ -14,28 +15,40 @@ Problem & Session::problem() {
     return _problem;
 }
 
-Builder ** Session::builder() {
-    return &_builder;
+EvolutionaryNetwork * Session::network() {
+    return _network;
 }
 
-Fitness ** Session::fitness() {
-    auto fitness = new Fitness*;
-    *fitness = _fitness;
-    return fitness;
+Builder * Session::builder() {
+    return _builder;
 }
 
-FeatureMap ** Session::featuremap() {
-    auto featuremap = new FeatureMap*;
-    *featuremap = _featuremap;
-    return featuremap;
+Fitness * Session::fitness() {
+    return _fitness;
 }
 
-Individual ** Session::individual() {
-    return &_individual;
+Relevance * Session::relevance() {
+    return _relevance;
 }
 
-BreedingOperator ** Session::pipeline() {
-    return &_pipeline;
+FeatureMap * Session::featuremap() {
+    return _featuremap;
+}
+
+Individual * Session::individual() {
+    return _individual;
+}
+
+BreedingOperator * Session::pipeline() {
+    return _pipeline;
+}
+
+unsigned int Session::epochs() {
+    return _epochs;
+}
+
+unsigned int Session::episodes() {
+    return _episodes;
 }
 
 unsigned int Session::generations() {
@@ -50,6 +63,22 @@ unsigned int Session::varythreads() {
     return _varythreads;
 }
 
+float Session::learning_rate() {
+    return _learning_rate;
+}
+
+float Session::discount_factor() {
+    return _discount_factor;
+}
+
+void Session::epochs(unsigned int epochs) {
+    this->_epochs = epochs;
+}
+
+void Session::episodes(unsigned int episodes) {
+    this->_episodes = episodes;
+}
+
 void Session::generations(unsigned int generations) {
     this->_generations = generations;
 }
@@ -60,4 +89,12 @@ void Session::evalthreads(unsigned int evalthreads) {
 
 void Session::varythreads(unsigned int varythreads) {
     this->_varythreads = varythreads;
+}
+
+void Session::learning_rate(float learning_rate) {
+    this->_learning_rate = learning_rate;
+}
+
+void Session::discount_factor(float discount_factor) {
+    this->_discount_factor = discount_factor;
 }

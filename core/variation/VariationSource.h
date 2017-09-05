@@ -48,7 +48,7 @@ protected:
      * @param parents Parent individuals for the operation.
      * @return Offspring individuals.
      */
-    virtual vector<Individual *> perform(Population &pop, vector<Individual *> parents, Randomizer &random) = 0;
+    virtual vector<Individual *> perform(Population &pop, vector<Individual *> parents, unsigned int epoch, Randomizer &random) = 0;
 
 public:
     explicit VariationSource(Session &session);
@@ -67,7 +67,7 @@ public:
      * @param pop Current state of the evolutionary system's population.
      * @return
      */
-    vector<Individual *> vary(Population &pop, Randomizer &random);
+    vector<Individual *> vary(Population &pop, unsigned int epoch, Randomizer &random);
 
 };
 

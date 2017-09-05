@@ -3,9 +3,11 @@
 
 
 #include <boost/python.hpp>
+#include "../../../../core/evaluation/EvolutionaryNetwork.h"
 #include "../../../../core/Session.h"
 #include "../../../../core/initialization/Builder.h"
 #include "../../../../core/representation/Fitness.h"
+#include "../../../../core/representation/Relevance.h"
 #include "../../../../core/representation/FeatureMap.h"
 #include "../../../../core/representation/Individual.h"
 #include "../../../../core/variation/BreedingOperator.h"
@@ -22,8 +24,10 @@ class SessionWrapper : public Session, public wrapper<Session> {
 public:
     explicit SessionWrapper(boost::shared_ptr<Problem> problem);
 
+    void network(EvolutionaryNetwork &network_prototype) override;
     void builder(Builder &builder_prototype) override;
     void fitness(Fitness &fitness_prototype) override;
+    void relevance(Relevance &relevance_prototype) override;
     void featuremap(FeatureMap &featuremap_prototype) override;
     void individual(Individual &individual_prototype) override;
     void pipeline(BreedingOperator &pipeline_prototype) override;

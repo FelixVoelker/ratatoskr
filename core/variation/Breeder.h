@@ -20,7 +20,7 @@ private:
 
     vector<Randomizer> random;
 
-    BreedingOperator **variation_pipeline;
+    BreedingOperator *variation_pipeline;
 
 protected:
     /**
@@ -35,6 +35,7 @@ protected:
      */
     void breedChunk(Population &pop,
                     vector<Individual *> &offsprings,
+                    unsigned int epoch,
                     unsigned int offset,
                     unsigned int size,
                     unsigned int thread);
@@ -43,10 +44,10 @@ public:
     explicit Breeder(Session &session);
 
     /**
-     * Breeds the next generation of the population.
+     * Breeds the next generation of offsprings and returns the old ones.
      * @param pop Current state of the evolutionary system's population.
      */
-    void breedPopulation(Population &pop);
+    vector<Individual *> & breedPopulation(Population &pop, unsigned int epoch);
 
 };
 

@@ -2,7 +2,7 @@
 #define NDEC_EVALUATOR_H
 
 
-#include "../representation/Population.h"
+#include "EvolutionaryNetwork.h"
 
 /**
  * Represents the evaluator of the evolutionary system.
@@ -14,6 +14,8 @@
 class Evaluator : public Singleton {
 
 private:
+    EvolutionaryNetwork *network;
+
     unsigned int evalthreads = 1;
 
     Problem &problem;

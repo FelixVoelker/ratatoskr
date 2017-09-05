@@ -3,7 +3,7 @@
 
 
 #include <boost/python.hpp>
-#include "../../../../cc/toolbox/ec/ndga/NDGAProblem.h"
+#include "../../../../cc/ec/ndga/NDGAProblem.h"
 
 using namespace boost::python;
 

@@ -13,20 +13,26 @@
 class Statistics {
 
 private:
-    vector<float> best_fitnesses;
-    vector<float> average_fitnesses;
-    vector<float> worst_fitnesses;
+    unsigned int episodes;
+
+    vector<vector<float>> best_fitnesses;
+    vector<vector<float>> average_fitnesses;
+    vector<vector<float>> worst_fitnesses;
 
     float averageFitness(Population &pop);
 
 public:
     explicit Statistics(Session &session);
 
-    void record(Population &pop, unsigned int generation);
+    void record(Population &pop, unsigned int epoch, unsigned int generation);
 
-    vector<float> bestFitnesses();
-    vector<float> averageFitnesses();
-    vector<float> worstFitnesses();
+    vector<float> bestFitnesses(int epoch);
+    vector<vector<float>> bestFitnesses();
+    vector<float> averageFitnesses(int epoch);
+    vector<vector<float>> averageFitnesses();
+    vector<float> worstFitnesses(int epoch);
+    vector<vector<float>> worstFitnesses();
+
 };
 
 

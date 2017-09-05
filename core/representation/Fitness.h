@@ -1,8 +1,8 @@
 #ifndef NDEC_FITNESS_H
 #define NDEC_FITNESS_H
 
-#include "../util/Prototype.h"
 
+#include "../util/Prototype.h"
 
 /**
  *  The interface for an individual's fitness that presents all functionality that a fitness measure has to be

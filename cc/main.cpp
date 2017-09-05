@@ -1,13 +1,13 @@
-#include "toolbox/problem/ndga/OneMaxProblem.h"
-#include "toolbox/ec/ndga/NDGASession.h"
+#include "problem/ndga/OneMaxProblem.h"
+#include "ec/ndga/NDGASession.h"
 #include "../core/EvolutionarySystem.h"
 
 int main() {
-    auto problem = new OneMaxProblem(200, 50);
+    auto problem = new OneMaxProblem(200, 10);
     auto session = new NDGASession(*problem);
-    /*auto system = new EvolutionarySystem(*session);
+    auto system = new EvolutionarySystem(*session);
     system->run();
-    delete system;*/
+    delete system;
     delete session;
     delete problem;
     return 0;

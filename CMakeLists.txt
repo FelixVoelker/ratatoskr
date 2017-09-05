@@ -11,12 +11,15 @@ include_directories(${BOOST_INCLUDEDIR} )
 
 set(CORE_SOURCES
         core/evaluation/Evaluator.cpp core/evaluation/Evaluator.h
+        core/evaluation/EvolutionaryNetwork.cpp core/evaluation/EvolutionaryNetwork.h
         core/evaluation/Problem.cpp core/evaluation/Problem.h
+        core/experience/Replayer.cpp core/experience/Replayer.h
         core/initialization/Builder.cpp core/initialization/Builder.h
         core/representation/FeatureMap.cpp core/representation/FeatureMap.h
         core/representation/Fitness.h core/representation/Fitness.cpp
         core/representation/Individual.cpp core/representation/Individual.h
         core/representation/Population.cpp core/representation/Population.h
+        core/representation/Relevance.cpp core/representation/Relevance.h
         core/statistics/Statistics.cpp core/statistics/Statistics.h
         core/util/Prototype.cpp core/util/Prototype.h
         core/util/Randomizer.cpp core/util/Randomizer.h
@@ -29,16 +32,17 @@ set(CORE_SOURCES
         core/Session.cpp core/Session.h)
 
 set(CC_API
-        cc/toolbox/ec/common/FitnessProportionateSelection.cpp cc/toolbox/ec/common/FitnessProportionateSelection.h
-        cc/toolbox/ec/common/RawFitness.cpp cc/toolbox/ec/common/RawFitness.h
-        cc/toolbox/ec/ndga/BitVectorCrossover.cpp cc/toolbox/ec/ndga/BitVectorCrossover.h
-        cc/toolbox/ec/ndga/BitVectorIndividual.cpp cc/toolbox/ec/ndga/BitVectorIndividual.h
-        cc/toolbox/ec/ndga/BitVectorMutation.cpp cc/toolbox/ec/ndga/BitVectorMutation.h
-        cc/toolbox/ec/ndga/FeatureVector.cpp cc/toolbox/ec/ndga/FeatureVector.h
-        cc/toolbox/ec/ndga/NDGAProblem.cpp cc/toolbox/ec/ndga/NDGAProblem.h
-        cc/toolbox/ec/ndga/NDGASession.cpp cc/toolbox/ec/ndga/NDGASession.h
-        cc/toolbox/ec/ndga/RandomBitVectorBuilder.cpp cc/toolbox/ec/ndga/RandomBitVectorBuilder.h
-        cc/toolbox/problem/ndga/OneMaxProblem.cpp cc/toolbox/problem/ndga/OneMaxProblem.h)
+        cc/ec/common/FitnessProportionateSelection.cpp cc/ec/common/FitnessProportionateSelection.h
+        cc/ec/common/RawFitness.cpp cc/ec/common/RawFitness.h
+        cc/ec/common/RawRelevance.cpp cc/ec/common/RawRelevance.h
+        cc/ec/ndga/BitVectorCrossover.cpp cc/ec/ndga/BitVectorCrossover.h
+        cc/ec/ndga/BitVectorIndividual.cpp cc/ec/ndga/BitVectorIndividual.h
+        cc/ec/ndga/BitVectorMutation.cpp cc/ec/ndga/BitVectorMutation.h
+        cc/ec/ndga/FeatureVector.cpp cc/ec/ndga/FeatureVector.h
+        cc/ec/ndga/NDGAProblem.cpp cc/ec/ndga/NDGAProblem.h
+        cc/ec/ndga/NDGASession.cpp cc/ec/ndga/NDGASession.h
+        cc/ec/ndga/RandomBitVectorBuilder.cpp cc/ec/ndga/RandomBitVectorBuilder.h
+        cc/problem/ndga/OneMaxProblem.cpp cc/problem/ndga/OneMaxProblem.h)
 
 add_library(ndec_cc SHARED ${CORE_SOURCES} ${CC_API})
 target_link_libraries(ndec_cc ${Boost_LIBRARIES} ${PYTHON_LIBRARIES})
@@ -52,7 +56,7 @@ set(PYTHON_API_CORE
         python/ext/wrapper/core/IndividualWrapper.cpp python/ext/wrapper/core/IndividualWrapper.h
         python/ext/wrapper/core/ProblemWrapper.cpp python/ext/wrapper/core/ProblemWrapper.h
         python/ext/wrapper/core/SessionWrapper.cpp python/ext/wrapper/core/SessionWrapper.h
-        python/ext/core_ext.cpp)
+        python/ext/core_ext.cpp python/ext/wrapper/core/RelevanceWrapper.cpp python/ext/wrapper/core/RelevanceWrapper.h)
 
 set(PYTHON_API_NDGA
         python/ext/wrapper/ndga/ProblemWrapper.cpp python/ext/wrapper/ndga/ProblemWrapper.h

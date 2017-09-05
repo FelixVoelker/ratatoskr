@@ -18,7 +18,7 @@ void BreedingOperator::connect(vector<VariationSource *> sources) {
     }
 }
 
-vector<Individual *> BreedingOperator::perform(Population &pop, vector<Individual *> parents, Randomizer &random) {
+vector<Individual *> BreedingOperator::perform(Population &pop, vector<Individual *> parents, unsigned int epoch, Randomizer &random) {
     vector<Individual *> offspring = breed(parents, random);
     for (auto ind : parents)
         delete ind;

@@ -6,12 +6,15 @@
 #include "wrapper/core/FitnessWrapper.h"
 #include "../../core/EvolutionarySystem.h"
 #include "wrapper/core/IndividualWrapper.h"
+#include "wrapper/core/RelevanceWrapper.h"
 
 using namespace boost::python;
 
 BOOST_PYTHON_MODULE(core) {
     class_<std::vector<float>>("std::vector<float>")
             .def(vector_indexing_suite<std::vector<float>>());
+    class_<std::vector<float>>("std::vector<std::vector<float>>")
+            .def(vector_indexing_suite<std::vector<std::vector<float>>>());
 
     class_<FeatureMapWrapper, boost::noncopyable>("FeatureMap", init<boost::shared_ptr<Session>>())
             .def("clone", pure_virtual(&FeatureMap::clone), return_value_policy<manage_new_object>());
@@ -24,12 +27,17 @@ BOOST_PYTHON_MODULE(core) {
             .def("operator>=", pure_virtual(&Fitness::operator>=))
             .def("operator==", pure_virtual(&Fitness::operator==));
 
+    class_<RelevanceWrapper, boost::noncopyable>("Relevance", init<boost::shared_ptr<Session>>())
+            .def("relevance", pure_virtual(&Relevance::relevance))
+            .def("fitness", &Relevance::getFitness, return_value_policy<reference_existing_object>())
+            .def("clone", pure_virtual(&Relevance::clone), return_value_policy<manage_new_object>());;
+
     class_<IndividualWrapper, boost::noncopyable>("Individual", init<boost::shared_ptr<Session>>())
             .add_property("evaluated",
                           static_cast<bool(Individual::*)()>(&Individual::evaluated),
                           static_cast<void(Individual::*)(bool)>(&Individual::evaluated))
             .def("tostring", pure_virtual(&Individual::toString))
-            .def("fitness", &Individual::getFitness, return_value_policy<reference_existing_object>())
+            .def("relevance", &Individual::getRelevance, return_value_policy<reference_existing_object>())
             .def("featuremap", &Individual::getFeaturemap, return_value_policy<reference_existing_object>())
             .def("clone", pure_virtual(&Individual::clone), return_value_policy<manage_new_object>());
 
@@ -41,6 +49,12 @@ BOOST_PYTHON_MODULE(core) {
 
     //TODO: Add pure virtual functions
     class_<SessionWrapper, boost::noncopyable>("Session", init<boost::shared_ptr<Problem>>())
+            .add_property("epochs",
+                          static_cast<unsigned int(Session::*)()>(&Session::epochs),
+                          static_cast<void(Session::*)(unsigned int)>(&Session::epochs))
+            .add_property("episodes",
+                          static_cast<unsigned int(Session::*)()>(&Session::episodes),
+                          static_cast<void(Session::*)(unsigned int)>(&Session::episodes))
             .add_property("generations",
                           static_cast<unsigned int(Session::*)()>(&Session::generations),
                           static_cast<void(Session::*)(unsigned int)>(&Session::generations))
@@ -49,13 +63,22 @@ BOOST_PYTHON_MODULE(core) {
                           static_cast<void(Session::*)(unsigned int)>(&Session::evalthreads))
             .add_property("varythreads",
                           static_cast<unsigned int(Session::*)()>(&Session::varythreads),
-                          static_cast<void(Session::*)(unsigned int)>(&Session::varythreads));
+                          static_cast<void(Session::*)(unsigned int)>(&Session::varythreads))
+            .add_property("learningrate",
+                          static_cast<float(Session::*)()>(&Session::learning_rate),
+                          static_cast<void(Session::*)(float)>(&Session::learning_rate))
+            .add_property("discount-factor",
+                          static_cast<float(Session::*)()>(&Session::discount_factor),
+                          static_cast<void(Session::*)(float)>(&Session::discount_factor));
             //.def("builder", &builder);
 
     class_<Statistics>("Statistics", init<Session &>())
-            .add_property("best_fitnesses", &Statistics::bestFitnesses)
-            .add_property("average_fitnesses", &Statistics::averageFitnesses)
-            .add_property("worst_fitnesses", &Statistics::worstFitnesses);
+            .def("bestFitnesses", static_cast<vector<vector<float>>(Statistics::*)()>(&Statistics::bestFitnesses))
+            .def("averageFitnesses", static_cast<vector<vector<float>>(Statistics::*)()>(&Statistics::averageFitnesses))
+            .def("worstFitnesses", static_cast<vector<vector<float>>(Statistics::*)()>(&Statistics::worstFitnesses))
+            .def("bestFitnesses", static_cast<vector<float>(Statistics::*)(int)>(&Statistics::bestFitnesses))
+            .def("averageFitnesses", static_cast<vector<float>(Statistics::*)(int)>(&Statistics::averageFitnesses))
+            .def("worstFitnesses", static_cast<vector<float>(Statistics::*)(int)>(&Statistics::worstFitnesses));
 
     class_<EvolutionarySystem>("EvolutionarySystem", init<Session &>())
             .add_property("statistics", &EvolutionarySystem::getStatistics)
