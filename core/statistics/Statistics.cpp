@@ -11,14 +11,14 @@ Statistics::Statistics(Session &session) {
     worst_fitnesses = vector<vector<float>>(session.epochs(), vector<float>(session.generations() + 1, 0));
 }
 
-void Statistics::record(const Population &pop, const unsigned int epoch, const unsigned int generation) {
+void Statistics::record(Population &pop, const unsigned int epoch, const unsigned int generation) {
     best_fitnesses.at(epoch).at(generation) = dynamic_cast<RawFitness &>(pop.bestIndividual()->getRelevance().getFitness()).fitness() / episodes;
     worst_fitnesses.at(epoch).at(generation) = dynamic_cast<RawFitness &>(pop.worstIndividual()->getRelevance().getFitness()).fitness() / episodes;
     average_fitnesses.at(epoch).at(generation) = averageFitness(pop) / episodes;
 }
 
-float Statistics::averageFitness(const Population &pop) {
-    vector<Individual *> individuals = pop.getIndividuals();
+float Statistics::averageFitness(Population &pop) {
+    vector<Individual *> &individuals = pop.getIndividuals();
     float total_fitness = 0;
     for (auto ind : individuals)
         total_fitness += dynamic_cast<RawFitness &>(ind->getRelevance().getFitness()).fitness();

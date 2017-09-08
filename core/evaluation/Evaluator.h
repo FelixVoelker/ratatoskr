@@ -36,7 +36,7 @@ public:
      * Evaluates an entire population.
      * @param pop State of evolutionary system's population.
      */
-    void evaluatePopulation(const Population &pop) const;
+    void evaluatePopulation(Population &pop) const;
 
 };
 

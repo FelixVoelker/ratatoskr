@@ -19,12 +19,12 @@ private:
     vector<vector<float>> average_fitnesses;
     vector<vector<float>> worst_fitnesses;
 
-    float averageFitness(const Population &pop);
+    float averageFitness(Population &pop);
 
 public:
     explicit Statistics(Session &session);
 
-    void record(const Population &pop, unsigned int epoch, unsigned int generation);
+    void record(Population &pop, unsigned int epoch, unsigned int generation);
 
     vector<float> bestFitnesses(int epoch) const;
     vector<vector<float>> bestFitnesses() const;

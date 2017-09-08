@@ -39,6 +39,6 @@ void Population::populate() {
     }
 }
 
-vector<Individual *> Population::getIndividuals() const {
+vector<Individual *> & Population::getIndividuals() {
     return individuals;
 }

@@ -43,7 +43,7 @@ public:
      */
     void populate();
 
-    vector<Individual *> getIndividuals() const;
+    vector<Individual *> & getIndividuals();
 
 };
 

@@ -51,25 +51,25 @@ BOOST_PYTHON_MODULE(core) {
     class_<SessionWrapper, boost::noncopyable>("Session", init<boost::shared_ptr<Problem>>())
             .add_property("epochs",
                           static_cast<unsigned int(Session::*)()const>(&Session::epochs),
-                          static_cast<void(Session::*)(const unsigned int)>(&Session::epochs))
+                          static_cast<void(Session::*)(unsigned int)>(&Session::epochs))
             .add_property("episodes",
                           static_cast<unsigned int(Session::*)()const>(&Session::episodes),
-                          static_cast<void(Session::*)(const unsigned int)>(&Session::episodes))
+                          static_cast<void(Session::*)(unsigned int)>(&Session::episodes))
             .add_property("generations",
                           static_cast<unsigned int(Session::*)()const>(&Session::generations),
-                          static_cast<void(Session::*)(const unsigned int)>(&Session::generations))
+                          static_cast<void(Session::*)(unsigned int)>(&Session::generations))
             .add_property("evalthreads",
                           static_cast<unsigned int(Session::*)()const>(&Session::evalthreads),
-                          static_cast<void(Session::*)(const unsigned int)>(&Session::evalthreads))
+                          static_cast<void(Session::*)(unsigned int)>(&Session::evalthreads))
             .add_property("varythreads",
                           static_cast<unsigned int(Session::*)()const>(&Session::varythreads),
-                          static_cast<void(Session::*)(const unsigned int)>(&Session::varythreads))
+                          static_cast<void(Session::*)(unsigned int)>(&Session::varythreads))
             .add_property("learningrate",
                           static_cast<float(Session::*)()const>(&Session::learning_rate),
-                          static_cast<void(Session::*)(const float)>(&Session::learning_rate))
+                          static_cast<void(Session::*)(float)>(&Session::learning_rate))
             .add_property("discount-factor",
                           static_cast<float(Session::*)()const>(&Session::discount_factor),
-                          static_cast<void(Session::*)(const float)>(&Session::discount_factor));
+                          static_cast<void(Session::*)(float)>(&Session::discount_factor));
             //.def("builder", &builder);
 
     class_<Statistics>("Statistics", init<Session &>())

@@ -1,4 +1,5 @@
 #include <thread>
+#include <iostream>
 #include "Evaluator.h"
 #include "../../cc/ec/common/RawRelevance.h"
 
@@ -14,8 +15,8 @@ void Evaluator::evaluateChunk(vector<Individual *> &individuals, const unsigned 
 
 }
 
-void Evaluator::evaluatePopulation(const Population &pop) const {
-    vector<Individual *> individuals = pop.getIndividuals();
+void Evaluator::evaluatePopulation(Population &pop) const {
+    vector<Individual *> &individuals = pop.getIndividuals();
     vector<thread> threads(evalthreads);
 
     unsigned int offset = 0;
