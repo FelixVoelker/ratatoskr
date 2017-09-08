@@ -2,7 +2,7 @@
 #include "evaluation/EvolutionaryNetwork.h"
 #include "variation/BreedingOperator.h"
 
-Session::Session(Problem &problem) : _problem(problem) {}
+Session::Session(const Problem &problem) : _problem(problem) {}
 
 Session::~Session() {
     delete _individual;
@@ -11,63 +11,63 @@ Session::~Session() {
     delete _pipeline;
 }
 
-Problem & Session::problem() {
+const Problem & Session::problem() const {
     return _problem;
 }
 
-EvolutionaryNetwork * Session::network() {
+EvolutionaryNetwork * Session::network() const {
     return _network;
 }
 
-Builder * Session::builder() {
+Builder * Session::builder() const {
     return _builder;
 }
 
-Fitness * Session::fitness() {
+Fitness * Session::fitness() const {
     return _fitness;
 }
 
-Relevance * Session::relevance() {
+Relevance * Session::relevance() const {
     return _relevance;
 }
 
-FeatureMap * Session::featuremap() {
+FeatureMap * Session::featuremap() const {
     return _featuremap;
 }
 
-Individual * Session::individual() {
+Individual * Session::individual() const {
     return _individual;
 }
 
-BreedingOperator * Session::pipeline() {
+BreedingOperator * Session::pipeline() const {
     return _pipeline;
 }
 
-unsigned int Session::epochs() {
+unsigned int Session::epochs() const {
     return _epochs;
 }
 
-unsigned int Session::episodes() {
+unsigned int Session::episodes() const {
     return _episodes;
 }
 
-unsigned int Session::generations() {
+unsigned int Session::generations() const {
     return _generations;
 }
 
-unsigned int Session::evalthreads() {
+unsigned int Session::evalthreads() const {
     return _evalthreads;
 }
 
-unsigned int Session::varythreads() {
+unsigned int Session::varythreads() const {
     return _varythreads;
 }
 
-float Session::learning_rate() {
+float Session::learning_rate() const {
     return _learning_rate;
 }
 
-float Session::discount_factor() {
+float Session::discount_factor() const {
     return _discount_factor;
 }
 

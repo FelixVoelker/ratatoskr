@@ -11,7 +11,7 @@
 #include "../common/RawFitness.h"
 #include "../common/RawRelevance.h"
 
-NDGASession::NDGASession(NDGAProblem &problem) : Session(problem) {
+NDGASession::NDGASession(const NDGAProblem &problem) : Session(problem) {
     _fitness = new RawFitness(*this);
     _relevance = new RawRelevance(*this);
     _featuremap = new FeatureVector(*this);

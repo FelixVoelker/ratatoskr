@@ -2,4 +2,4 @@
 
 Singleton::Singleton(const Singleton &obj) = default;
 
-Singleton::Singleton(Session &session) {}
+Singleton::Singleton(const Session &session) {}

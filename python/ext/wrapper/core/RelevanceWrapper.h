@@ -20,7 +20,7 @@ public:
 
     float relevance(int epoch) override;
 
-    Relevance * clone() override;
+    Relevance * clone() const override;
 };
 
 

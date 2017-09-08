@@ -17,7 +17,7 @@ class ProblemWrapper : public NDGAProblem, public wrapper<NDGAProblem> {
 public:
     explicit ProblemWrapper(unsigned int popsize, unsigned int genes);
 
-    void evaluate(Individual &individual) override;
+    void evaluate(Individual &individual) const override;
 
 };
 

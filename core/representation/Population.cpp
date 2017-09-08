@@ -1,7 +1,7 @@
 #include <iostream>
 #include "Population.h"
 
-Population::Population(Session &session) : Singleton(session) {
+Population::Population(const Session &session) : Singleton(session) {
     builder = session.builder();
     individuals = vector<Individual *>();
     individuals.reserve(session.problem().popsize());
@@ -12,7 +12,7 @@ Population::~Population() {
         delete ind;
 }
 
-Individual* Population::bestIndividual() {
+Individual * Population::bestIndividual() const {
     Individual *best_individual = individuals.at(0);
     for (int k = 1; k < individuals.size(); k++) {
         if (individuals.at(k)->getRelevance().getFitness() > best_individual->getRelevance().getFitness()) {
@@ -22,7 +22,7 @@ Individual* Population::bestIndividual() {
     return best_individual;
 }
 
-Individual* Population::worstIndividual() {
+Individual * Population::worstIndividual() const {
     Individual *worst_individual = individuals.at(0);
     for (int k = 1; k < individuals.size(); k++) {
         if (individuals.at(k)->getRelevance().getFitness() < worst_individual->getRelevance().getFitness()) {
@@ -39,6 +39,6 @@ void Population::populate() {
     }
 }
 
-vector<Individual *> & Population::getIndividuals() {
+vector<Individual *> Population::getIndividuals() const {
     return individuals;
 }

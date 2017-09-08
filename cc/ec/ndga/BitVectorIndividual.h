@@ -21,10 +21,10 @@ class BitVectorIndividual : public Individual {
 protected:
     vector<unsigned int> chromosome;
 
-    BitVectorIndividual(BitVectorIndividual &obj);
+    BitVectorIndividual(const BitVectorIndividual &obj);
 
 public:
-    explicit BitVectorIndividual(NDGASession &session);
+    explicit BitVectorIndividual(const NDGASession &session);
 
     /**
      * Returns the bit string representation of the chromosome.
@@ -33,7 +33,7 @@ public:
 
     vector<unsigned int> & getChromosome();
 
-    BitVectorIndividual * clone() override;
+    BitVectorIndividual * clone() const override;
 
 };
 

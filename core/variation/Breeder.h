@@ -2,6 +2,7 @@
 #define NDEC_BREEDER_H
 
 
+#include <thread>
 #include "../util/Singleton.h"
 #include "BreedingOperator.h"
 #include "../util/Randomizer.h"
@@ -16,7 +17,8 @@
 class Breeder : public Singleton {
 
 private:
-    unsigned long breedthreads = 1;
+    const unsigned int popsize;
+    const unsigned int varythreads;
 
     vector<Randomizer> random;
 
@@ -28,26 +30,26 @@ protected:
      * breeding threads and performs variation for the chunk. If the pipeline produces too much offsprings to fit
      * into the chunk, the remaining slots are assigned randomly.
      * @param pop        Current state of the evolutionary system's population.
-     * @param offsprings The next population of the system.
+     * @param parents The next population of the system.
      * @param offset     Index to start adding offsprings.
      * @param size       Size of the chunk.
      * @param thread     Index of running thread.
      */
     void breedChunk(Population &pop,
-                    vector<Individual *> &offsprings,
+                    vector<Individual *> &parents,
                     unsigned int epoch,
                     unsigned int offset,
                     unsigned int size,
                     unsigned int thread);
 
 public:
-    explicit Breeder(Session &session);
+    explicit Breeder(const Session &session);
 
     /**
      * Breeds the next generation of offsprings and returns the old ones.
      * @param pop Current state of the evolutionary system's population.
      */
-    vector<Individual *> & breedPopulation(Population &pop, unsigned int epoch);
+    vector<Individual *> * breedPopulation(Population &pop, unsigned int epoch);
 
 };
 

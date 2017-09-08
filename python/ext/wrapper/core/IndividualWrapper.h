@@ -19,7 +19,7 @@ public:
 
     string toString() override;
 
-    Individual * clone() override;
+    Individual * clone() const override;
 
 };
 

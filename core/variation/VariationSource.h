@@ -39,7 +39,7 @@ protected:
     /**
      * Specifies the number of previous sources that the variation source expects as input.
      */
-    virtual unsigned long expectedSources() = 0;
+    virtual unsigned long expectedSources() const = 0;
 
     /**
      * Performs the genetic operation that is associated with this source. This method is to differentiate between
@@ -48,17 +48,17 @@ protected:
      * @param parents Parent individuals for the operation.
      * @return Offspring individuals.
      */
-    virtual vector<Individual *> perform(Population &pop, vector<Individual *> parents, unsigned int epoch, Randomizer &random) = 0;
+    virtual vector<Individual *> perform(vector<Individual *> &parents, unsigned int epoch, Randomizer &random) const = 0;
 
 public:
-    explicit VariationSource(Session &session);
-    ~VariationSource();
+    explicit VariationSource(const Session &session);
+    virtual ~VariationSource();
 
     /**
      * Connects this variation source with the sources of the previous layer.
      * @param sources
      */
-    virtual void connect(vector<VariationSource *> sources);
+    virtual void connect(vector<VariationSource *> &sources);
 
     /**
      * Creates offspring individuals by varying the individuals of the current population recursively, i.e.
@@ -67,7 +67,7 @@ public:
      * @param pop Current state of the evolutionary system's population.
      * @return
      */
-    vector<Individual *> vary(Population &pop, unsigned int epoch, Randomizer &random);
+    vector<Individual *> vary(const vector<Individual *> &parents, unsigned int epoch, Randomizer &random) const;
 
 };
 

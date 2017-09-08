@@ -18,7 +18,7 @@ private:
 
     unsigned int evalthreads = 1;
 
-    Problem &problem;
+    const Problem &problem;
 
     /**
      * Evaluates a given chunk of the population only. This function is called by each of the evaluation threads
@@ -27,16 +27,16 @@ private:
      * @param offset      Index to start with the evaluation.
      * @param size        Size of the chunk.
      */
-    void evaluateChunk(vector<Individual *> &individuals, unsigned int offset, unsigned int size);
+    void evaluateChunk(vector<Individual *> &individuals, unsigned int offset, unsigned int size) const;
 
 public:
-    explicit Evaluator(Session &session);
+    explicit Evaluator(const Session &session);
 
     /**
      * Evaluates an entire population.
      * @param pop State of evolutionary system's population.
      */
-    void evaluatePopulation(Population &pop);
+    void evaluatePopulation(const Population &pop) const;
 
 };
 

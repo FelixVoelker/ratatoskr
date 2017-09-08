@@ -15,14 +15,14 @@ protected:
     float _cost;
 
 public:
-    explicit RawRelevance(Session &session);
+    explicit RawRelevance(const Session &session);
 
-    float relevance(int epoch);
+    float relevance(int epoch) override;
 
-    float cost();
+    float cost() const;
     void cost(float cost);
 
-    RawRelevance* clone();
+    RawRelevance* clone() const override;
 
 };
 

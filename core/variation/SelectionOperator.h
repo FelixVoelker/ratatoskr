@@ -17,21 +17,21 @@
 class SelectionOperator : public VariationSource {
 
 protected:
-    unsigned long expectedSources();
+    unsigned long expectedSources() const override;
 
 public:
-    explicit SelectionOperator(Session &session);
+    explicit SelectionOperator(const Session &session);
 
     /**
      * Selects an individual according to the operator's strategy.
      * @param pop Current state of the evolutionary system's population.
      */
-    virtual vector<Individual *> select(Population &pop, unsigned int epoch, Randomizer &random) = 0;
+    virtual vector<Individual *> select(const vector<Individual *> &parents, unsigned int epoch, Randomizer &random) const = 0;
 
     /**
      * Performs the selection operation on the current population and clones the selected individuals afterwards.
      */
-    vector<Individual *> perform(Population &pop, vector<Individual *> parents, unsigned int epoch, Randomizer &random) override;
+    vector<Individual *> perform(vector<Individual *> &parents, unsigned int epoch, Randomizer &random) const override;
 
 };
 

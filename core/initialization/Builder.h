@@ -25,16 +25,16 @@ protected:
     * Initializes an individual according to the builder's strategy.
     * @param ind The individual to be initialized.
     */
-    virtual void initialize(Individual &ind) = 0;
+    virtual void initialize(Individual &ind) const = 0;
 
 public:
-    explicit Builder(Session &session);
+    explicit Builder(const Session &session);
 
     /**
      * Builds a new individual by copying the given prototype then initializing it.
      * @return Pointer to the new individual.
      */
-    Individual * build();
+    Individual * build() const;
 };
 
 

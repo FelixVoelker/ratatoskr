@@ -34,7 +34,7 @@ protected:
     float _learning_rate = 0.1;
     float _discount_factor = 0.1;
 
-    Problem &_problem;
+    const Problem &_problem;
 
     /**
      * Necessary prototypes.
@@ -48,18 +48,18 @@ protected:
     BreedingOperator    *_pipeline;
 
 public:
-    explicit Session(Problem &problem);
-    ~Session();
+    explicit Session(const Problem &problem);
+    virtual ~Session();
 
-    Problem & problem();
+    const Problem & problem() const;
 
-    EvolutionaryNetwork * network();
-    Builder * builder();
-    Fitness * fitness();
-    Relevance  * relevance();
-    FeatureMap * featuremap();
-    Individual * individual();
-    BreedingOperator * pipeline();
+    EvolutionaryNetwork * network() const;
+    Builder * builder() const;
+    Fitness * fitness() const;
+    Relevance  * relevance() const;
+    FeatureMap * featuremap() const;
+    Individual * individual() const;
+    BreedingOperator * pipeline() const;
 
     virtual void network(EvolutionaryNetwork &network_prototype) = 0;
     virtual void builder(Builder &builder_prototype) = 0;
@@ -70,13 +70,13 @@ public:
     virtual void pipeline(BreedingOperator &pipeline_prototype) = 0;
 
 
-    unsigned int epochs();
-    unsigned int episodes();
-    unsigned int generations();
-    unsigned int evalthreads();
-    unsigned int varythreads();
-    float learning_rate();
-    float discount_factor();
+    unsigned int epochs() const;
+    unsigned int episodes() const;
+    unsigned int generations() const;
+    unsigned int evalthreads() const;
+    unsigned int varythreads() const;
+    float learning_rate() const;
+    float discount_factor() const;
 
     void epochs(unsigned int epochs);
     void episodes(unsigned int episodes);

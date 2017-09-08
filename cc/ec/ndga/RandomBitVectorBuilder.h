@@ -21,10 +21,10 @@ private:
      * Samples each gene of the chromosome from a uniform distribution over {0,1}.
      * @param ind The individual to be initialized.
      */
-    void initialize(Individual &ind) override;
+    void initialize(Individual &ind) const override;
 
 public:
-    explicit RandomBitVectorBuilder(NDGASession &session);
+    explicit RandomBitVectorBuilder(const NDGASession &session);
 
 };
 

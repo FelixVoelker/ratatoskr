@@ -31,7 +31,7 @@ private:
     unsigned int EPISODES;
     unsigned int GENERATIONS;
 
-    void evolve(int epoch);
+    void evolve(unsigned int epoch);
 
 public:
     explicit EvolutionarySystem(Session &session);

@@ -4,4 +4,4 @@ Prototype::Prototype(const Prototype &obj) = default;
 
 Prototype::~Prototype() = default;
 
-Prototype::Prototype(Session &session) : Singleton(session) {}
+Prototype::Prototype(const Session &session) : Singleton(session) {}

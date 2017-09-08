@@ -19,7 +19,7 @@ class ProblemWrapper : public Problem, public wrapper<Problem> {
 public:
     explicit ProblemWrapper(unsigned int popsize);
 
-    void evaluate(Individual &individual) override;
+    void evaluate(Individual &individual) const override;
 
 };
 

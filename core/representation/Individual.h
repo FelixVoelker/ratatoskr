@@ -22,11 +22,11 @@ protected:
     Relevance  *relevance;
     FeatureMap *featuremap;
 
-    Individual(Individual &obj);
+    Individual(const Individual &obj);
 
 public:
-    explicit Individual(Session &session);
-    ~Individual();
+    explicit Individual(const Session &session);
+    virtual ~Individual();
 
     /**
      * Returns a human-readable representation of the individual.
@@ -34,11 +34,10 @@ public:
      */
     virtual string toString() = 0;
 
-    Relevance  & getRelevance();
-    FeatureMap & getFeaturemap();
+    Relevance  & getRelevance() const;
+    FeatureMap & getFeaturemap() const;
 
-    bool evaluated();
-
+    bool evaluated() const;
     void evaluated(bool evaluated);
 
 };

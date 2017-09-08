@@ -15,7 +15,7 @@
 class Fitness : public Prototype {
 
 public:
-    explicit Fitness(Session &session);
+    explicit Fitness(const Session &session);
 
     /**
      * Estimates if the current fitness fulfills the termination criteria of the NDEC method.
@@ -23,7 +23,7 @@ public:
      */
     virtual bool isIdeal() = 0;
 
-    virtual bool operator<(Fitness &other)  = 0;
+    virtual bool operator<(Fitness &other) = 0;
     virtual bool operator<=(Fitness &other) = 0;
     virtual bool operator>(Fitness &other)  = 0;
     virtual bool operator>=(Fitness &other) = 0;

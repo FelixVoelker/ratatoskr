@@ -23,7 +23,7 @@ public:
     /**
      * Initializes a component according to the given Session.
      */
-    explicit Singleton(Session &session);
+    explicit Singleton(const Session &session);
 
 };
 

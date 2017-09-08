@@ -15,17 +15,15 @@ class RawFitness : public Fitness {
 
 protected:
     /**
-     * An ordinary fitness measure that is compared based on a natural order.
+     * An ordinary fitness measure that is compared based on a reversed natural order.
      */
     float   _fitness;
-    float   _standarized_fitness;
 
 public:
-    explicit RawFitness(Session &session);
+    explicit RawFitness(const Session &session);
 
     /**
-    * Estimates if the evaluation of the individual results in no unsuccessful fitness cases.
-    * @return True if hits is zero, false otherwise.
+    * Estimates if the evaluation of the individual results in a fitness of zero.
     */
     bool isIdeal() override;
 
@@ -35,12 +33,10 @@ public:
     bool operator>=(Fitness &other) override;
     bool operator==(Fitness &other) override;
 
-    float fitness();
-    float standarizedFitness();
+    float fitness() const;
     void  fitness(float fitness);
-    void  standarizedFitness(float standarizedFitness);
 
-    RawFitness * clone() override;
+    RawFitness * clone() const override;
 
 };
 

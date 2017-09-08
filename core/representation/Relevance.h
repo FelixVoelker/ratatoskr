@@ -14,17 +14,17 @@ class Relevance : public Prototype {
 protected:
     Fitness *fitness;
 
-    int EPOCHS;
+    int epochs;
 
-    Relevance(Relevance &obj);
+    Relevance(const Relevance &obj);
 
 public:
-    explicit Relevance(Session &session);
-    ~Relevance();
+    explicit Relevance(const Session &session);
+    virtual ~Relevance();
 
     virtual float relevance(int epoch) = 0;
 
-    Fitness & getFitness();
+    Fitness & getFitness() const;
 
 };
 

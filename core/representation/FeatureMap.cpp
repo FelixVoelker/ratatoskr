@@ -1,3 +1,3 @@
 #include "FeatureMap.h"
 
-FeatureMap::FeatureMap(Session &session) : Prototype(session) {}
+FeatureMap::FeatureMap(const Session &session) : Prototype(session) {}

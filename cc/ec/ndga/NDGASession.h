@@ -18,7 +18,7 @@ public:
     double xover_rate = 0.7;
     double mutation_rate = 0.001;
 
-    explicit NDGASession(NDGAProblem &problem);
+    explicit NDGASession(const NDGAProblem &problem);
 
     void network(EvolutionaryNetwork &network) override;
     void builder(Builder &builder) override;

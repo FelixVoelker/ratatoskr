@@ -21,14 +21,14 @@ public:
     /**
      * Initializes the prototype to be cloned from.
      */
-    explicit Prototype(Session &session);
-    ~Prototype();
+    explicit Prototype(const Session &session);
+    virtual ~Prototype();
 
     /**
      * Copies a given Prototype object.
      * @return Cloned Prototype object.
      */
-    virtual Prototype * clone() = 0;
+    virtual Prototype * clone() const = 0;
 
 };
 

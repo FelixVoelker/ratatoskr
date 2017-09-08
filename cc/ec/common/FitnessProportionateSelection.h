@@ -14,13 +14,13 @@
 class FitnessProportionateSelection : public SelectionOperator {
 
 public:
-    explicit FitnessProportionateSelection(Session &session);
+    explicit FitnessProportionateSelection(const Session &session);
 
     /**
      * Selects an individual according to its index that is sampled from a fitness dependent probability distribution.
      * @param pop Current state of the evolutionary system's population.
      */
-    vector<Individual *> select(Population &pop, unsigned int epoch, Randomizer &random) override;
+    vector<Individual *> select(const vector<Individual *> &parents, unsigned int epoch, Randomizer &random) const override;
 
 };
 

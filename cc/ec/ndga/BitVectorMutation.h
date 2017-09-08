@@ -18,16 +18,16 @@ protected:
     int genes;
 
 protected:
-    unsigned long expectedSources() override;
+    unsigned long expectedSources() const override;
 
 public:
-    explicit BitVectorMutation(NDGASession &session);
+    explicit BitVectorMutation(const NDGASession &session);
 
     /**
      * A bit flip is performed on each locus of each parent's chromosome with a probability pm.
      * @param parents Parent individuals for the mutation.
      */
-    vector<Individual *> breed(vector<Individual *> parents, Randomizer &random) override;
+    vector<Individual *> & breed(vector<Individual *> &parents, Randomizer &random) const override;
 
 };
 

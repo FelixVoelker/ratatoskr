@@ -19,15 +19,15 @@ using namespace std;
 class FeatureVector : public FeatureMap {
 
 public:
-    explicit FeatureVector(NDGASession &session);
+    explicit FeatureVector(const NDGASession &session);
 
     /**
      * Returns the bit vector as a vector of floats.
      * @returns {0,1}^n
      */
-    vector<float> compute(vector<unsigned int> &chromosome);
+    vector<float> compute(vector<unsigned int> &chromosome) const;
 
-    FeatureVector * clone() override;
+    FeatureVector * clone() const override;
     
 };
 

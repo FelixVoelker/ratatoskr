@@ -15,9 +15,9 @@ protected:
     EvolutionaryNetwork *network;
 
 public:
-    explicit Replayer(Session &session);
+    explicit Replayer(const Session &session);
 
-    void replay(Population &pop, vector<Individual *> &old);
+    void replay(const Population &pop, vector<Individual *> &old) const;
 
 };
 

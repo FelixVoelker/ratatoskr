@@ -1,49 +1,40 @@
 #include "RawFitness.h"
 
-RawFitness::RawFitness(Session &session) : Fitness(session) {}
+RawFitness::RawFitness(const Session &session) : Fitness(session) {}
 
 bool RawFitness::isIdeal() {
-    return false;
+    return _fitness == 0;
 }
 
 bool RawFitness::operator<(Fitness &other) {
-    return this->_fitness < ((RawFitness &) other)._fitness;
-}
-
-bool RawFitness::operator<=(Fitness &other) {
-    return this->_fitness <= ((RawFitness &) other)._fitness;
-}
-
-bool RawFitness::operator>(Fitness &other) {
     return this->_fitness > ((RawFitness &) other)._fitness;
 }
 
-bool RawFitness::operator>=(Fitness &other) {
+bool RawFitness::operator<=(Fitness &other) {
     return this->_fitness >= ((RawFitness &) other)._fitness;
+}
+
+bool RawFitness::operator>(Fitness &other) {
+    return this->_fitness < ((RawFitness &) other)._fitness;
+}
+
+bool RawFitness::operator>=(Fitness &other) {
+    return this->_fitness <= ((RawFitness &) other)._fitness;
 }
 
 bool RawFitness::operator==(Fitness &other) {
     return this->_fitness == ((RawFitness &) other)._fitness;
 }
 
-float RawFitness::fitness() {
+float RawFitness::fitness() const {
     return _fitness;
 }
 
-float RawFitness::standarizedFitness() {
-    return _standarized_fitness;
-}
-
-void RawFitness::fitness(float fitness) {
+void RawFitness::fitness(const float fitness) {
     this->_fitness = fitness;
 }
 
-void RawFitness::standarizedFitness(float standarizedFitness) {
-    this->_standarized_fitness = standarizedFitness;
-}
-
-
-RawFitness * RawFitness::clone() {
+RawFitness * RawFitness::clone() const {
     return new RawFitness(*this);
 }
 

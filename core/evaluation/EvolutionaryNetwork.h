@@ -18,10 +18,10 @@ protected:
     float discount_factor;
 
 public:
-    explicit EvolutionaryNetwork(Session &session);
+    explicit EvolutionaryNetwork(const Session &session);
 
-    vector<float> output(Population &population);
-    void update(Population &pop, vector<Individual *> old);
+    vector<float> output(const Population &pop) const;
+    void update(const Population &pop, vector<Individual *> old);
 
 };
 

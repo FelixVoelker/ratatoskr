@@ -16,7 +16,7 @@
 class FeatureMap : public Prototype {
 
 public:
-    explicit FeatureMap(Session &session);
+    explicit FeatureMap(const Session &session);
 
 };
 

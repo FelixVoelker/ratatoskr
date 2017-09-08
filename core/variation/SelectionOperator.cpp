@@ -1,15 +1,15 @@
 #include "SelectionOperator.h"
 
-SelectionOperator::SelectionOperator(Session &session) : VariationSource(session) {}
+SelectionOperator::SelectionOperator(const Session &session) : VariationSource(session) {}
 
-unsigned long SelectionOperator::expectedSources() {
+unsigned long SelectionOperator::expectedSources() const {
     return 0;
 }
 
-vector<Individual *> SelectionOperator::perform(Population &pop, vector<Individual *> parents, unsigned int epoch, Randomizer &random) {
-    vector<Individual *> selected = select(pop, epoch, random);
+vector<Individual *> SelectionOperator::perform(vector<Individual *> &parents, const unsigned int epoch, Randomizer &random) const {
+    vector<Individual *> selected = select(parents, epoch, random);
     for (int k = 0; k < selected.size(); k++) {
-        selected.at(0) = dynamic_cast<Individual *>(selected.at(0)->clone());
+        selected.at(k) = dynamic_cast<Individual *>(selected.at(k)->clone());
     }
     return selected;
 }

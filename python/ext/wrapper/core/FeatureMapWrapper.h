@@ -17,7 +17,7 @@ class FeatureMapWrapper : public FeatureMap, public wrapper<FeatureMap> {
 public:
     explicit FeatureMapWrapper(boost::shared_ptr<Session> session);
 
-    FeatureMap * clone() override;
+    FeatureMap * clone() const override;
 };
 
 

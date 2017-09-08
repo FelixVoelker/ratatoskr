@@ -29,21 +29,21 @@ protected:
     double prob; // Probability that the operator is performed.
 
 public:
-    explicit BreedingOperator(Session &session);
+    explicit BreedingOperator(const Session &session);
 
-    void connect(vector<VariationSource *> sources) override;
+    void connect(vector<VariationSource *> &sources) override;
 
     /**
      * Breeds with a certain probability new offsprings from a given set of parents according to
      * the operator's strategy.
      * @param parents Parent individuals for the breeding operation.
      */
-    virtual vector<Individual *> breed(vector<Individual *> parents, Randomizer &random) = 0;
+    virtual vector<Individual *> & breed(vector<Individual *> &parents, Randomizer &random) const = 0;
 
     /**
      * Performs the breeding operation on parent individuals and deletes them afterwards.
      */
-    vector<Individual *> perform(Population &pop, vector<Individual *> parents, unsigned int epoch, Randomizer &random) override;
+    vector<Individual *> perform(vector<Individual *> &parents, unsigned int epoch, Randomizer &random) const override;
 };
 
 

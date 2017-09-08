@@ -4,11 +4,11 @@
 BreedingOperator::ZeroSourcesException::ZeroSourcesException()
         : runtime_error("BreedingOperator needs at least one source.") {}
 
-BreedingOperator::BreedingOperator(Session &session) : VariationSource(session) {}
+BreedingOperator::BreedingOperator(const Session &session) : VariationSource(session) {}
 
-void BreedingOperator::connect(vector<VariationSource *> sources) {
+void BreedingOperator::connect(vector<VariationSource *> &sources) {
     try {
-        if (sources.size() == 0)
+        if (sources.empty())
             throw ZeroSourcesException();
         else
             VariationSource::connect(sources);
@@ -18,9 +18,6 @@ void BreedingOperator::connect(vector<VariationSource *> sources) {
     }
 }
 
-vector<Individual *> BreedingOperator::perform(Population &pop, vector<Individual *> parents, unsigned int epoch, Randomizer &random) {
-    vector<Individual *> offspring = breed(parents, random);
-    for (auto ind : parents)
-        delete ind;
-    return offspring;
+vector<Individual *> BreedingOperator::perform(vector<Individual *> &parents, unsigned int epoch, Randomizer &random) const {
+    return breed(parents, random);
 }

@@ -26,6 +26,6 @@ bool FitnessWrapper::operator==(Fitness &other) {
     return this->get_override("operator==")(other);
 }
 
-Fitness* FitnessWrapper::clone() {
+Fitness* FitnessWrapper::clone() const {
     return this->get_override("clone")();
 }

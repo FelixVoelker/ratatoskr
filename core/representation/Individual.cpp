@@ -1,11 +1,11 @@
 #include "Individual.h"
 
-Individual::Individual(Individual &obj) : Prototype(obj) {
-    relevance = dynamic_cast<Relevance *>(obj.getRelevance().clone());
-    featuremap = dynamic_cast<FeatureMap *>(obj.getFeaturemap().clone());
+Individual::Individual(const Individual &obj) : Prototype(obj) {
+    relevance = dynamic_cast<Relevance *>(obj.relevance->clone());
+    featuremap = dynamic_cast<FeatureMap *>(obj.featuremap->clone());
 }
 
-Individual::Individual(Session &session) : Prototype(session) {
+Individual::Individual(const Session &session) : Prototype(session) {
     relevance = session.relevance();
     featuremap = session.featuremap();
 }
@@ -15,18 +15,18 @@ Individual::~Individual() {
     delete featuremap;
 }
 
-Relevance & Individual::getRelevance() {
+Relevance & Individual::getRelevance() const {
     return *relevance;
 }
 
-FeatureMap & Individual::getFeaturemap() {
+FeatureMap & Individual::getFeaturemap() const {
     return *featuremap;
 }
 
-bool Individual::evaluated() {
+bool Individual::evaluated() const {
     return _evaluated;
 }
 
-void Individual::evaluated(bool evaluated) {
+void Individual::evaluated(const bool evaluated) {
     this->_evaluated = evaluated;
 }

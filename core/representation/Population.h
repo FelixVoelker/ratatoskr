@@ -22,20 +22,20 @@ private:
     vector<Individual *> individuals;
 
 public:
-    explicit Population(Session &session);
+    explicit Population(const Session &session);
     ~Population();
 
     /**
      * Estimates and returns the best individual within the population of the current generation according
      * to its given fitness measure.
      */
-    Individual * bestIndividual();
+    Individual * bestIndividual() const;
 
     /**
     * Estimates and returns the worse individual within the population of the current generation according
     * to its given fitness measure.
     */
-    Individual * worstIndividual();
+    Individual * worstIndividual() const;
 
     /**
      * Populates the evolutionary system's population by calling the given Builder.
@@ -43,7 +43,7 @@ public:
      */
     void populate();
 
-    vector<Individual *> & getIndividuals();
+    vector<Individual *> getIndividuals() const;
 
 };
 

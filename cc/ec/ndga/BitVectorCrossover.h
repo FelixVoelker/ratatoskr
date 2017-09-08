@@ -18,16 +18,16 @@ protected:
     int genes;
 
 protected:
-    unsigned long expectedSources() override;
+    unsigned long expectedSources() const override;
 
 public:
-    explicit BitVectorCrossover(NDGASession &session);
+    explicit BitVectorCrossover(const NDGASession &session);
 
     /**
      * Performs a one point crossover of two parents with a probability pc.
      * @param parents Parent individuals for the crossover.
      */
-    vector<Individual *> breed(vector<Individual *> parents, Randomizer &random) override;
+    vector<Individual *> & breed(vector<Individual *> &parents, Randomizer &random) const override;
 
 };
 

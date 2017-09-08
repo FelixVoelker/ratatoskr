@@ -17,24 +17,21 @@ BOOST_PYTHON_MODULE(ndga) {
 
     class_<RawFitness, bases<Fitness>>("RawFitness", init<Session &>())
             .add_property("fitness",
-                          static_cast<float(RawFitness::*)()>(&RawFitness::fitness),
-                          static_cast<void(RawFitness::*)(float)>(&RawFitness::fitness))
-            .add_property("standarized-fitness",
-                          static_cast<float(RawFitness::*)()>(&RawFitness::standarizedFitness),
-                          static_cast<void(RawFitness::*)(float)>(&RawFitness::standarizedFitness));
+                          static_cast<float(RawFitness::*)()const>(&RawFitness::fitness),
+                          static_cast<void(RawFitness::*)(const float)>(&RawFitness::fitness));
 
     class_<RawRelevance, bases<Relevance>, boost::noncopyable>("RawRelevance", init<Session &>())
             .add_property("cost",
-                          static_cast<float(RawRelevance::*)()>(&RawRelevance::cost),
-                          static_cast<void(RawRelevance::*)(float)>(&RawRelevance::cost));
+                          static_cast<float(RawRelevance::*)()const>(&RawRelevance::cost),
+                          static_cast<void(RawRelevance::*)(const float)>(&RawRelevance::cost));
 
     class_<BitVectorIndividual, bases<Individual>, boost::noncopyable>("BitVectorIndividual", init<NDGASession &>())
             .def("chromosome", &BitVectorIndividual::getChromosome, return_value_policy<reference_existing_object>());
 
     class_<ProblemWrapper, bases<Problem>, boost::noncopyable>("NDGAProblem", init<unsigned int, unsigned int>())
             .add_property("popsize",
-                          static_cast<unsigned int(NDGAProblem::*)()>(&NDGAProblem::popsize),
-                          static_cast<void(NDGAProblem::*)(unsigned int)>(&NDGAProblem::popsize))
+                          static_cast<unsigned int(NDGAProblem::*)()const>(&NDGAProblem::popsize),
+                          static_cast<void(NDGAProblem::*)(const unsigned int)>(&NDGAProblem::popsize))
             .def_readwrite("genes", &NDGAProblem::genes)
             .def("evaluate", pure_virtual(&NDGAProblem::evaluate));
 

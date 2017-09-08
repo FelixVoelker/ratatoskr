@@ -6,6 +6,6 @@ float RelevanceWrapper::relevance(int epoch) {
     return this->get_override("relevance")(epoch);
 }
 
-Relevance* RelevanceWrapper::clone() {
+Relevance* RelevanceWrapper::clone() const {
     return this->get_override("clone")();
 }

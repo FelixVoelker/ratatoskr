@@ -5,14 +5,14 @@ VariationSource::InitializationException::InitializationException(unsigned long 
         : runtime_error("VariationSource has been given " + to_string(sources)
                         + " sources but expects " + to_string(expected) + ".") {}
 
-VariationSource::VariationSource(Session &session) : Singleton(session) {}
+VariationSource::VariationSource(const Session &session) : Singleton(session) {}
 
 VariationSource::~VariationSource() {
     for (auto source : sources)
         delete source;
 }
 
-void VariationSource::connect(vector<VariationSource *> sources) {
+void VariationSource::connect(vector<VariationSource *> &sources) {
     try {
         if (sources.size() != expectedSources())
             throw InitializationException(sources.size(), expectedSources());
@@ -24,12 +24,15 @@ void VariationSource::connect(vector<VariationSource *> sources) {
     }
 }
 
-vector<Individual *> VariationSource::vary(Population &pop, unsigned int epoch, Randomizer &random) {
-    vector<Individual *> parents;
-    for (auto &source : sources) {
-        vector<Individual *> p  = source->vary(pop, epoch, random);
-        parents.insert(parents.end(), p.begin(), p.end());
+vector<Individual *> VariationSource::vary(const vector<Individual *> &parents, const unsigned int epoch, Randomizer &random) const {
+    vector<Individual *> offsprings;
+    for (auto source : sources) {
+        vector<Individual *> o  = source->vary(parents, epoch, random);
+        offsprings.insert(offsprings.end(), o.begin(), o.end());
     }
 
-    return perform(pop, parents, epoch, random);
+    if (offsprings.empty())
+        offsprings = parents;
+
+    return perform(offsprings, epoch, random);
 }

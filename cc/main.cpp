@@ -3,8 +3,13 @@
 #include "../core/EvolutionarySystem.h"
 
 int main() {
-    auto problem = new OneMaxProblem(200, 10);
+    auto problem = new OneMaxProblem(50, 5);
     auto session = new NDGASession(*problem);
+    session->epochs(10);
+    session->episodes(100000);
+    session->generations(50);
+    session->evalthreads(3);
+    session->varythreads(3);
     auto system = new EvolutionarySystem(*session);
     system->run();
     delete system;

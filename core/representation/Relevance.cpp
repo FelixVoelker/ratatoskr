@@ -1,18 +1,19 @@
 #include "Relevance.h"
 
-Relevance::Relevance(Relevance &obj) : Prototype(obj) {
-    this->fitness = dynamic_cast<Fitness *>(obj.getFitness().clone());
+Relevance::Relevance(const Relevance &obj) : Prototype(obj) {
+    this->fitness = dynamic_cast<Fitness *>(obj.fitness->clone());
+    epochs = obj.epochs;
 }
 
-Relevance::Relevance(Session &session) : Prototype(session) {
+Relevance::Relevance(const Session &session) : Prototype(session) {
     fitness = session.fitness();
-    EPOCHS = session.epochs();
+    epochs = session.epochs();
 }
 
 Relevance::~Relevance() {
     delete fitness;
 }
 
-Fitness & Relevance::getFitness() {
+Fitness & Relevance::getFitness() const {
     return *fitness;
 }

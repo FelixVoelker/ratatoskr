@@ -24,10 +24,9 @@ public:
      * Evaluates a given individual according to the user specified strategy.
      * @param individual Individual to be evaluated.
      */
-    virtual void evaluate(Individual &individual) = 0;
+    virtual void evaluate(Individual &individual) const = 0;
 
-    unsigned int popsize();
-
+    unsigned int popsize() const;
     void popsize(unsigned int popsize);
 
 };

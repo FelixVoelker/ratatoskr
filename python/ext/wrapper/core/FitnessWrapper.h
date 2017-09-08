@@ -25,7 +25,7 @@ public:
     bool operator>=(Fitness &other) override;
     bool operator==(Fitness &other) override;
 
-    Fitness * clone() override;
+    Fitness * clone() const override;
 
 };
 

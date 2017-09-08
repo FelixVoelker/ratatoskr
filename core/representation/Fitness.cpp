@@ -1,3 +1,3 @@
 #include "Fitness.h"
 
-Fitness::Fitness(Session &session) : Prototype(session) {}
+Fitness::Fitness(const Session &session) : Prototype(session) {}

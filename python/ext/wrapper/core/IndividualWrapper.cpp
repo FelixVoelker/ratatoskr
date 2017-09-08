@@ -6,6 +6,6 @@ string IndividualWrapper::toString() {
     return this->get_override("tostring")();
 }
 
-Individual* IndividualWrapper::clone() {
+Individual* IndividualWrapper::clone() const {
     return this->get_override("clone")();
 }
