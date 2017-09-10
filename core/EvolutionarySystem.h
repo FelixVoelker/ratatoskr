@@ -31,6 +31,8 @@ private:
     unsigned int EPISODES;
     unsigned int GENERATIONS;
 
+    bool complete;
+
     void evolve(unsigned int epoch);
 
 public:

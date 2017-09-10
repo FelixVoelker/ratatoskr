@@ -25,8 +25,9 @@ class Session {
 protected:
     unsigned int _epochs = 1; // Number of epochs to run.
     unsigned int _episodes = 1; // Number of evolutions in each epoch.
-
     unsigned int _generations = 200; // Maximum number of generations to evolve.
+
+    bool _complete = false; // Determines whether an evolution progresses until the maximum generation.
 
     unsigned int _evalthreads  = 1; // Number of used threads during evaluation phase.
     unsigned int _varythreads = 1; // Number of used threads during variation phase.
@@ -73,6 +74,7 @@ public:
     unsigned int epochs() const;
     unsigned int episodes() const;
     unsigned int generations() const;
+    bool complete() const;
     unsigned int evalthreads() const;
     unsigned int varythreads() const;
     float learning_rate() const;
@@ -81,6 +83,7 @@ public:
     void epochs(unsigned int epochs);
     void episodes(unsigned int episodes);
     void generations(unsigned int generations);
+    void complete(bool complete);
     void evalthreads(unsigned int evalthreads);
     void varythreads(unsigned int varythreads);
     void learning_rate(float learning_rate);

@@ -58,6 +58,9 @@ BOOST_PYTHON_MODULE(core) {
             .add_property("generations",
                           static_cast<unsigned int(Session::*)()const>(&Session::generations),
                           static_cast<void(Session::*)(unsigned int)>(&Session::generations))
+            .add_property("complete",
+                          static_cast<bool(Session::*)()const>(&Session::complete),
+                          static_cast<void(Session::*)(bool)>(&Session::complete))
             .add_property("evalthreads",
                           static_cast<unsigned int(Session::*)()const>(&Session::evalthreads),
                           static_cast<void(Session::*)(unsigned int)>(&Session::evalthreads))

@@ -10,6 +10,7 @@ EvolutionarySystem::EvolutionarySystem(Session &session)
     EPOCHS = session.epochs();
     EPISODES = session.episodes();
     GENERATIONS = session.generations();
+    complete = session.complete();
 }
 
 void EvolutionarySystem::evolve(const unsigned int epoch) {
@@ -19,8 +20,9 @@ void EvolutionarySystem::evolve(const unsigned int epoch) {
 
         statistics.record(population, epoch, generation);
 
-        if (population.bestIndividual()->getRelevance().getFitness().isIdeal())
-            break;
+        if (!complete)
+            if (population.bestIndividual()->getRelevance().getFitness().isIdeal())
+                break;
 
         vector<Individual *> *offsprings = breeder.breedPopulation(population, epoch);
         replayer.replay(population, *offsprings);

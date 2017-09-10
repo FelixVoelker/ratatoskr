@@ -55,6 +55,10 @@ unsigned int Session::generations() const {
     return _generations;
 }
 
+bool Session::complete() const {
+    return _complete;
+}
+
 unsigned int Session::evalthreads() const {
     return _evalthreads;
 }
@@ -81,6 +85,10 @@ void Session::episodes(unsigned int episodes) {
 
 void Session::generations(unsigned int generations) {
     this->_generations = generations;
+}
+
+void Session::complete(bool complete) {
+    this->_complete = complete;
 }
 
 void Session::evalthreads(unsigned int evalthreads) {
