@@ -23,7 +23,22 @@ private:
 
 public:
     explicit Population(const Session &session);
-    ~Population();
+
+    /**
+     * Populates the evolutionary system's population by calling the given Builder.
+     * This creates entirely fresh individuals.
+     */
+    void initialize();
+
+    /**
+     * Cleans up the entire population.
+     */
+    void finalize();
+
+    /**
+     * Changes the population from one generation to the next.
+     */
+    void changeGeneration(vector<Individual *> *offspring);
 
     /**
      * Estimates and returns the best individual within the population of the current generation according
@@ -37,13 +52,9 @@ public:
     */
     Individual * worstIndividual() const;
 
-    /**
-     * Populates the evolutionary system's population by calling the given Builder.
-     * This creates entirely fresh individuals.
-     */
-    void populate();
 
-    vector<Individual *> & getIndividuals();
+
+    vector<Individual *> getIndividuals() const;
 
 };
 

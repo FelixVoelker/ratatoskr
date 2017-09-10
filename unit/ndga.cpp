@@ -65,7 +65,7 @@ TEST_CASE("NDGA", "[ndga]") {
     Randomizer random = Randomizer();
 
     auto pop = Population(session);
-    pop.populate();
+    pop.initialize();
     vector<Individual *> &individuals = pop.getIndividuals();
     auto ind = (BitVectorIndividual *) individuals.at(0);
     vector<unsigned int> &chromosome = ind->getChromosome();
@@ -117,7 +117,7 @@ TEST_CASE("NDGA", "[ndga]") {
             bool changed = false;
 
             for (int k = 1; k <= 10; k++) {
-                pop.populate();
+                pop.initialize();
                 individuals = pop.getIndividuals();
                 ind = dynamic_cast<BitVectorIndividual *>(individuals.at(0));
                 chromosome = ind->getChromosome();

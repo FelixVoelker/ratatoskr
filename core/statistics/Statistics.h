@@ -26,11 +26,11 @@ public:
 
     void record(Population &pop, unsigned int epoch, unsigned int generation);
 
-    vector<float> bestFitnesses(int epoch) const;
+    vector<float> bestFitnesses(unsigned int epoch) const;
     vector<vector<float>> bestFitnesses() const;
-    vector<float> averageFitnesses(int epoch) const;
+    vector<float> averageFitnesses(unsigned int epoch) const;
     vector<vector<float>> averageFitnesses() const;
-    vector<float> worstFitnesses(int epoch) const;
+    vector<float> worstFitnesses(unsigned int epoch) const;
     vector<vector<float>> worstFitnesses() const;
 
 };

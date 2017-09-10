@@ -21,7 +21,7 @@ TEST_CASE("Core", "[core]") {
         SECTION("Check multithreading...") {
             session->evalthreads = 4;
             auto pop = new Population(*session);
-            pop->populate();
+            pop->initialize();
 
             auto evaluator = new Evaluator(*session);
             evaluator->evaluatePopulation(*pop);

@@ -18,14 +18,14 @@ void Statistics::record(Population &pop, const unsigned int epoch, const unsigne
 }
 
 float Statistics::averageFitness(Population &pop) {
-    vector<Individual *> &individuals = pop.getIndividuals();
+    vector<Individual *> individuals = pop.getIndividuals();
     float total_fitness = 0;
     for (auto ind : individuals)
         total_fitness += dynamic_cast<RawFitness &>(ind->getRelevance().getFitness()).fitness();
     return total_fitness / individuals.size();
 }
 
-vector<float> Statistics::bestFitnesses(const int epoch) const {
+vector<float> Statistics::bestFitnesses(const unsigned int epoch) const {
     return best_fitnesses.at(epoch);
 }
 
@@ -33,7 +33,7 @@ vector<vector<float>> Statistics::bestFitnesses() const {
     return best_fitnesses;
 }
 
-vector<float> Statistics::averageFitnesses(const int epoch) const {
+vector<float> Statistics::averageFitnesses(const unsigned int epoch) const {
     return average_fitnesses.at(epoch);
 }
 
@@ -41,7 +41,7 @@ vector<vector<float>> Statistics::averageFitnesses() const {
     return average_fitnesses;
 }
 
-vector<float> Statistics::worstFitnesses(const int epoch) const {
+vector<float> Statistics::worstFitnesses(const unsigned int epoch) const {
     return worst_fitnesses.at(epoch);
 }
 

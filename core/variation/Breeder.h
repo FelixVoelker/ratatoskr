@@ -18,9 +18,10 @@ class Breeder : public Singleton {
 
 private:
     const unsigned int popsize;
-    const unsigned int varythreads;
 
-    vector<Randomizer> random;
+    const unsigned int varythreads;
+    vector<thread>     *threads;
+    vector<Randomizer> *random;
 
     BreedingOperator *variation_pipeline;
 
@@ -35,21 +36,22 @@ protected:
      * @param size       Size of the chunk.
      * @param thread     Index of running thread.
      */
-    void breedChunk(Population &pop,
-                    vector<Individual *> &parents,
-                    unsigned int epoch,
-                    unsigned int offset,
-                    unsigned int size,
-                    unsigned int thread);
+    void breedChunk(vector<Individual *> &parents,
+                    vector<Individual *> &offsprings,
+                    const unsigned int epoch,
+                    const unsigned int offset,
+                    const unsigned int size,
+                    const unsigned int thread) const;
 
 public:
     explicit Breeder(const Session &session);
+    ~Breeder();
 
     /**
-     * Breeds the next generation of offsprings and returns the old ones.
+     * Breeds a generation of offsprings.
      * @param pop Current state of the evolutionary system's population.
      */
-    vector<Individual *> * breedPopulation(Population &pop, unsigned int epoch);
+    vector<Individual *> * breedPopulation(const Population &pop, const unsigned int epoch) const;
 
 };
 

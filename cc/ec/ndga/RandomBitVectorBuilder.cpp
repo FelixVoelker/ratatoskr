@@ -8,9 +8,9 @@
 RandomBitVectorBuilder::RandomBitVectorBuilder(const NDGASession &session) : Builder(session) {}
 
 void RandomBitVectorBuilder::initialize(Individual &ind) const {
-    Randomizer r;
+    //Randomizer r;
     vector<unsigned int> &chromosome = dynamic_cast<BitVectorIndividual &>(ind).getChromosome();
     for (unsigned int &k : chromosome) {
-        k = r.randomInt(2);
+        k = 0/*r.randomInt(2)*/;
     }
 }

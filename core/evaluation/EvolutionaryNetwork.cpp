@@ -12,8 +12,12 @@ EvolutionaryNetwork::EvolutionaryNetwork(const Session &session) : Singleton(ses
                                  dynamic_cast<const NDGAProblem &>(session.problem()).genes)), 0));
 }
 
-vector<float> EvolutionaryNetwork::output(Population &pop) const {
-    vector<Individual *> &individuals = pop.getIndividuals();
+EvolutionaryNetwork::~EvolutionaryNetwork() {
+    delete lookup_table;
+}
+
+vector<float> EvolutionaryNetwork::output(const Population &pop) const {
+    vector<Individual *> individuals = pop.getIndividuals();
     vector<float> cost = vector<float>(lookup_table->size());
     for (unsigned int k = 0; k < cost.size(); k++) {
         vector<unsigned int> &chromosome = dynamic_cast<BitVectorIndividual *>(individuals.at(k))->getChromosome();
@@ -26,8 +30,8 @@ vector<float> EvolutionaryNetwork::output(Population &pop) const {
     return cost;
 }
 
-void EvolutionaryNetwork::update(Population &pop, vector<Individual *> old) {
-    vector<Individual *> &inds = pop.getIndividuals();
+void EvolutionaryNetwork::update(Population &pop, vector<Individual *> offsprings) {
+    vector<Individual *> inds = pop.getIndividuals();
     for (unsigned int k = 0; k < lookup_table->size(); k++) {
         vector<unsigned int> &old_chromosome = dynamic_cast<BitVectorIndividual *>(inds.at(k))->getChromosome();
         unsigned int index = 0;
@@ -35,7 +39,7 @@ void EvolutionaryNetwork::update(Population &pop, vector<Individual *> old) {
             index += old_chromosome.at(l) * pow(2, old_chromosome.size() - l -1);
         float newValue = lookup_table->at(k).at(index);
 
-        vector<unsigned int> &new_chromosome = dynamic_cast<BitVectorIndividual *>(old.at(k))->getChromosome();
+        vector<unsigned int> &new_chromosome = dynamic_cast<BitVectorIndividual *>(offsprings.at(k))->getChromosome();
         index = 0;
         for (unsigned int l = 0; l < new_chromosome.size(); l++)
             index += old_chromosome.at(l) * pow(2, new_chromosome.size() - l -1);

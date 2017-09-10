@@ -76,9 +76,9 @@ BOOST_PYTHON_MODULE(core) {
             .def("bestFitnesses", static_cast<vector<vector<float>>(Statistics::*)()const>(&Statistics::bestFitnesses))
             .def("averageFitnesses", static_cast<vector<vector<float>>(Statistics::*)()const>(&Statistics::averageFitnesses))
             .def("worstFitnesses", static_cast<vector<vector<float>>(Statistics::*)()const>(&Statistics::worstFitnesses))
-            .def("bestFitnesses", static_cast<vector<float>(Statistics::*)(int)const>(&Statistics::bestFitnesses))
-            .def("averageFitnesses", static_cast<vector<float>(Statistics::*)(int)const>(&Statistics::averageFitnesses))
-            .def("worstFitnesses", static_cast<vector<float>(Statistics::*)(int)const>(&Statistics::worstFitnesses));
+            .def("bestFitnesses", static_cast<vector<float>(Statistics::*)(unsigned int)const>(&Statistics::bestFitnesses))
+            .def("averageFitnesses", static_cast<vector<float>(Statistics::*)(unsigned int)const>(&Statistics::averageFitnesses))
+            .def("worstFitnesses", static_cast<vector<float>(Statistics::*)(unsigned int)const>(&Statistics::worstFitnesses));
 
     class_<EvolutionarySystem>("EvolutionarySystem", init<Session &>())
             .add_property("statistics", &EvolutionarySystem::getStatistics)

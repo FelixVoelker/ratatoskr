@@ -35,7 +35,6 @@ private:
 
 public:
     explicit EvolutionarySystem(Session &session);
-    ~EvolutionarySystem();
 
     void run();
 

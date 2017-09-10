@@ -3,36 +3,36 @@
 #include "Evaluator.h"
 #include "../../cc/ec/common/RawRelevance.h"
 
-Evaluator::Evaluator(const Session &session) : Singleton(session), problem(session.problem()) {
+Evaluator::Evaluator(const Session &session)
+        : Singleton(session),
+          problem(session.problem()),
+          evalthreads(session.evalthreads()) {
     network = session.network();
-    evalthreads = session.evalthreads();
+    threads = new vector<thread>(evalthreads);
+}
+
+Evaluator::~Evaluator() {
+    delete threads;
 }
 
 void Evaluator::evaluateChunk(vector<Individual *> &individuals, const unsigned int offset, const unsigned int size) const {
-    for (unsigned int k = offset; k < offset + size; k++) {
+    for (unsigned int k = offset; k < offset + size; k++)
         problem.evaluate(*individuals.at(k));
-    }
-
 }
 
-void Evaluator::evaluatePopulation(Population &pop) const {
-    vector<Individual *> &individuals = pop.getIndividuals();
-    vector<thread> threads(evalthreads);
+void Evaluator::evaluatePopulation(const Population &pop) const {
+    vector<Individual *> individuals = pop.getIndividuals();
 
     unsigned int offset = 0;
     auto chunk_size = static_cast<unsigned int>(individuals.size() / evalthreads);
     for (int k = 0; k < evalthreads - 1; k++) {
-        threads.at(k) = thread( [this, &individuals, offset, chunk_size] {
-            evaluateChunk(individuals, offset, chunk_size);
-        } );
+        threads->at(k) = thread(&Evaluator::evaluateChunk, this, std::ref(individuals), offset, chunk_size);
         offset += chunk_size;
     }
-    threads.at(evalthreads - 1) = thread( [this, &individuals, offset, chunk_size] {
-                evaluateChunk(individuals, offset, static_cast<unsigned int>(individuals.size() - offset));
-            });
+    threads->at(evalthreads - 1) = thread(&Evaluator::evaluateChunk, this, std::ref(individuals), offset, individuals.size() - offset);
 
-    for (int k = 0; k < threads.size(); k++) {
-        threads.at(k).join();
+    for (auto &thread : *threads) {
+        thread.join();
     }
 
     vector<float> cost = network->output(pop);

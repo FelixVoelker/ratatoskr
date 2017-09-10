@@ -3,13 +3,26 @@
 
 Population::Population(const Session &session) : Singleton(session) {
     builder = session.builder();
-    individuals = vector<Individual *>();
-    individuals.reserve(session.problem().popsize());
+
+    individuals = vector<Individual *>(session.problem().popsize());
 }
 
-Population::~Population() {
-    for (auto ind : individuals)
-        delete ind;
+void Population::initialize() {
+    for (auto &individual : individuals) {
+        individual = builder->build();
+    }
+}
+
+void Population::finalize() {
+    for (auto individual : individuals) {
+        delete individual;
+    }
+}
+
+void Population::changeGeneration(vector<Individual *> *offspring) {
+    finalize();
+    individuals = *offspring;
+    delete offspring;
 }
 
 Individual * Population::bestIndividual() const {
@@ -32,13 +45,6 @@ Individual * Population::worstIndividual() const {
     return worst_individual;
 }
 
-void Population::populate() {
-    individuals.clear();
-    for (int k = 0; k < individuals.capacity(); k++) {
-        individuals.push_back(builder->build());
-    }
-}
-
-vector<Individual *> & Population::getIndividuals() {
+vector<Individual *> Population::getIndividuals() const {
     return individuals;
 }

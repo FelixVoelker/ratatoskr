@@ -17,7 +17,7 @@ protected:
 public:
     explicit Replayer(const Session &session);
 
-    void replay(Population &pop, vector<Individual *> &old) const;
+    void replay(Population &pop, vector<Individual *> &offsprings) const;
 
 };
 

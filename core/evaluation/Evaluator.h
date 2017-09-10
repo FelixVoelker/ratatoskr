@@ -2,6 +2,7 @@
 #define NDEC_EVALUATOR_H
 
 
+#include <thread>
 #include "EvolutionaryNetwork.h"
 
 /**
@@ -14,11 +15,12 @@
 class Evaluator : public Singleton {
 
 private:
-    EvolutionaryNetwork *network;
-
-    unsigned int evalthreads = 1;
-
     const Problem &problem;
+
+    unsigned int evalthreads;
+    vector<thread> *threads;
+
+    EvolutionaryNetwork *network;
 
     /**
      * Evaluates a given chunk of the population only. This function is called by each of the evaluation threads
@@ -31,12 +33,13 @@ private:
 
 public:
     explicit Evaluator(const Session &session);
+    ~Evaluator();
 
     /**
      * Evaluates an entire population.
      * @param pop State of evolutionary system's population.
      */
-    void evaluatePopulation(Population &pop) const;
+    void evaluatePopulation(const Population &pop) const;
 
 };
 

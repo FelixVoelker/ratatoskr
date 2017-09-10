@@ -12,28 +12,23 @@ EvolutionarySystem::EvolutionarySystem(Session &session)
     GENERATIONS = session.generations();
 }
 
-EvolutionarySystem::~EvolutionarySystem() {}
-
 void EvolutionarySystem::evolve(const unsigned int epoch) {
-    population.populate();
+    population.initialize();
     for (unsigned int generation = 0; generation < GENERATIONS; generation++) {
         evaluator.evaluatePopulation(population);
 
         statistics.record(population, epoch, generation);
 
-        /*if (population.bestIndividual()->getRelevance().getFitness().isIdeal())
-            break;*/
+        if (population.bestIndividual()->getRelevance().getFitness().isIdeal())
+            break;
 
-        vector<Individual *> *parents = breeder.breedPopulation(population, epoch);
-        replayer.replay(population, *parents);
-
-        for (auto ind : *parents) {
-            delete ind;
-        }
-        delete parents;
+        vector<Individual *> *offsprings = breeder.breedPopulation(population, epoch);
+        replayer.replay(population, *offsprings);
+        population.changeGeneration(offsprings);
     }
     evaluator.evaluatePopulation(population);
     statistics.record(population, epoch, GENERATIONS);
+    population.finalize();
 }
 
 
