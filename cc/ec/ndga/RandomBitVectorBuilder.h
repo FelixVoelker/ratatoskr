@@ -5,6 +5,7 @@
 #include <random>
 #include "../../../core/initialization/Builder.h"
 #include "NDGASession.h"
+#include "../../../core/util/Randomizer.h"
 
 /**
  * A bit vector builder that uses a uniform random distribution to sample the genes of a BitVectorIndividual's
@@ -17,6 +18,8 @@
 class RandomBitVectorBuilder : public Builder {
 
 private:
+    Randomizer *random;
+
     /**
      * Samples each gene of the chromosome from a uniform distribution over {0,1}.
      * @param ind The individual to be initialized.
@@ -25,6 +28,7 @@ private:
 
 public:
     explicit RandomBitVectorBuilder(const NDGASession &session);
+    ~RandomBitVectorBuilder();
 
 };
 
