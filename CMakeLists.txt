@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.7)
-project(NDEC)
+project(Ratatoskr)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
 
@@ -10,39 +10,39 @@ include_directories(${PYTHON_INCLUDE_DIRS})
 include_directories(${BOOST_INCLUDEDIR} )
 
 set(CORE_SOURCES
-        core/evaluation/Evaluator.cpp core/evaluation/Evaluator.h
-        core/evaluation/EvolutionaryNetwork.cpp core/evaluation/EvolutionaryNetwork.h
-        core/evaluation/Problem.cpp core/evaluation/Problem.h
-        core/experience/Replayer.cpp core/experience/Replayer.h
-        core/initialization/Builder.cpp core/initialization/Builder.h
-        core/representation/FeatureMap.cpp core/representation/FeatureMap.h
-        core/representation/Fitness.h core/representation/Fitness.cpp
-        core/representation/Individual.cpp core/representation/Individual.h
-        core/representation/Population.cpp core/representation/Population.h
-        core/representation/Relevance.cpp core/representation/Relevance.h
-        core/statistics/Statistics.cpp core/statistics/Statistics.h
-        core/util/Prototype.cpp core/util/Prototype.h
-        core/util/Randomizer.cpp core/util/Randomizer.h
-        core/util/Singleton.cpp core/util/Singleton.h
-        core/variation/Breeder.cpp core/variation/Breeder.h
-        core/variation/BreedingOperator.cpp core/variation/BreedingOperator.h
-        core/variation/SelectionOperator.cpp core/variation/SelectionOperator.h
-        core/variation/VariationSource.cpp core/variation/VariationSource.h
-        core/EvolutionarySystem.cpp core/EvolutionarySystem.h
-        core/Session.cpp core/Session.h)
+#        core/evaluation/Evaluator.cpp core/evaluation/Evaluator.h
+#        core/evaluation/EvolutionaryNetwork.cpp core/evaluation/EvolutionaryNetwork.h
+#        core/evaluation/Problem.cpp core/evaluation/Problem.h
+#        core/experience/Replayer.cpp core/experience/Replayer.h
+#        core/initialization/Builder.cpp core/initialization/Builder.h
+#        core/representation/FeatureMap.cpp core/representation/FeatureMap.h
+#        core/representation/Fitness.h core/representation/Fitness.cpp
+#        core/representation/Individual.cpp core/representation/Individual.h
+#        core/representation/Population.cpp core/representation/Population.h
+#        core/representation/Relevance.cpp core/representation/Relevance.h
+#        core/statistics/Statistics.cpp core/statistics/Statistics.h
+#        core/util/Prototype.cpp core/util/Prototype.h
+#        core/util/Randomizer.cpp core/util/Randomizer.h
+#        core/util/Singleton.cpp core/util/Singleton.h
+#        core/variation/Breeder.cpp core/variation/Breeder.h
+#        core/variation/BreedingOperator.cpp core/variation/BreedingOperator.h
+#        core/variation/SelectionOperator.cpp core/variation/SelectionOperator.h
+#        core/variation/VariationSource.cpp core/variation/VariationSource.h
+#        core/EvolutionarySystem.cpp core/EvolutionarySystem.h
+        core/Session.cpp core/Session.h core/evaluation/EvaluationFunction.h
+        core/util/Clonable.h)
 
 set(CC_API
-        cc/ec/common/FitnessProportionateSelection.cpp cc/ec/common/FitnessProportionateSelection.h
-        cc/ec/common/RawFitness.cpp cc/ec/common/RawFitness.h
-        cc/ec/common/RawRelevance.cpp cc/ec/common/RawRelevance.h
-        cc/ec/ndga/BitVectorCrossover.cpp cc/ec/ndga/BitVectorCrossover.h
-        cc/ec/ndga/BitVectorIndividual.cpp cc/ec/ndga/BitVectorIndividual.h
-        cc/ec/ndga/BitVectorMutation.cpp cc/ec/ndga/BitVectorMutation.h
-        cc/ec/ndga/FeatureVector.cpp cc/ec/ndga/FeatureVector.h
-        cc/ec/ndga/NDGAProblem.cpp cc/ec/ndga/NDGAProblem.h
-        cc/ec/ndga/NDGASession.cpp cc/ec/ndga/NDGASession.h
-        cc/ec/ndga/RandomBitVectorBuilder.cpp cc/ec/ndga/RandomBitVectorBuilder.h
-        cc/problem/ndga/OneMaxProblem.cpp cc/problem/ndga/OneMaxProblem.h)
+#        cc/ec/common/FitnessProportionateSelection.cpp cc/ec/common/FitnessProportionateSelection.h
+#        cc/ec/ndga/BitVectorCrossover.cpp cc/ec/ndga/BitVectorCrossover.h
+#        cc/ec/ndga/BitVectorIndividual.cpp cc/ec/ndga/BitVectorIndividual.h
+#        cc/ec/ndga/BitVectorMutation.cpp cc/ec/ndga/BitVectorMutation.h
+#        cc/ec/ndga/FeatureVector.cpp cc/ec/ndga/FeatureVector.h
+#        cc/ec/ndga/NDGAProblem.cpp cc/ec/ndga/NDGAProblem.h
+#        cc/ec/ndga/NDGASession.cpp cc/ec/ndga/NDGASession.h
+#        cc/ec/ndga/RandomBitVectorBuilder.cpp cc/ec/ndga/RandomBitVectorBuilder.h
+#        cc/problem/ndga/OneMaxProblem.cpp cc/problem/ndga/OneMaxProblem.h
+        )
 
 add_library(ndec_cc SHARED ${CORE_SOURCES} ${CC_API})
 target_link_libraries(ndec_cc ${Boost_LIBRARIES} ${PYTHON_LIBRARIES})
@@ -54,7 +54,7 @@ set(PYTHON_API_CORE
         python/ext/wrapper/core/FeatureMapWrapper.cpp python/ext/wrapper/core/FeatureMapWrapper.h
         python/ext/wrapper/core/FitnessWrapper.cpp python/ext/wrapper/core/FitnessWrapper.h
         python/ext/wrapper/core/IndividualWrapper.cpp python/ext/wrapper/core/IndividualWrapper.h
-        python/ext/wrapper/core/ProblemWrapper.cpp python/ext/wrapper/core/ProblemWrapper.h
+        python/ext/wrapper/core/TaskWrapper.cpp python/ext/wrapper/core/TaskWrapper.h
         python/ext/wrapper/core/SessionWrapper.cpp python/ext/wrapper/core/SessionWrapper.h
         python/ext/core_ext.cpp python/ext/wrapper/core/RelevanceWrapper.cpp python/ext/wrapper/core/RelevanceWrapper.h)
 
@@ -76,8 +76,14 @@ add_custom_target(ndec_py)
 add_dependencies(ndec_py core ndga)
 
 set(UNIT_SOURCES
-        unit/TestComponents.cpp unit/TestComponents.h
-        unit/core.cpp
+        unit/core/util/TestBreedingOperator.cpp unit/core/util/TestBreedingOperator.h
+        unit/core/util/TestBuilder.cpp unit/core/util/TestBuilder.h
+        unit/core/util/TestFeatureMap.cpp unit/core/util/TestFeatureMap.h
+        unit/core/util/TestIndividual.cpp unit/core/util/TestIndividual.h
+        unit/core/util/TestProblem.cpp unit/core/util/TestProblem.h
+        unit/core/util/TestSession.cpp unit/core/util/TestSession.h
+        unit/core/util/TestVariationSource.cpp unit/core/util/TestVariationSource.h
+        unit/core/unit.cpp
         unit/common.cpp
         unit/ndga.cpp
         catch.hpp)

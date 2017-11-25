@@ -2,7 +2,6 @@
 #include "EvolutionaryNetwork.h"
 #include "../../cc/ec/ndga/NDGAProblem.h"
 #include "../../cc/ec/ndga/BitVectorIndividual.h"
-#include "../../cc/ec/common/RawFitness.h"
 
 EvolutionaryNetwork::EvolutionaryNetwork(const Session &session) : Singleton(session) {
     learning_rate = session.learning_rate();
@@ -21,7 +20,7 @@ vector<float> EvolutionaryNetwork::output(const Population &pop) const {
     vector<float> cost = vector<float>(lookup_table->size());
     for (unsigned int k = 0; k < cost.size(); k++) {
         vector<unsigned int> &chromosome = dynamic_cast<BitVectorIndividual *>(individuals.at(k))->getChromosome();
-        int index = 0;
+        unsigned int index = 0;
         for (unsigned int l = 0; l < chromosome.size(); l++)
             index += chromosome.at(l) * pow(2, chromosome.size() - l -1);
 
@@ -47,7 +46,7 @@ void EvolutionaryNetwork::update(Population &pop, vector<Individual *> offspring
 
         lookup_table->at(k).at(index) = oldValue
                                         + learning_rate
-                                          * (dynamic_cast<RawFitness &>(inds.at(k)->getRelevance().getFitness()).fitness()
+                                          * (inds.at(k)->getRelevance().getFitness().fitness()
                                              + discount_factor * newValue - oldValue);
 
     }

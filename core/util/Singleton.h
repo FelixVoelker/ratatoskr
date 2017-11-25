@@ -1,31 +1,27 @@
-#ifndef NDEC_SINGLETON_H
-#define NDEC_SINGLETON_H
+#ifndef RATATOSKR_SINGLETON_H
+#define RATATOSKR_SINGLETON_H
 
 
-#include <string>
 #include "../Session.h"
-
-using namespace std;
 
 /**
  * Represents the basic interface for all components of the evolutionary system.
  *
  * @author  Felix Voelker
- * @version 0.1
- * @since   4.8.2017
+ * @version 0.0.2
+ * @since   11.10.2017
  */
 class Singleton {
 
-protected:
-    Singleton(const Singleton &obj);
-
 public:
     /**
-     * Initializes a component according to the given Session.
+     * Initializes a component according to a given session.
+     * @param session The session to be run by the evolutionary system.
      */
-    explicit Singleton(const Session &session);
+    explicit Singleton(const Session &session) {};
+    virtual ~Singleton() = 0;
 
 };
 
 
-#endif //NDEC_SINGLETON_H
+#endif // RATATOSKR_SINGLETON_H

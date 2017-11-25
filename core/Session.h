@@ -1,5 +1,5 @@
-#ifndef NDEC_SESSION_H
-#define NDEC_SESSION_H
+#ifndef RATATOSKR_SESSION_H
+#define RATATOSKR_SESSION_H
 
 
 #include "evaluation/Problem.h"
@@ -9,9 +9,11 @@ class Builder;
 class Fitness;
 class Relevance;
 class FeatureMap;
+class Individual;
 class BreedingOperator;
 
 /**
+ * TODO: Comments
  * Represents the blueprint class for all Session objects of NDEC. A session is a run of a particular neuro-dynamic
  * evolutionary computation method on a given problem. It configures all the components that are necessary to run
  * this method.
@@ -92,4 +94,4 @@ public:
 };
 
 
-#endif //NDEC_MODULE_H
+#endif //RATATOSKR_MODULE_H

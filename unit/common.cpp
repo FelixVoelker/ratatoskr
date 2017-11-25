@@ -1,6 +1,4 @@
 #include <catch.hpp>
-#include "../cc/toolbox/ec/common/RawFitness.h"
-#include "../cc/toolbox/ec/ndga/NDGASession.h"
 #include "TestComponents.h"
 
 /**

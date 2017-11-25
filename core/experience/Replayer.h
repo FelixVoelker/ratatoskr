@@ -5,6 +5,8 @@
 #include "../evaluation/EvolutionaryNetwork.h"
 
 /**
+ * TODO: Comments
+ *
  * @author  Felix Voelker
  * @version 0.1
  * @since   3.9.2017

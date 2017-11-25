@@ -8,6 +8,7 @@
 #include "../util/Randomizer.h"
 
 /**
+ * TODO: Comments
  * Represents the breeder of the evolutionary system.
  *
  * @author  Felix Voelker
@@ -38,10 +39,10 @@ protected:
      */
     void breedChunk(vector<Individual *> &parents,
                     vector<Individual *> &offsprings,
-                    const unsigned int epoch,
-                    const unsigned int offset,
-                    const unsigned int size,
-                    const unsigned int thread) const;
+                    unsigned int epoch,
+                    unsigned int offset,
+                    unsigned int size,
+                    unsigned int thread) const;
 
 public:
     explicit Breeder(const Session &session);
@@ -51,7 +52,7 @@ public:
      * Breeds a generation of offsprings.
      * @param pop Current state of the evolutionary system's population.
      */
-    vector<Individual *> * breedPopulation(const Population &pop, const unsigned int epoch) const;
+    vector<Individual *> * breedPopulation(const Population &pop, unsigned int epoch) const;
 
 };
 

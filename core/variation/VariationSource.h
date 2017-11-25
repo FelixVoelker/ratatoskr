@@ -10,6 +10,7 @@
 #include "../util/Randomizer.h"
 
 /**
+ * TODO: Comments
  * The blueprint class for all variation sources that form the basic elements of variation pipelines in NDEC.
  * Each source defines a particular genetic operator and selects its Genetic Operation Parameters (GOPs) randomly.
  * Therefore, its assembling variation pipeline builds delivers the components for a variation control of

@@ -9,7 +9,7 @@ class OneMaxProblem : public NDGAProblem {
 public:
     OneMaxProblem(unsigned int pop_size, unsigned int genes);
 
-    void evaluate(Individual &individual) const override;
+    void evaluate(Individual &individual) const /*override*/;
 
 };
 

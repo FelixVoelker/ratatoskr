@@ -5,6 +5,7 @@
 #include "VariationSource.h"
 
 /**
+ * TODO: Comments
  * The blueprint class for selection operators in NDEC. These operators form the lowest layer of
  * the variation pipeline and simply select individuals from the current population
  * of the evolutionary system. Accordingly each selection operator may not have any

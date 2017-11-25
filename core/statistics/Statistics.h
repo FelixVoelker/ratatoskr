@@ -6,6 +6,8 @@
 #include "../representation/Population.h"
 
 /**
+ * TODO: Comments
+ *
  * @author  Felix Voelker
  * @version 0.1
  * @since   9.8.2017
@@ -27,11 +29,8 @@ public:
     void record(Population &pop, unsigned int epoch, unsigned int generation);
 
     vector<float> bestFitnesses(unsigned int epoch) const;
-    vector<vector<float>> bestFitnesses() const;
     vector<float> averageFitnesses(unsigned int epoch) const;
-    vector<vector<float>> averageFitnesses() const;
     vector<float> worstFitnesses(unsigned int epoch) const;
-    vector<vector<float>> worstFitnesses() const;
 
 };
 

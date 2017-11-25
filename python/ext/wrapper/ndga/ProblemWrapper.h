@@ -12,10 +12,10 @@ using namespace boost::python;
  * @version 0.1
  * @since   24.8.2017
  */
-class ProblemWrapper : public NDGAProblem, public wrapper<NDGAProblem> {
+class TaskWrapper : public NDGAProblem, public wrapper<NDGAProblem> {
 
 public:
-    explicit ProblemWrapper(unsigned int popsize, unsigned int genes);
+    explicit TaskWrapper(unsigned int popsize, unsigned int genes);
 
     void evaluate(Individual &individual) const override;
 

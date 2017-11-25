@@ -10,6 +10,7 @@ using namespace std;
 
 
 /**
+ * TODO: Comments
  * An individual of conventional Genetic Algorithms, i.e. its representation is a vector of binary values.
  *
  * @author  Felix Voelker

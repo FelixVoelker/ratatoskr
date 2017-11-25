@@ -3,9 +3,7 @@
 #include "../../cc/problem/ndga/OneMaxProblem.h"
 #include "../../cc/ec/ndga/BitVectorIndividual.h"
 #include "../../cc/ec/ndga/FeatureVector.h"
-#include "../../cc/ec/common/RawFitness.h"
 #include "wrapper/ndga/ProblemWrapper.h"
-#include "../../cc/ec/common/RawRelevance.h"
 
 using namespace boost::python;
 
@@ -13,22 +11,13 @@ BOOST_PYTHON_MODULE(ndga) {
     class_<std::vector<unsigned int>>("std::vector<unsigned int>")
             .def(vector_indexing_suite<std::vector<unsigned int>>());
 
+    /** Tools **/
     class_<FeatureVector, bases<FeatureMap>>("FeatureVector", init<NDGASession &>());
-
-    class_<RawFitness, bases<Fitness>>("RawFitness", init<Session &>())
-            .add_property("fitness",
-                          static_cast<float(RawFitness::*)()const>(&RawFitness::fitness),
-                          static_cast<void(RawFitness::*)(const float)>(&RawFitness::fitness));
-
-    class_<RawRelevance, bases<Relevance>, boost::noncopyable>("RawRelevance", init<Session &>())
-            .add_property("cost",
-                          static_cast<float(RawRelevance::*)()const>(&RawRelevance::cost),
-                          static_cast<void(RawRelevance::*)(const float)>(&RawRelevance::cost));
 
     class_<BitVectorIndividual, bases<Individual>, boost::noncopyable>("BitVectorIndividual", init<NDGASession &>())
             .def("chromosome", &BitVectorIndividual::getChromosome, return_value_policy<reference_existing_object>());
 
-    class_<ProblemWrapper, bases<Problem>, boost::noncopyable>("NDGAProblem", init<unsigned int, unsigned int>())
+    class_<TaskWrapper, bases<Problem>, boost::noncopyable>("NDGAProblem", init<unsigned int, unsigned int>())
             .add_property("popsize",
                           static_cast<unsigned int(NDGAProblem::*)()const>(&NDGAProblem::popsize),
                           static_cast<void(NDGAProblem::*)(const unsigned int)>(&NDGAProblem::popsize))

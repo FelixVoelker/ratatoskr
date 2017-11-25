@@ -1,4 +1,3 @@
-#include <iostream>
 #include "Breeder.h"
 
 Breeder::Breeder(const Session &session)

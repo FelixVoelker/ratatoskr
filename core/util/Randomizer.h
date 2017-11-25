@@ -7,6 +7,7 @@
 using namespace std;
 
 /**
+ * TODO: Comments
  * Represents a mersenne twister random generator that produces random integers or numbers according to
  * some given probability distributions.
  *

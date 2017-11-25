@@ -1,6 +1,6 @@
 #include <boost/python.hpp>
 #include <boost/python/suite/indexing/vector_indexing_suite.hpp>
-#include "wrapper/core/ProblemWrapper.h"
+#include "wrapper/core/TaskWrapper.h"
 #include "wrapper/core/SessionWrapper.h"
 #include "wrapper/core/FeatureMapWrapper.h"
 #include "wrapper/core/FitnessWrapper.h"
@@ -13,24 +13,33 @@ using namespace boost::python;
 BOOST_PYTHON_MODULE(core) {
     class_<std::vector<float>>("std::vector<float>")
             .def(vector_indexing_suite<std::vector<float>>());
-    class_<std::vector<vector<float>>>("std::vector<std::vector<float>>")
-            .def(vector_indexing_suite<std::vector<std::vector<float>>>());
 
+    class_<TaskWrapper, boost::noncopyable>("Problem", init<unsigned int>())
+            .add_property("popsize", &Problem::getPopsize, &Problem::setPopsize)
+            .def("eval", pure_virtual(&Problem::eval))
+            .def("clone", pure_virtual(&Problem::clone));
+
+    // Workspace
     class_<FeatureMapWrapper, boost::noncopyable>("FeatureMap", init<boost::shared_ptr<Session>>())
             .def("clone", pure_virtual(&FeatureMap::clone), return_value_policy<manage_new_object>());
 
     class_<FitnessWrapper, boost::noncopyable>("Fitness", init<boost::shared_ptr<Session>>())
-            .def("isideal", pure_virtual(&Fitness::isIdeal))
-            .def("operator<", pure_virtual(&Fitness::operator<))
-            .def("operator<=", pure_virtual(&Fitness::operator<=))
-            .def("operator>", pure_virtual(&Fitness::operator>))
-            .def("operator>=", pure_virtual(&Fitness::operator>=))
-            .def("operator==", pure_virtual(&Fitness::operator==));
+            .add_property("fitness",
+                          static_cast<float(Fitness::*)()const>(&Fitness::fitness),
+                          static_cast<void(Fitness::*)(const float)>(&Fitness::fitness))
+            .def("isideal", &Fitness::isIdeal, &FitnessWrapper::default_isIdeal)
+            .def("operator<", &Fitness::operator<, &FitnessWrapper::default_lt)
+            .def("operator<=", &Fitness::operator<=, &FitnessWrapper::default_leq)
+            .def("operator>", &Fitness::operator>, &FitnessWrapper::default_gt)
+            .def("operator>=", &Fitness::operator>=, &FitnessWrapper::default_geq)
+            .def("operator==", &Fitness::operator==, &FitnessWrapper::default_eq);
 
     class_<RelevanceWrapper, boost::noncopyable>("Relevance", init<boost::shared_ptr<Session>>())
-            .def("relevance", pure_virtual(&Relevance::relevance))
-            .def("fitness", &Relevance::getFitness, return_value_policy<reference_existing_object>())
-            .def("clone", pure_virtual(&Relevance::clone), return_value_policy<manage_new_object>());;
+            .add_property("cost",
+                          static_cast<float(Relevance::*)()const>(&Relevance::cost),
+                          static_cast<void(Relevance::*)(const float)>(&Relevance::cost))
+            .def("relevance", &Relevance::relevance, &RelevanceWrapper::default_relevance)
+            .def("fitness", &Relevance::getFitness, return_value_policy<reference_existing_object>());
 
     class_<IndividualWrapper, boost::noncopyable>("Individual", init<boost::shared_ptr<Session>>())
             .add_property("evaluated",
@@ -38,16 +47,8 @@ BOOST_PYTHON_MODULE(core) {
                           static_cast<void(Individual::*)(const bool)>(&Individual::evaluated))
             .def("tostring", pure_virtual(&Individual::toString))
             .def("relevance", &Individual::getRelevance, return_value_policy<reference_existing_object>())
-            .def("featuremap", &Individual::getFeaturemap, return_value_policy<reference_existing_object>())
-            .def("clone", pure_virtual(&Individual::clone), return_value_policy<manage_new_object>());
+            .def("featuremap", &Individual::getFeaturemap, return_value_policy<reference_existing_object>());
 
-    class_<ProblemWrapper, boost::noncopyable>("Problem", init<unsigned int>())
-            .add_property("popsize",
-                          static_cast<unsigned int(Problem::*)()const>(&Problem::popsize),
-                          static_cast<void(Problem::*)(const unsigned int)>(&Problem::popsize))
-            .def("evaluate", pure_virtual(&Problem::evaluate));
-
-    //TODO: Add pure virtual functions
     class_<SessionWrapper, boost::noncopyable>("Session", init<boost::shared_ptr<Problem>>())
             .add_property("epochs",
                           static_cast<unsigned int(Session::*)()const>(&Session::epochs),
@@ -72,13 +73,16 @@ BOOST_PYTHON_MODULE(core) {
                           static_cast<void(Session::*)(float)>(&Session::learning_rate))
             .add_property("discount-factor",
                           static_cast<float(Session::*)()const>(&Session::discount_factor),
-                          static_cast<void(Session::*)(float)>(&Session::discount_factor));
-            //.def("builder", &builder);
+                          static_cast<void(Session::*)(float)>(&Session::discount_factor))
+            .def("network", pure_virtual(static_cast<void(Session::*)(EvolutionaryNetwork&)>(&Session::network)))
+            .def("builder", pure_virtual(static_cast<void(Session::*)(Builder&)>(&Session::builder)))
+            .def("fitness", pure_virtual(static_cast<void(Session::*)(Fitness&)>(&Session::fitness)))
+            .def("relevance", pure_virtual(static_cast<void(Session::*)(Relevance&)>(&Session::relevance)))
+            .def("featuremap", pure_virtual(static_cast<void(Session::*)(FeatureMap&)>(&Session::featuremap)))
+            .def("individual", pure_virtual(static_cast<void(Session::*)(Individual&)>(&Session::individual)))
+            .def("pipeline", pure_virtual(static_cast<void(Session::*)(BreedingOperator&)>(&Session::pipeline)));
 
     class_<Statistics>("Statistics", init<Session &>())
-            .def("bestFitnesses", static_cast<vector<vector<float>>(Statistics::*)()const>(&Statistics::bestFitnesses))
-            .def("averageFitnesses", static_cast<vector<vector<float>>(Statistics::*)()const>(&Statistics::averageFitnesses))
-            .def("worstFitnesses", static_cast<vector<vector<float>>(Statistics::*)()const>(&Statistics::worstFitnesses))
             .def("bestFitnesses", static_cast<vector<float>(Statistics::*)(unsigned int)const>(&Statistics::bestFitnesses))
             .def("averageFitnesses", static_cast<vector<float>(Statistics::*)(unsigned int)const>(&Statistics::averageFitnesses))
             .def("worstFitnesses", static_cast<vector<float>(Statistics::*)(unsigned int)const>(&Statistics::worstFitnesses));

@@ -1,7 +1,7 @@
 #include "Individual.h"
 
 Individual::Individual(const Individual &obj) : Prototype(obj) {
-    relevance = dynamic_cast<Relevance *>(obj.relevance->clone());
+    relevance = obj.relevance->clone();
     featuremap = dynamic_cast<FeatureMap *>(obj.featuremap->clone());
 }
 

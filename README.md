@@ -12,7 +12,7 @@ features will be listed in this document.
 * C++-API
   * Toolkit
     * Neuro-Dynamic Genetic Algorithm (NDGA)
-      * OneMax-Problem
+      * OneMax-Task
 * Python-API
   * Programmable Problems
   * Running existing C++ sessions

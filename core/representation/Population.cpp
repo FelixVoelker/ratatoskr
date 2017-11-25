@@ -1,4 +1,3 @@
-#include <iostream>
 #include "Population.h"
 
 Population::Population(const Session &session) : Singleton(session) {

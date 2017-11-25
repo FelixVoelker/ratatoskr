@@ -8,6 +8,7 @@
 #include "../../../core/util/Randomizer.h"
 
 /**
+ * TODO: Comments
  * A bit vector builder that uses a uniform random distribution to sample the genes of a BitVectorIndividual's
  * chromosome.
  *

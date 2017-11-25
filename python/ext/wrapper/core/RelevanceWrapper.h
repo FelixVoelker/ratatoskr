@@ -19,8 +19,8 @@ public:
     explicit RelevanceWrapper(boost::shared_ptr<Session> session);
 
     float relevance(int epoch) override;
+    float default_relevance(int epoch);
 
-    Relevance * clone() const override;
 };
 
 

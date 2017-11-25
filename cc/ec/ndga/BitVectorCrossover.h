@@ -6,6 +6,7 @@
 #include "NDGASession.h"
 
 /**
+ * TODO: Comments
  * Represents the One Point Crossover as described in "Melanie Mitchell: An Introduction to Genetic Algorithms (1996)."
  *
  * @author  Felix Voelker
@@ -15,7 +16,7 @@
 class BitVectorCrossover : public BreedingOperator {
 
 protected:
-    int genes;
+    unsigned int genes;
 
 protected:
     unsigned long expectedSources() const override;

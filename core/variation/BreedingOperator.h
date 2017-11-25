@@ -4,6 +4,7 @@
 #include "VariationSource.h"
 
 /**
+ * TODO: Comments
  * The blueprint class for all breeding operators in NDEC. These operators form the internal nodes in the
  * variation pipeline and therefore need to have at least one previous source. In addition to that the root
  * of each pipeline needs to be a breeding operator.

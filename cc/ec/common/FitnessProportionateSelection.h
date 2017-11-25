@@ -5,6 +5,7 @@
 #include "../../../core/variation/SelectionOperator.h"
 
 /**
+ * TODO: Comments
  * Represents the roulette wheel selection as commonly used in evolutionary algorithms.
  *
  * @author  Felix Voelker

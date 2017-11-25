@@ -1,36 +1,24 @@
-#ifndef NDEC_PROTOTYPE_H
-#define NDEC_PROTOTYPE_H
+#ifndef RATATOSKR_PROTOTYPE_H
+#define RATATOSKR_PROTOTYPE_H
 
 
 #include "Singleton.h"
+#include "Clonable.h"
 
 /**
- * Represents the basic interface for all prototypic components of the evolutionary system, i.e. a singleton
- * with the functionality to create copies from itself.
+ * Represents the basic interface for all components that are defined as prototypes in a session. The evolutionary
+ * system derives multiple entities from these prototypes that are to be modified during the evolutionary process.
  *
  * @author  Felix Voelker
- * @version 0.1
- * @since   4.8.2017
+ * @version 0.0.2
+ * @since   11.10.2017
  */
-class Prototype : public Singleton {
-
-protected:
-    Prototype(const Prototype &obj);
+class Prototype : public Singleton, public Clonable {
 
 public:
-    /**
-     * Initializes the prototype to be cloned from.
-     */
-    explicit Prototype(const Session &session);
-    virtual ~Prototype();
-
-    /**
-     * Copies a given Prototype object.
-     * @return Cloned Prototype object.
-     */
-    virtual Prototype * clone() const = 0;
+    explicit Prototype(const Session &session) : Singleton(session) {};
 
 };
 
 
-#endif //NDEC_PROTOTYPE_H
+#endif //RATATOSKR_PROTOTYPE_H

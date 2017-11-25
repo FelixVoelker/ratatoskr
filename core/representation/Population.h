@@ -1,15 +1,17 @@
 #ifndef NDEC_POPULATION_H
 #define NDEC_POPULATION_H
 
-#include <vector>
 
+#include <vector>
 #include "../initialization/Builder.h"
 
 
 /**
+ * TODO: Comments
  * Represents the state of the evolutionary system. The class organizes a set of individuals as a
  * population and provides the functionality to maintain it as well as compare several individuals with each other.
  * Furthermore, it ensures the modularization with respect to the representation's builder and individuals.
+ *
  * @author  Felix Voelker
  * @version 0.1
  * @since   5.7.2017

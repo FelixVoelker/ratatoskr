@@ -6,6 +6,7 @@
 #include "Relevance.h"
 
 /**
+ * TODO: Comments
  * The blueprint class of individuals within a population that provides all functionality in regard of the
  * individual as an entity of the evolutionary system. Accordingly, it maintains its Fitness and
  * FeatureMap objects.

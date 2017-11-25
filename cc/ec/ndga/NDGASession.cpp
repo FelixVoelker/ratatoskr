@@ -8,12 +8,10 @@
 #include "BitVectorMutation.h"
 #include "BitVectorCrossover.h"
 #include "../common/FitnessProportionateSelection.h"
-#include "../common/RawFitness.h"
-#include "../common/RawRelevance.h"
 
 NDGASession::NDGASession(const NDGAProblem &problem) : Session(problem) {
-    _fitness = new RawFitness(*this);
-    _relevance = new RawRelevance(*this);
+    _fitness = new Fitness(*this);
+    _relevance = new Relevance(*this);
     _featuremap = new FeatureVector(*this);
     _individual = new BitVectorIndividual(*this);
     _builder = new RandomBitVectorBuilder(*this);
@@ -38,11 +36,11 @@ void NDGASession::builder(Builder &builder) {
 }
 
 void NDGASession::fitness(Fitness &fitness_prototype) {
-    _fitness = dynamic_cast<RawFitness *>(&fitness_prototype);
+    _fitness = &fitness_prototype;
 }
 
 void NDGASession::relevance(Relevance &relevance_prototype) {
-    _relevance = dynamic_cast<RawRelevance *>(&relevance_prototype);
+    _relevance = &relevance_prototype;
 }
 
 void NDGASession::featuremap(FeatureMap &featuremap_prototype) {

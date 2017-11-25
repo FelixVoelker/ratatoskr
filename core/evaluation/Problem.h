@@ -1,35 +1,46 @@
-#ifndef NDEC_PROBLEM_H
-#define NDEC_PROBLEM_H
+#ifndef RATATOSKR_TASK_H
+#define RATATOSKR_TASK_H
 
+
+#include "../util/Clonable.h"
 
 class Individual;
 
 /**
- * The blueprint class for any problem that has to be solved by a run of the evolutionary system. It contains all
- * problem-dependent information for each component of NDEC.
+ * The abstract base class for any optimization problem that is supposed to be solved by the evolutionary system.
+ * These are specified by a set of particular parameters and an evaluation function. Accordingly, a problem does not
+ * only drive the evaluation of each single individual but also designates all problem-dependent data to the components
+ * of the evolutionary system.
+ *
+ * @param popsize The size of the population.
  *
  * @author  Felix Voelker
- * @version 0.1
- * @since   8.8.2017
+ * @version 0.0.2
+ * @since   25.10.2017
  */
-class Problem {
+class Problem : public Clonable {
 
 protected:
-    unsigned int _popsize; // Size of the population.
+    // Parameters
+    unsigned int popsize;
+
+    Problem(const Problem &obj);
 
 public:
     explicit Problem(unsigned int popsize);
 
     /**
-     * Evaluates a given individual according to the user specified strategy.
-     * @param individual Individual to be evaluated.
+     * Assigns a fitness value to an individual according to the strategy of the task.
+     * @param individual The individual to be evaluated.
      */
-    virtual void evaluate(Individual &individual) const = 0;
+    virtual void eval(Individual &individual) const = 0;
 
-    unsigned int popsize() const;
-    void popsize(unsigned int popsize);
+    virtual Problem * clone() const = 0;
+
+    unsigned int getPopsize() const;
+    void setPopsize(unsigned int popsize);
 
 };
 
 
-#endif //NDEC_PROBLEM_H
+#endif // RATATOSKR_TASK_H

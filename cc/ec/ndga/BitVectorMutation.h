@@ -6,6 +6,7 @@
 #include "NDGASession.h"
 
 /**
+ * TODO: Comments
  * Represents the Bit Flip Mutation as described in "Melanie Mitchell: An Introduction to Genetic Algorithms (1996)."
  *
  * @author  Felix Voelker

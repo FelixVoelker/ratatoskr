@@ -5,6 +5,7 @@
 #include "../util/Prototype.h"
 
 /**
+ * TODO: Comments
  * The interface for all FeatureMap objects of the NDEC framework. Each derived class is dependent on the
  * representation of the associated individual, i.e. its functionality has to provide feasible features in order to
  * generate the input for the evolutionary network.
