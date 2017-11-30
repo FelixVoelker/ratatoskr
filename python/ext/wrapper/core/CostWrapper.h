@@ -3,7 +3,7 @@
 
 
 #include <boost/python.hpp>
-#include "../../../../core/representation/Relevance.h"
+#include "../../../../core/representation/Cost.h"
 
 using namespace boost::python;
 
@@ -13,7 +13,7 @@ using namespace boost::python;
  * @version 0.1
  * @since   4.9.2017
  */
-class RelevanceWrapper : public Relevance, public wrapper<Relevance> {
+class RelevanceWrapper : public Cost, public wrapper<Cost> {
 
 public:
     explicit RelevanceWrapper(boost::shared_ptr<Session> session);

@@ -15,6 +15,9 @@
  */
 class Prototype : public Singleton, public Clonable {
 
+protected:
+    Prototype(const Prototype &obj) = default;
+
 public:
     explicit Prototype(const Session &session) : Singleton(session) {};
 

@@ -7,15 +7,15 @@
 int main() {
     /*auto problem = new OneMaxProblem(50, 5);
     auto session = new NDGASession(*problem);
-    session->epochs(1);
-    session->episodes(1000);
-    session->generations(50);
-    session->evalthreads(3);
-    session->varythreads(3);
+    session->getEpochs(1);
+    session->getEpisodes(1000);
+    session->getGenerations(50);
+    session->setEvalthreads(3);
+    session->setVarythreads(3);
     auto system = new EvolutionarySystem(*session);
     system->run();
     delete system;
     delete session;
-    delete problem;
+    delete getProblem;
     return 0;*/
 }

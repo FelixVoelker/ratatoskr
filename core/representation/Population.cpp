@@ -1,9 +1,9 @@
 #include "Population.h"
 
 Population::Population(const Session &session) : Singleton(session) {
-    builder = session.builder();
+    builder = session.getBuilder();
 
-    individuals = vector<Individual *>(session.problem().popsize());
+    individuals = vector<Individual *>(session.getProblem().popsize());
 }
 
 void Population::initialize() {

@@ -11,7 +11,7 @@
 class Clonable {
 
 protected:
-    Clonable(Clonable &obj) = default;
+    Clonable(const Clonable &obj) = default;
 
 public:
     explicit Clonable() = default;
@@ -19,7 +19,7 @@ public:
     /**
      * Returns a copy of the calling object.
      */
-    virtual Clonable * clone() = 0;
+    virtual Clonable * clone() const = 0;
 
 };
 

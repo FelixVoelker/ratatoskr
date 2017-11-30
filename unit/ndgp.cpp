@@ -20,12 +20,12 @@ TEST_CASE("NDGP", "[ndgp]") {
         KozaFitness koza3 = KozaFitness();
         koza3.setStandarizedFitness(0);
 
-        SECTION("Checking optimality of fitness...") {
+        SECTION("Checking optimality of getFitness...") {
             REQUIRE(!koza1.isIdeal());
             REQUIRE(!koza2.isIdeal());
             REQUIRE(koza3.isIdeal());
         }
-        SECTION("Checking comparison of fitness...") {
+        SECTION("Checking comparison of getFitness...") {
             REQUIRE(!(koza1 < koza2));
             REQUIRE(koza2 < koza3);
             REQUIRE(koza1 < koza3);

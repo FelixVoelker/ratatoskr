@@ -1,7 +1,7 @@
 #include "Builder.h"
 
 Builder::Builder(const Session &session) : Singleton(session) {
-    prototype = session.individual();
+    prototype = session.getIndividual();
 }
 
 Individual * Builder::build() const {

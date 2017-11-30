@@ -1,9 +1,10 @@
-#ifndef NDEC_INDIVIDUAL_H
-#define NDEC_INDIVIDUAL_H
+#ifndef RATATOSKR_INDIVIDUAL_H
+#define RATATOSKR_INDIVIDUAL_H
 
 
+#include <string>
 #include "FeatureMap.h"
-#include "Relevance.h"
+#include "Cost.h"
 
 /**
  * TODO: Comments
@@ -18,10 +19,12 @@
 class Individual : public Prototype {
 
 protected:
-    bool _evaluated = false;
+    bool evaluated = false;
 
-    Relevance  *relevance;
-    FeatureMap *featuremap;
+    /** Components */
+    Cost        *cost;
+    FeatureMap  *featuremap;
+    Fitness     *fitness;
 
     Individual(const Individual &obj);
 
@@ -30,18 +33,26 @@ public:
     virtual ~Individual();
 
     /**
+     * Computes the relevance of an individual according to the given fraction, i.e. the approaching factor
+     * between its fitness or cost. Alignment strategy
+     * @param fraction Decimal number of the interval [0,1] with 0 being fitness only and 1 being cost only.
+     */
+    float relevance(float fraction);
+
+    /**
      * Returns a human-readable representation of the individual.
      * @return The string representing the individual.
      */
-    virtual string toString() = 0;
+    virtual std::string toString() = 0;
 
-    Relevance  & getRelevance() const;
+    Cost       & getCost() const;
     FeatureMap & getFeaturemap() const;
+    Fitness    & getFitness() const;
 
-    bool evaluated() const;
-    void evaluated(bool evaluated);
+    bool isEvaluated() const;
+    void setEvaluated(bool evaluated);
 
 };
 
 
-#endif //NDEC_INDIVIDUAL_H
+#endif // RATATOSKR_INDIVIDUAL_H

@@ -3,37 +3,45 @@
 Fitness::Fitness(const Session &session) : Prototype(session) {}
 
 bool Fitness::isIdeal() const {
-    return _fitness == 0;
+    return fitness == 0;
 }
 
 bool Fitness::operator<(const Fitness &other) const {
-    return this->_fitness > other._fitness;
+    return this->fitness > other.fitness;
 }
 
 bool Fitness::operator<=(const Fitness &other) const {
-    return this->_fitness >= other._fitness;
+    return this->fitness >= other.fitness;
 }
 
 bool Fitness::operator>(const Fitness &other) const {
-    return this->_fitness < other._fitness;
+    return this->fitness < other.fitness;
 }
 
 bool Fitness::operator>=(const Fitness &other) const {
-    return this->_fitness <= other._fitness;
+    return this->fitness <= other.fitness;
 }
 
 bool Fitness::operator==(const Fitness &other) const {
-    return this->_fitness == other._fitness;
+    return this->fitness == other.fitness;
 }
 
-float Fitness::fitness() const {
-    return _fitness;
-}
-
-void Fitness::fitness(const float fitness) {
-    this->_fitness = fitness;
+bool Fitness::operator!=(const Fitness &other) const {
+    return this->fitness != other.fitness;
 }
 
 Fitness * Fitness::clone() const {
     return new Fitness(*this);
+}
+
+float Fitness::getFitness() const {
+    return fitness;
+}
+
+void Fitness::setFitness(const float fitness) {
+    this->fitness = fitness;
+}
+
+Fitness::Fitness(const Fitness &obj) : Prototype(obj) {
+    this->fitness = obj.fitness;
 }

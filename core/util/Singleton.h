@@ -18,8 +18,7 @@ public:
      * Initializes a component according to a given session.
      * @param session The session to be run by the evolutionary system.
      */
-    explicit Singleton(const Session &session) {};
-    virtual ~Singleton() = 0;
+    explicit Singleton(const Session &session) {}
 
 };
 

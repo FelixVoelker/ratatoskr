@@ -6,27 +6,34 @@ Individual::Individual(const Individual &obj) : Prototype(obj) {
 }
 
 Individual::Individual(const Session &session) : Prototype(session) {
-    relevance = session.relevance();
-    featuremap = session.featuremap();
+    relevance = session.getCost();
+    featuremap = session.getFeaturemap();
 }
 
 Individual::~Individual() {
-    delete relevance;
     delete featuremap;
 }
 
-Relevance & Individual::getRelevance() const {
-    return *relevance;
+float Individual::relevance(float fraction) {
+    return 1 / (1 + (1 - fraction) * fitness->getFitness() + fraction * cost->getApproximateCost());
 }
 
-FeatureMap & Individual::getFeaturemap() const {
+Cost & Individual::getCost() const {
+    return *cost;
+}
+
+FeatureMap& Individual::getFeaturemap() const {
     return *featuremap;
 }
 
-bool Individual::evaluated() const {
-    return _evaluated;
+Fitness & Individual::getFitness() const {
+    return *fitness;
 }
 
-void Individual::evaluated(const bool evaluated) {
-    this->_evaluated = evaluated;
+bool Individual::isEvaluated() const {
+    return evaluated;
+}
+
+void Individual::setEvaluated(const bool evaluated) {
+    this->evaluated = evaluated;
 }

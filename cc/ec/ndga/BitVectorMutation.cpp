@@ -6,7 +6,7 @@ unsigned long BitVectorMutation::expectedSources() const { return 1; }
 BitVectorMutation::BitVectorMutation(const NDGASession &session)
         : BreedingOperator(session) {
     prob = session.mutation_rate;
-    genes = dynamic_cast<const NDGAProblem &>(session.problem()).genes;
+    genes = dynamic_cast<const NDGAProblem &>(session.getProblem()).genes;
 }
 
 vector<Individual *> & BitVectorMutation::breed(vector<Individual *> &parents, Randomizer &random) const {

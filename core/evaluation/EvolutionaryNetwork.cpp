@@ -4,11 +4,11 @@
 #include "../../cc/ec/ndga/BitVectorIndividual.h"
 
 EvolutionaryNetwork::EvolutionaryNetwork(const Session &session) : Singleton(session) {
-    learning_rate = session.learning_rate();
-    discount_factor = session.discount_factor();
-    lookup_table = new vector<vector<float>>(session.problem().popsize(),
+    learning_rate = session.getLearningRate();
+    discount_factor = session.getDiscountFactor();
+    lookup_table = new vector<vector<float>>(session.getProblem().popsize(),
                         vector<float>(static_cast<unsigned long>(pow(2,
-                                 dynamic_cast<const NDGAProblem &>(session.problem()).genes)), 0));
+                                 dynamic_cast<const NDGAProblem &>(session.getProblem()).genes)), 0));
 }
 
 EvolutionaryNetwork::~EvolutionaryNetwork() {

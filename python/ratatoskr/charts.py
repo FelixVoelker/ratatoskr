@@ -11,7 +11,7 @@ def fitnessChart(best_fitnesses, average_fitnesses, worst_fitnesses):
         if (len(best_fitnesses) != len(average_fitnesses) or len(average_fitnesses) != len(worst_fitnesses)):
             raise InitializationError()
     except InitializationError:
-        print("All fitnesses need to be recorded over the same number of generations.")
+        print("All fitnesses need to be recorded over the same number of getGenerations.")
         sys.exit(1)
 
     generations = len(best_fitnesses)
@@ -35,21 +35,21 @@ def fitnessAnimation(best_fitnesses, average_fitnesses, worst_fitnesses):
         if (len(best_fitnesses) != len(average_fitnesses) or len(average_fitnesses) != len(worst_fitnesses)):
             raise InitializationError()
     except InitializationError:
-        print("All fitnesses need to be recorded over the same number of epochs.")
+        print("All fitnesses need to be recorded over the same number of getEpochs.")
         sys.exit(1)
 
     try:
         if (len(best_fitnesses) == 1):
             raise InitializationError()
     except InitializationError:
-        print("The number of recorded epochs needs to be larger than 1.")
+        print("The number of recorded getEpochs needs to be larger than 1.")
         sys.exit(1)
 
     try:
         if (len(best_fitnesses[0]) != len(average_fitnesses[0]) or len(average_fitnesses[0]) != len(worst_fitnesses[0])):
             raise InitializationError()
     except InitializationError:
-        print("All fitnesses need to be recorded over the same number of generations.")
+        print("All fitnesses need to be recorded over the same number of getGenerations.")
         sys.exit(1)
 
     epochs = len(best_fitnesses)
@@ -88,7 +88,7 @@ def fitnessAnimation(best_fitnesses, average_fitnesses, worst_fitnesses):
 
     callback = CustomJS(args=dict(source=source,fitness=fitness), code="""
         var data = source.data;
-        var fit = fitness.data;
+        var fit = getFitness.data;
         var k = cb_obj.value
         x = data['x']
         b = data['b']

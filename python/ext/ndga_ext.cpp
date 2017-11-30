@@ -17,7 +17,7 @@ BOOST_PYTHON_MODULE(ndga) {
     class_<BitVectorIndividual, bases<Individual>, boost::noncopyable>("BitVectorIndividual", init<NDGASession &>())
             .def("chromosome", &BitVectorIndividual::getChromosome, return_value_policy<reference_existing_object>());
 
-    class_<TaskWrapper, bases<Problem>, boost::noncopyable>("NDGAProblem", init<unsigned int, unsigned int>())
+    class_<ProblemWrapper, bases<Problem>, boost::noncopyable>("NDGAProblem", init<unsigned int, unsigned int>())
             .add_property("popsize",
                           static_cast<unsigned int(NDGAProblem::*)()const>(&NDGAProblem::popsize),
                           static_cast<void(NDGAProblem::*)(const unsigned int)>(&NDGAProblem::popsize))

@@ -7,10 +7,10 @@ EvolutionarySystem::EvolutionarySystem(Session &session)
           breeder(Breeder(session)),
           statistics(Statistics(session)),
           replayer(Replayer(session)) {
-    EPOCHS = session.epochs();
-    EPISODES = session.episodes();
-    GENERATIONS = session.generations();
-    complete = session.complete();
+    EPOCHS = session.getEpochs();
+    EPISODES = session.getEpisodes();
+    GENERATIONS = session.getGenerations();
+    complete = session.isComplete();
 }
 
 void EvolutionarySystem::evolve(const unsigned int epoch) {
@@ -39,7 +39,7 @@ void EvolutionarySystem::run() {
         cout << "Starting epoch " << epoch << "..." << endl;
         for (unsigned int episode = 0; episode < EPISODES; episode++) {
             if (episode % 250 == 0)
-                cout << "Epoch " << epoch << ": " << EPISODES - episode << " episodes left." << endl;
+                cout << "Epoch " << epoch << ": " << EPISODES - episode << " getEpisodes left." << endl;
             evolve(epoch);
         }
         cout << "Finished epoch " << epoch << "." << endl;

@@ -6,7 +6,7 @@ unsigned long BitVectorCrossover::expectedSources() const { return 2; }
 BitVectorCrossover::BitVectorCrossover(const NDGASession &session)
         : BreedingOperator(session) {
     prob = session.xover_rate;
-    genes = dynamic_cast<const NDGAProblem &>(session.problem()).genes;
+    genes = dynamic_cast<const NDGAProblem &>(session.getProblem()).genes;
 }
 
 vector<Individual *> & BitVectorCrossover::breed(vector<Individual *> &parents, Randomizer &random) const {

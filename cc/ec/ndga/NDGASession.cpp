@@ -10,12 +10,12 @@
 #include "../common/FitnessProportionateSelection.h"
 
 NDGASession::NDGASession(const NDGAProblem &problem) : Session(problem) {
-    _fitness = new Fitness(*this);
-    _relevance = new Relevance(*this);
-    _featuremap = new FeatureVector(*this);
-    _individual = new BitVectorIndividual(*this);
-    _builder = new RandomBitVectorBuilder(*this);
-    _network = new EvolutionaryNetwork(*this);
+    fitness = new Fitness(*this);
+    cost = new Cost(*this);
+    featuremap = new FeatureVector(*this);
+    individual = new BitVectorIndividual(*this);
+    builder = new RandomBitVectorBuilder(*this);
+    network = new EvolutionaryNetwork(*this);
 
     vector<VariationSource *> selectors(2);
     selectors.at(0) = new FitnessProportionateSelection(*this);
@@ -23,34 +23,34 @@ NDGASession::NDGASession(const NDGAProblem &problem) : Session(problem) {
     vector<VariationSource *> crossover(1);
     crossover.at(0) = new BitVectorCrossover(*this);
     crossover.at(0)->connect(selectors);
-    _pipeline = new BitVectorMutation(*this);
-    _pipeline->connect(crossover);
+    pipeline = new BitVectorMutation(*this);
+    pipeline->connect(crossover);
 }
 
-void NDGASession::network(EvolutionaryNetwork &network) {
-    _network = &network;
+void NDGASession::setNetwork(EvolutionaryNetwork &network) {
+    network = &network;
 }
 
-void NDGASession::builder(Builder &builder) {
-    _builder = dynamic_cast<RandomBitVectorBuilder *>(&builder);
+void NDGASession::setBuilder(Builder &builder) {
+    builder = dynamic_cast<RandomBitVectorBuilder *>(&builder);
 }
 
-void NDGASession::fitness(Fitness &fitness_prototype) {
-    _fitness = &fitness_prototype;
+void NDGASession::setFitness(Fitness &fitness_prototype) {
+    fitness = &fitness_prototype;
 }
 
-void NDGASession::relevance(Relevance &relevance_prototype) {
-    _relevance = &relevance_prototype;
+void NDGASession::setCost(Cost &relevance_prototype) {
+    cost = &relevance_prototype;
 }
 
-void NDGASession::featuremap(FeatureMap &featuremap_prototype) {
-    _featuremap = dynamic_cast<FeatureVector *>(&featuremap_prototype);
+void NDGASession::setFeaturemap(FeatureMap &featuremap_prototype) {
+    featuremap = dynamic_cast<FeatureVector *>(&featuremap_prototype);
 }
 
-void NDGASession::individual(Individual &individual_prototype) {
-    _individual = dynamic_cast<BitVectorIndividual *>(&individual_prototype);
+void NDGASession::setIndividual(Individual &individual_prototype) {
+    individual = dynamic_cast<BitVectorIndividual *>(&individual_prototype);
 }
 
-void NDGASession::pipeline(BreedingOperator &pipeline_prototype) {
-    _pipeline = &pipeline_prototype;
+void NDGASession::setPipeline(BreedingOperator &pipeline_prototype) {
+    pipeline = &pipeline_prototype;
 }

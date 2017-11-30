@@ -1,5 +1,5 @@
-#ifndef RATATOSKR_TASK_H
-#define RATATOSKR_TASK_H
+#ifndef RATATOSKR_PROBLEM_H
+#define RATATOSKR_PROBLEM_H
 
 
 #include "../util/Clonable.h"
@@ -33,7 +33,7 @@ public:
      * Assigns a fitness value to an individual according to the strategy of the task.
      * @param individual The individual to be evaluated.
      */
-    virtual void eval(Individual &individual) const = 0;
+//    virtual void eval(Individual &individual) const = 0;
 
     virtual Problem * clone() const = 0;
 
@@ -43,4 +43,4 @@ public:
 };
 
 
-#endif // RATATOSKR_TASK_H
+#endif // RATATOSKR_PROBLEM_H

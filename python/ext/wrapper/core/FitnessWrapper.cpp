@@ -3,7 +3,7 @@
 FitnessWrapper::FitnessWrapper(boost::shared_ptr<Session> session) : Fitness(*session) {}
 
 bool FitnessWrapper::isIdeal() const {
-    if (override isIdeal = this->get_override("isideal"))
+    if (override isIdeal = this->get_override("isIdeal"))
         return isIdeal();
     return Fitness::isIdeal();
 }
@@ -49,3 +49,11 @@ bool FitnessWrapper::operator==(const Fitness &other) const {
 }
 
 bool FitnessWrapper::default_eq(const Fitness &other) const { return Fitness::operator==(other); }
+
+bool FitnessWrapper::operator!=(const Fitness &other) const {
+    if (override o = this->get_override("operator!="))
+        return o(other);
+    return Fitness::operator!=(other);
+}
+
+bool FitnessWrapper::default_neq(const Fitness &other) const { return Fitness::operator!=(other); }

@@ -8,7 +8,7 @@ features will be listed in this document.
 * Core-Engine
    * Supports traditional Evolutionary Computation only
    * Programmable representations, initialization, evaluation, variation and sessions
-   * Statistics: Recoring of the best, average and worst fitness of each generation
+   * Statistics: Recoring of the best, average and worst getFitness of each generation
 * C++-API
   * Toolkit
     * Neuro-Dynamic Genetic Algorithm (NDGA)

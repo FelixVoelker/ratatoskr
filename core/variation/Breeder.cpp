@@ -2,9 +2,9 @@
 
 Breeder::Breeder(const Session &session)
         : Singleton(session),
-          popsize(session.problem().popsize()),
-          varythreads(session.varythreads()) {
-    variation_pipeline = session.pipeline();
+          popsize(session.getProblem().popsize()),
+          varythreads(session.getVarythreads()) {
+    variation_pipeline = session.getPipeline();
     threads = new vector<thread>(varythreads);
     random = new vector<Randomizer>(varythreads);
 }

@@ -3,12 +3,12 @@
 using namespace boost::python;
 
 Statistics::Statistics(Session &session) {
-    episodes = session.episodes();
+    episodes = session.getEpisodes();
 
-    vector<float> f = vector<float>(session.generations() + 1, 0);
-    best_fitnesses = vector<vector<float>>(session.epochs(), f);
-    average_fitnesses = vector<vector<float>>(session.epochs(), f);
-    worst_fitnesses = vector<vector<float>>(session.epochs(), f);
+    vector<float> f = vector<float>(session.getGenerations() + 1, 0);
+    best_fitnesses = vector<vector<float>>(session.getEpochs(), f);
+    average_fitnesses = vector<vector<float>>(session.getEpochs(), f);
+    worst_fitnesses = vector<vector<float>>(session.getEpochs(), f);
 }
 
 void Statistics::record(Population &pop, const unsigned int epoch, const unsigned int generation) {

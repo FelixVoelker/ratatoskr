@@ -1,10 +1,10 @@
 #include "Evaluator.h"
 
 Evaluator::Evaluator(const Session &session) : Singleton(session),
-                                               popsize(session.problem().popsize()),
-                                               evalthreads(session.evalthreads()),
-                                               eval(session.problem().eval()),
-                                               network(session.network()),
+                                               popsize(session.getProblem().popsize()),
+                                               evalthreads(session.getEvalthreads()),
+                                               eval(session.getProblem().eval()),
+                                               network(session.getNetwork()),
                                                threads(new vector<thread>(evalthreads)) {}
 
 Evaluator::~Evaluator() {

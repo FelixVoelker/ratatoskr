@@ -2,7 +2,7 @@
 #include "Replayer.h"
 
 Replayer::Replayer(const Session &session) : Singleton(session) {
-    network = session.network();
+    network = session.getNetwork();
 }
 
 void Replayer::replay(Population &pop, vector<Individual *> &offsprings) const {

@@ -21,13 +21,13 @@ public:
 
     explicit NDGASession(const NDGAProblem &problem);
 
-    void network(EvolutionaryNetwork &network) override;
-    void builder(Builder &builder) override;
-    void fitness(Fitness &fitness_prototype) override;
-    void relevance(Relevance &relevance_prototype) override;
-    void featuremap(FeatureMap &featuremap_prototype) override;
-    void individual(Individual &individual_prototype) override;
-    void pipeline(BreedingOperator &pipeline_prototype) override;
+    void setNetwork(EvolutionaryNetwork &network) override;
+    void setBuilder(Builder &builder) override;
+    void setFitness(Fitness &fitness_prototype) override;
+    void setCost(Cost &relevance_prototype) override;
+    void setFeaturemap(FeatureMap &featuremap_prototype) override;
+    void setIndividual(Individual &individual_prototype) override;
+    void setPipeline(BreedingOperator &pipeline_prototype) override;
 
 };
 

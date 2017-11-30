@@ -1,108 +1,108 @@
 #include "Session.h"
-#include "evaluation/EvolutionaryNetwork.h"
-#include "variation/BreedingOperator.h"
+//#include "evaluation/EvolutionaryNetwork.h"
+//#include "variation/BreedingOperator.h"
 
-Session::Session(const Problem &problem) : _problem(problem) {}
+Session::Session(const Problem &problem) : problem(problem) {}
 
 Session::~Session() {
-    delete _individual;
-    delete _builder;
-    delete _network;
-    delete _pipeline;
+//    delete individual;
+//    delete builder;
+//    delete network;
+//    delete pipeline;
 }
 
-const Problem & Session::problem() const {
-    return _problem;
+const Problem & Session::getProblem() const {
+    return problem;
 }
 
-EvolutionaryNetwork * Session::network() const {
-    return _network;
+//EvolutionaryNetwork * Session::getNetwork() const {
+//    return network;
+//}
+//
+//Builder * Session::getBuilder() const {
+//    return builder;
+//}
+
+Fitness * Session::getFitness() const {
+    return fitness;
 }
 
-Builder * Session::builder() const {
-    return _builder;
+//Cost * Session::getCost() const {
+//    return cost;
+//}
+
+//FeatureMap * Session::getFeaturemap() const {
+//    return featuremap;
+//}
+//
+//Individual * Session::getIndividual() const {
+//    return individual;
+//}
+//
+//BreedingOperator * Session::getPipeline() const {
+//    return pipeline;
+//}
+
+unsigned int Session::getEpochs() const {
+    return epochs;
 }
 
-Fitness * Session::fitness() const {
-    return _fitness;
+unsigned int Session::getEpisodes() const {
+    return episodes;
 }
 
-Relevance * Session::relevance() const {
-    return _relevance;
+unsigned int Session::getGenerations() const {
+    return generations;
 }
 
-FeatureMap * Session::featuremap() const {
-    return _featuremap;
+bool Session::isComplete() const {
+    return complete;
 }
 
-Individual * Session::individual() const {
-    return _individual;
+unsigned int Session::getEvalthreads() const {
+    return evalthreads;
 }
 
-BreedingOperator * Session::pipeline() const {
-    return _pipeline;
+unsigned int Session::getVarythreads() const {
+    return varythreads;
 }
 
-unsigned int Session::epochs() const {
-    return _epochs;
+float Session::getLearningRate() const {
+    return learning_rate;
 }
 
-unsigned int Session::episodes() const {
-    return _episodes;
+float Session::getDiscountFactor() const {
+    return discount_factor;
 }
 
-unsigned int Session::generations() const {
-    return _generations;
+void Session::setEpochs(unsigned int epochs) {
+    this->epochs = epochs;
 }
 
-bool Session::complete() const {
-    return _complete;
+void Session::setEpisodes(unsigned int episodes) {
+    this->episodes = episodes;
 }
 
-unsigned int Session::evalthreads() const {
-    return _evalthreads;
+void Session::setGenerations(unsigned int generations) {
+    this->generations = generations;
 }
 
-unsigned int Session::varythreads() const {
-    return _varythreads;
+void Session::setComplete(bool complete) {
+    this->complete = complete;
 }
 
-float Session::learning_rate() const {
-    return _learning_rate;
+void Session::setEvalthreads(unsigned int evalthreads) {
+    this->evalthreads = evalthreads;
 }
 
-float Session::discount_factor() const {
-    return _discount_factor;
+void Session::setVarythreads(unsigned int varythreads) {
+    this->varythreads = varythreads;
 }
 
-void Session::epochs(unsigned int epochs) {
-    this->_epochs = epochs;
+void Session::setLearningRate(float learning_rate) {
+    this->learning_rate = learning_rate;
 }
 
-void Session::episodes(unsigned int episodes) {
-    this->_episodes = episodes;
-}
-
-void Session::generations(unsigned int generations) {
-    this->_generations = generations;
-}
-
-void Session::complete(bool complete) {
-    this->_complete = complete;
-}
-
-void Session::evalthreads(unsigned int evalthreads) {
-    this->_evalthreads = evalthreads;
-}
-
-void Session::varythreads(unsigned int varythreads) {
-    this->_varythreads = varythreads;
-}
-
-void Session::learning_rate(float learning_rate) {
-    this->_learning_rate = learning_rate;
-}
-
-void Session::discount_factor(float discount_factor) {
-    this->_discount_factor = discount_factor;
+void Session::setDiscountFactor(float discount_factor) {
+    this->discount_factor = discount_factor;
 }
