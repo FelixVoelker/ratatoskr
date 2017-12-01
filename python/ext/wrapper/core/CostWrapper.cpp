@@ -1,14 +1,51 @@
 #include "CostWrapper.h"
 
-RelevanceWrapper::RelevanceWrapper(boost::shared_ptr<Session> session) : Cost(*session) {}
+CostWrapper::CostWrapper(boost::shared_ptr<Session> session) : Cost(*session) {}
 
-float RelevanceWrapper::relevance(int epoch) {
-    if (override relevance = this->get_override("setCost")) {
-        return relevance(epoch);
-    }
-    return Cost::relevance(epoch);
+bool CostWrapper::operator<(const Cost &other) const {
+    if (override o = this->get_override("operator<"))
+        return o(other);
+    return Cost::operator<(other);
 }
 
-float RelevanceWrapper::default_relevance(int epoch) {
-    return Cost::relevance(epoch);
+bool CostWrapper::default_lt(const Cost &other) const { return Cost::operator<(other); }
+
+bool CostWrapper::operator<=(const Cost &other) const {
+    if (override o = this->get_override("operator<="))
+        return o(other);
+    return Cost::operator<=(other);
 }
+
+bool CostWrapper::default_leq(const Cost &other) const { return Cost::operator<=(other); }
+
+bool CostWrapper::operator>(const Cost &other) const {
+    if (override o = this->get_override("operator>"))
+        return o(other);
+    return Cost::operator>(other);
+}
+
+bool CostWrapper::default_gt(const Cost &other) const { return Cost::operator>(other); }
+
+bool CostWrapper::operator>=(const Cost &other) const {
+    if (override o = this->get_override("operator>="))
+        return o(other);
+    return Cost::operator>=(other);
+}
+
+bool CostWrapper::default_geq(const Cost &other) const { return Cost::operator>=(other); }
+
+bool CostWrapper::operator==(const Cost &other) const {
+    if (override o = this->get_override("operator=="))
+        return o(other);
+    return Cost::operator==(other);
+}
+
+bool CostWrapper::default_eq(const Cost &other) const { return Cost::operator==(other); }
+
+bool CostWrapper::operator!=(const Cost &other) const {
+    if (override o = this->get_override("operator!="))
+        return o(other);
+    return Cost::operator!=(other);
+}
+
+bool CostWrapper::default_neq(const Cost &other) const { return Cost::operator!=(other); }

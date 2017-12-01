@@ -15,7 +15,7 @@ Individual::~Individual() {
 }
 
 float Individual::relevance(float fraction) {
-    return 1 / (1 + (1 - fraction) * fitness->getFitness() + fraction * cost->getApproximateCost());
+    return 1 / (1 + (1 - fraction) * fitness->getFitness() + fraction * cost->getCost());
 }
 
 Cost & Individual::getCost() const {

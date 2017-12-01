@@ -2,11 +2,8 @@
 #include <boost/python/suite/indexing/vector_indexing_suite.hpp>
 #include "wrapper/core/ProblemWrapper.h"
 #include "wrapper/core/SessionWrapper.h"
-//#include "wrapper/core/FeatureMapWrapper.h"
 #include "wrapper/core/FitnessWrapper.h"
-//#include "../../core/EvolutionarySystem.h"
-//#include "wrapper/core/IndividualWrapper.h"
-//#include "wrapper/core/CostWrapper.h"
+#include "wrapper/core/CostWrapper.h"
 
 using namespace boost::python;
 
@@ -33,12 +30,16 @@ BOOST_PYTHON_MODULE(core) {
             .def("__eq__", &Fitness::operator==, &FitnessWrapper::default_eq)
             .def("__neq__", &Fitness::operator!=, &FitnessWrapper::default_neq);
 
-//    class_<RelevanceWrapper, boost::noncopyable>("Cost", init<boost::shared_ptr<Session>>())
-//            .add_property("cost",
-//                          static_cast<float(Cost::*)()const>(&Cost::cost),
-//                          static_cast<void(Cost::*)(const float)>(&Cost::cost))
-//            .def("setCost", &Cost::relevance, &RelevanceWrapper::default_relevance)
-//            .def("getFitness", &Cost::getFitness, return_value_policy<reference_existing_object>());
+    class_<CostWrapper, boost::noncopyable>("Cost", init<boost::shared_ptr<Session>>())
+            .add_property("cost", &Cost::getCost, &Cost::setCost)
+            .def("__copy__", &Cost::clone, return_value_policy<manage_new_object>())
+            .def("error", &Cost::error)
+            .def("__lt__", &Cost::operator<, &CostWrapper::default_lt)
+            .def("__le__", &Cost::operator<=, &CostWrapper::default_leq)
+            .def("__gt__", &Cost::operator>, &CostWrapper::default_gt)
+            .def("__ge__", &Cost::operator>=, &CostWrapper::default_geq)
+            .def("__eq__", &Cost::operator==, &CostWrapper::default_eq)
+            .def("__neq__", &Cost::operator!=, &CostWrapper::default_neq);
 //
 //    class_<IndividualWrapper, boost::noncopyable>("Individual", init<boost::shared_ptr<Session>>())
 //            .add_property("evaluated",

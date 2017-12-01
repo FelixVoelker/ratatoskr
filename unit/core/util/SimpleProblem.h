@@ -16,7 +16,7 @@ class SimpleProblem : public Problem {
 public:
     explicit SimpleProblem(unsigned int popsize);
 
-    void eval(Individual &individual) const override;
+    //void eval(Individual &individual) const override;
 
     SimpleProblem * clone() const;
 };

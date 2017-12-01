@@ -1,5 +1,5 @@
-#ifndef NDEC_RELEVANCEWRAPPER_H
-#define NDEC_RELEVANCEWRAPPER_H
+#ifndef RATATOSKR_COSTWRAPPER_H
+#define RATATOSKR_COSTWRAPPER_H
 
 
 #include <boost/python.hpp>
@@ -9,19 +9,31 @@ using namespace boost::python;
 
 
 /**
+ * Boost.Python wrapper to expose all virtual core functionality of Cost.
+ *
  * @author  Felix Voelker
- * @version 0.1
- * @since   4.9.2017
+ * @version 0.0.2
+ * @since   1.12.2017
  */
-class RelevanceWrapper : public Cost, public wrapper<Cost> {
+class CostWrapper : public Cost, public wrapper<Cost> {
 
 public:
-    explicit RelevanceWrapper(boost::shared_ptr<Session> session);
+    explicit CostWrapper(boost::shared_ptr<Session> session);
 
-    float relevance(int epoch) override;
-    float default_relevance(int epoch);
+    bool operator<(const Cost &other) const override;
+    bool default_lt(const Cost &other) const;
+    bool operator<=(const Cost &other) const override;
+    bool default_leq(const Cost &other) const;
+    bool operator>(const Cost &other) const override;
+    bool default_gt(const Cost &other) const;
+    bool operator>=(const Cost &other) const override;
+    bool default_geq(const Cost &other) const;
+    bool operator==(const Cost &other) const override;
+    bool default_eq(const Cost &other) const;
+    bool operator!=(const Cost &other) const override;
+    bool default_neq(const Cost &other) const;
 
 };
 
 
-#endif //NDEC_RELEVANCEWRAPPER_H
+#endif //RATATOSKR_COSTWRAPPER_H

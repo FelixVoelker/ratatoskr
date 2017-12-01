@@ -39,7 +39,7 @@ public:
 
 protected:
     /**
-     * The standarized fitness that is compared based on a reversed natural order.
+     * The current standarized fitness that is compared based on a reversed natural order.
      */
     float fitness;
 

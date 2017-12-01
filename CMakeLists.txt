@@ -15,7 +15,7 @@ set(CORE_SOURCES
         core/evaluation/Problem.cpp core/evaluation/Problem.h
 #        core/experience/Replayer.cpp core/experience/Replayer.h
 #        core/initialization/Builder.cpp core/initialization/Builder.h
-#        core/representation/Cost.cpp core/representation/Cost.h
+        core/representation/Cost.cpp core/representation/Cost.h
 #        core/representation/FeatureMap.cpp core/representation/FeatureMap.h
         core/representation/Fitness.h core/representation/Fitness.cpp
 #        core/representation/Individual.cpp core/representation/Individual.h
@@ -52,7 +52,7 @@ add_executable(ndec_cc_debug cc/main.cpp)
 target_link_libraries(ndec_cc_debug ndec_cc)
 
 set(PYTHON_API_CORE
-#        python/ext/wrapper/core/CostWrapper.cpp python/ext/wrapper/core/CostWrapper.h
+        python/ext/wrapper/core/CostWrapper.cpp python/ext/wrapper/core/CostWrapper.h
 #        python/ext/wrapper/core/FeatureMapWrapper.cpp python/ext/wrapper/core/FeatureMapWrapper.h
         python/ext/wrapper/core/FitnessWrapper.cpp python/ext/wrapper/core/FitnessWrapper.h
 #        python/ext/wrapper/core/IndividualWrapper.cpp python/ext/wrapper/core/IndividualWrapper.h
