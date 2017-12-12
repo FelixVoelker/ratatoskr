@@ -9,7 +9,7 @@
  * a mapping from the genotype of an individual to some numeric features. Each feature map takes part in the
  * preprocessing step that generates the input of the evolutionary network at each generation. Accordingly, each map
  * has to take the individual's representation into account in order to provide the evolutionary network with
- * highly informative training data.
+ * highly informative data.
  *
  * @author  Felix Voelker
  * @version 0.0.2

@@ -2,8 +2,8 @@
 #include <boost/python/suite/indexing/vector_indexing_suite.hpp>
 #include "wrapper/core/ProblemWrapper.h"
 #include "wrapper/core/SessionWrapper.h"
-#include "wrapper/core/FeatureMapWrapper.h"
 #include "wrapper/core/FitnessWrapper.h"
+#include "wrapper/core/FeatureMapWrapper.h"
 #include "wrapper/core/CostWrapper.h"
 
 using namespace boost::python;
