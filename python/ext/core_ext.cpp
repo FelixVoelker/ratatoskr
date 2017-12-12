@@ -2,6 +2,7 @@
 #include <boost/python/suite/indexing/vector_indexing_suite.hpp>
 #include "wrapper/core/ProblemWrapper.h"
 #include "wrapper/core/SessionWrapper.h"
+#include "wrapper/core/FeatureMapWrapper.h"
 #include "wrapper/core/FitnessWrapper.h"
 #include "wrapper/core/CostWrapper.h"
 
@@ -16,8 +17,8 @@ BOOST_PYTHON_MODULE(core) {
             .def("__copy__", pure_virtual(&Problem::clone), return_value_policy<manage_new_object>());
 //            .def("eval", pure_virtual(&Problem::eval));
 
-//    class_<FeatureMapWrapper, boost::noncopyable>("FeatureMap", init<boost::shared_ptr<Session>>())
-//            .def("clone", pure_virtual(&FeatureMap::clone), return_value_policy<manage_new_object>());
+    class_<FeatureMapWrapper, boost::noncopyable>("FeatureMap", init<boost::shared_ptr<Session>>())
+            .def("__copy__", pure_virtual(&FeatureMap::clone), return_value_policy<manage_new_object>());
 
     class_<FitnessWrapper, boost::noncopyable>("Fitness", init<boost::shared_ptr<Session>>())
             .add_property("fitness", &Fitness::getFitness, &Fitness::setFitness)

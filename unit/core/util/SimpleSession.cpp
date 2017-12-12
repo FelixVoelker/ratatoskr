@@ -1,7 +1,7 @@
 #include "SimpleSession.h"
 #include "../../../core/representation/Fitness.h"
 //#include "TestBuilder.h"
-//#include "TestFeatureMap.h"
+//#include "SimpleFeatureMap.h"
 //#include "TestIndividual.h"
 //#include "../../../cc/ec/common/FitnessProportionateSelection.h"
 //#include "TestBreedingOperator.h"
@@ -9,7 +9,7 @@
 SimpleSession::SimpleSession(Problem &problem) : Session(problem) {
 //    builder = new TestBuilder(*this);
     fitness = new Fitness(*this);
-//    featuremap = new TestFeatureMap(*this);
+//    featuremap = new SimpleFeatureMap(*this);
 //    individual = new TestIndividual(*this);
 //    vector<VariationSource *> sources(1);
 //    sources.at(0) = new FitnessProportionateSelection(*this);

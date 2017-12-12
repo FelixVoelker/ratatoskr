@@ -1,5 +1,5 @@
-#ifndef NDEC_FEATUREMAPWRAPPER_H
-#define NDEC_FEATUREMAPWRAPPER_H
+#ifndef RATATOSKR_FEATUREMAPWRAPPER_H
+#define RATATOSKR_FEATUREMAPWRAPPER_H
 
 
 #include <boost/python.hpp>
@@ -8,9 +8,11 @@
 using namespace boost::python;
 
 /**
+ * Boost.Python wrapper to expose all virtual core functionality of FeatureMap.
+ *
  * @author  Felix Voelker
- * @version 0.1
- * @since   23.8.2017
+ * @version 0.0.2
+ * @since   12.12.2017
  */
 class FeatureMapWrapper : public FeatureMap, public wrapper<FeatureMap> {
 
@@ -21,4 +23,4 @@ public:
 };
 
 
-#endif //NDEC_FEATUREMAPWRAPPER_H
+#endif //RATATOSKR_FEATUREMAPWRAPPER_H

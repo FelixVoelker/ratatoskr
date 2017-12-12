@@ -1,25 +1,27 @@
-#ifndef NDEC_FEATUREMAP_H
-#define NDEC_FEATUREMAP_H
+#ifndef RATATOSKR_FEATUREMAP_H
+#define RATATOSKR_FEATUREMAP_H
 
 
 #include "../util/Prototype.h"
 
 /**
- * TODO: Comments
- * The interface for all FeatureMap objects of the NDEC framework. Each derived class is dependent on the
- * representation of the associated individual, i.e. its functionality has to provide feasible features in order to
- * generate the input for the evolutionary network.
+ * The abstract base class for an individual's feature map in a Neuro-Dynamic Evolutionary Algorithm (NDEA), i.e.
+ * a mapping from the genotype of an individual to some numeric features. Each feature map takes part in the
+ * preprocessing step that generates the input of the evolutionary network at each generation. Accordingly, each map
+ * has to take the individual's representation into account in order to provide the evolutionary network with
+ * highly informative training data.
  *
  * @author  Felix Voelker
- * @version 0.1
- * @since   4.8.2017
+ * @version 0.0.2
+ * @since   12.12.2017
  */
 class FeatureMap : public Prototype {
 
 public:
     explicit FeatureMap(const Session &session);
 
+    virtual FeatureMap * clone() const = 0;
 };
 
 
-#endif //NDEC_FEATUREMAP_H
+#endif //RATATOSKR_FEATUREMAP_H

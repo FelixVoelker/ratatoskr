@@ -1,7 +1,7 @@
 #include <iostream>
-#include "problem/ndga/OneMaxProblem.h"
-#include "ec/ndga/NDGASession.h"
-#include "../core/EvolutionarySystem.h"
+//#include "problem/ndga/OneMaxProblem.h"
+//#include "ec/ndga/NDGASession.h"
+//#include "../core/EvolutionarySystem.h"
 
 
 int main() {

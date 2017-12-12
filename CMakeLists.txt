@@ -16,7 +16,7 @@ set(CORE_SOURCES
 #        core/experience/Replayer.cpp core/experience/Replayer.h
 #        core/initialization/Builder.cpp core/initialization/Builder.h
         core/representation/Cost.cpp core/representation/Cost.h
-#        core/representation/FeatureMap.cpp core/representation/FeatureMap.h
+        core/representation/FeatureMap.cpp core/representation/FeatureMap.h
         core/representation/Fitness.h core/representation/Fitness.cpp
 #        core/representation/Individual.cpp core/representation/Individual.h
 #        core/representation/Population.cpp core/representation/Population.h
@@ -53,7 +53,7 @@ target_link_libraries(ndec_cc_debug ndec_cc)
 
 set(PYTHON_API_CORE
         python/ext/wrapper/core/CostWrapper.cpp python/ext/wrapper/core/CostWrapper.h
-#        python/ext/wrapper/core/FeatureMapWrapper.cpp python/ext/wrapper/core/FeatureMapWrapper.h
+        python/ext/wrapper/core/FeatureMapWrapper.cpp python/ext/wrapper/core/FeatureMapWrapper.h
         python/ext/wrapper/core/FitnessWrapper.cpp python/ext/wrapper/core/FitnessWrapper.h
 #        python/ext/wrapper/core/IndividualWrapper.cpp python/ext/wrapper/core/IndividualWrapper.h
         python/ext/wrapper/core/ProblemWrapper.cpp python/ext/wrapper/core/ProblemWrapper.h
@@ -81,7 +81,7 @@ add_dependencies(ndec_py core ndga)
 set(UNIT_SOURCES
 #        unit/core/util/TestBreedingOperator.cpp unit/core/util/TestBreedingOperator.h
 #        unit/core/util/TestBuilder.cpp unit/core/util/TestBuilder.h
-#        unit/core/util/TestFeatureMap.cpp unit/core/util/TestFeatureMap.h
+        unit/core/util/SimpleFeatureMap.cpp unit/core/util/SimpleFeatureMap.h
 #        unit/core/util/TestIndividual.cpp unit/core/util/TestIndividual.h
         unit/core/util/SimpleProblem.cpp unit/core/util/SimpleProblem.h
         unit/core/util/SimpleSession.cpp unit/core/util/SimpleSession.h
