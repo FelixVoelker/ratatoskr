@@ -1,5 +1,5 @@
-#ifndef NDEC_INDIVIDUALWRAPPER_H
-#define NDEC_INDIVIDUALWRAPPER_H
+#ifndef RATATOSKR_INDIVIDUALWRAPPER_H
+#define RATATOSKR_INDIVIDUALWRAPPER_H
 
 
 #include <boost/python.hpp>
@@ -8,20 +8,22 @@
 using namespace boost::python;
 
 /**
+ * Boost.Python wrapper to expose all virtual core functionality of Individual.
+ *
  * @author  Felix Voelker
- * @version 0.1
- * @since   23.8.2017
+ * @version 0.0.2
+ * @since   14.12.2017
  */
 class IndividualWrapper : public Individual, public wrapper<Individual> {
 
 public:
     explicit IndividualWrapper(boost::shared_ptr<Session> session);
 
-    string toString() override;
+    std::string toString() override;
 
     Individual * clone() const override;
 
 };
 
 
-#endif //NDEC_INDIVIDUALWRAPPER_H
+#endif //RATATOSKR_INDIVIDUALWRAPPER_H

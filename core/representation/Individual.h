@@ -3,20 +3,46 @@
 
 
 #include <string>
-#include "FeatureMap.h"
 #include "Cost.h"
+#include "FeatureMap.h"
+#include "Fitness.h"
 
 /**
- * TODO: Comments
- * The blueprint class of individuals within a population that provides all functionality in regard of the
- * individual as an entity of the evolutionary system. Accordingly, it maintains its Fitness and
- * FeatureMap objects.
+ * The abstract base class of an individual within the population of an evolutionary system. It provides all
+ * functionality of the individual as a solution of an optimization problem and maintains all problem-dependent
+ * components to drive a Neuro-Dynamic Evolutionary Algorithm (NDEA), i.e. its cost, fitness and feature map.
  *
  * @author  Felix Voelker
- * @version 0.1
- * @since   4.8.2017
+ * @version 0.0.2
+ * @since   14.12.2017
  */
 class Individual : public Prototype {
+
+public:
+    explicit Individual(const Session &session);
+    ~Individual();
+
+    /**
+     * Computes the relevance of an individual according to the given fraction, i.e. the alignment factor
+     * between its fitness and cost.
+     * @param fraction Decimal number within the interval [0,1] with 0 being fitness only and 1 being cost only.
+     * Out of scope numbers are projected on the boundary of the interval.
+     */
+    float relevance(float fraction);
+
+    /**
+     * Returns a human-readable representation of the individual.
+     */
+    virtual std::string toString() = 0;
+
+    Individual * clone() const = 0;
+
+    Cost       & getCost() const;
+    FeatureMap & getFeaturemap() const;
+    Fitness    & getFitness() const;
+
+    bool isEvaluated() const;
+    void setEvaluated(bool evaluated);
 
 protected:
     bool evaluated = false;
@@ -28,31 +54,7 @@ protected:
 
     Individual(const Individual &obj);
 
-public:
-    explicit Individual(const Session &session);
-    virtual ~Individual();
-
-    /**
-     * Computes the relevance of an individual according to the given fraction, i.e. the approaching factor
-     * between its fitness or cost. Alignment strategy
-     * @param fraction Decimal number of the interval [0,1] with 0 being fitness only and 1 being cost only.
-     */
-    float relevance(float fraction);
-
-    /**
-     * Returns a human-readable representation of the individual.
-     * @return The string representing the individual.
-     */
-    virtual std::string toString() = 0;
-
-    Cost       & getCost() const;
-    FeatureMap & getFeaturemap() const;
-    Fitness    & getFitness() const;
-
-    bool isEvaluated() const;
-    void setEvaluated(bool evaluated);
-
 };
 
 
-#endif // RATATOSKR_INDIVIDUAL_H
+#endif //RATATOSKR_INDIVIDUAL_H

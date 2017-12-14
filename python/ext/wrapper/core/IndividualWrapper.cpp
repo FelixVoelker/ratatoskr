@@ -2,7 +2,7 @@
 
 IndividualWrapper::IndividualWrapper(boost::shared_ptr<Session> session) : Individual(*session) {}
 
-string IndividualWrapper::toString() {
+std::string IndividualWrapper::toString() {
     return this->get_override("tostring")();
 }
 

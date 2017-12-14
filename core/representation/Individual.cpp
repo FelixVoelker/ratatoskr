@@ -1,20 +1,20 @@
 #include "Individual.h"
 
-Individual::Individual(const Individual &obj) : Prototype(obj) {
-    relevance = obj.relevance->clone();
-    featuremap = dynamic_cast<FeatureMap *>(obj.featuremap->clone());
-}
-
 Individual::Individual(const Session &session) : Prototype(session) {
-    relevance = session.getCost();
+    cost = session.getCost();
     featuremap = session.getFeaturemap();
+    fitness = session.getFitness();
 }
 
 Individual::~Individual() {
+    delete cost;
     delete featuremap;
+    delete fitness;
 }
 
 float Individual::relevance(float fraction) {
+    fraction = fraction < 0? 0 : fraction;
+    fraction = fraction > 1? 1: fraction;
     return 1 / (1 + (1 - fraction) * fitness->getFitness() + fraction * cost->getCost());
 }
 
@@ -22,7 +22,7 @@ Cost & Individual::getCost() const {
     return *cost;
 }
 
-FeatureMap& Individual::getFeaturemap() const {
+FeatureMap & Individual::getFeaturemap() const {
     return *featuremap;
 }
 
@@ -36,4 +36,10 @@ bool Individual::isEvaluated() const {
 
 void Individual::setEvaluated(const bool evaluated) {
     this->evaluated = evaluated;
+}
+
+Individual::Individual(const Individual &obj) : Prototype(obj) {
+    cost = obj.cost->clone();
+    featuremap = obj.featuremap->clone();
+    fitness = obj.fitness->clone();
 }

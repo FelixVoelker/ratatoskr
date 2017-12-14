@@ -1,11 +1,10 @@
 #include "Session.h"
-//#include "evaluation/EvolutionaryNetwork.h"
-//#include "variation/BreedingOperator.h"
+#include "representation/Individual.h"
 
 Session::Session(const Problem &problem) : problem(problem) {}
 
 Session::~Session() {
-//    delete individual;
+    delete individual;
 //    delete builder;
 //    delete network;
 //    delete pipeline;
@@ -27,18 +26,18 @@ Fitness * Session::getFitness() const {
     return fitness;
 }
 
-//Cost * Session::getCost() const {
-//    return cost;
-//}
+Cost * Session::getCost() const {
+    return cost;
+}
 
-//FeatureMap * Session::getFeaturemap() const {
-//    return featuremap;
-//}
-//
-//Individual * Session::getIndividual() const {
-//    return individual;
-//}
-//
+FeatureMap * Session::getFeaturemap() const {
+    return featuremap;
+}
+
+Individual * Session::getIndividual() const {
+    return individual;
+}
+
 //BreedingOperator * Session::getPipeline() const {
 //    return pipeline;
 //}

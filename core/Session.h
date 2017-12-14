@@ -7,8 +7,8 @@
 //class EvolutionaryNetwork;
 //class Builder;
 class Fitness;
-//class Cost;
-//class FeatureMap;
+class Cost;
+class FeatureMap;
 //class Individual;
 //class BreedingOperator;
 
@@ -23,6 +23,47 @@ class Fitness;
  * @since   1.9.2017
  */
 class Session {
+
+public:
+    explicit Session(const Problem &problem);
+    virtual ~Session();
+
+    const Problem &       getProblem() const;
+
+//    EvolutionaryNetwork * getNetwork() const;
+//    Builder *             getBuilder() const;
+    Fitness *             getFitness() const;
+    Cost  *               getCost() const;
+    FeatureMap *          getFeaturemap() const;
+    Individual *          getIndividual() const;
+//    BreedingOperator *    getPipeline() const;
+
+//    virtual void setNetwork(EvolutionaryNetwork &network_prototype) = 0;
+//    virtual void setBuilder(Builder &builder_prototype) = 0;
+    virtual void setFitness(Fitness &fitness_prototype) = 0;
+    virtual void setCost(Cost &cost_prototype) = 0;
+    virtual void setFeaturemap(FeatureMap &featuremap_prototype) = 0;
+    virtual void setIndividual(Individual &individual_prototype) = 0;
+//    virtual void setPipeline(BreedingOperator &pipeline_prototype) = 0;
+
+
+    unsigned int getEpochs() const;
+    unsigned int getEpisodes() const;
+    unsigned int getGenerations() const;
+    bool isComplete() const;
+    unsigned int getEvalthreads() const;
+    unsigned int getVarythreads() const;
+    float getLearningRate() const;
+    float getDiscountFactor() const;
+
+    void setEpochs(unsigned int epochs);
+    void setEpisodes(unsigned int episodes);
+    void setGenerations(unsigned int generations);
+    void setComplete(bool complete);
+    void setEvalthreads(unsigned int evalthreads);
+    void setVarythreads(unsigned int varythreads);
+    void setLearningRate(float learning_rate);
+    void setDiscountFactor(float discount_factor);
 
 protected:
     unsigned int epochs = 1; // Number of getEpochs to run.
@@ -45,51 +86,10 @@ protected:
 //    EvolutionaryNetwork *network;
 //    Builder             *builder;
     Fitness             *fitness;
-//    Cost                *cost;
-//    FeatureMap          *featuremap;
-//    Individual          *individual;
+    Cost                *cost;
+    FeatureMap          *featuremap;
+    Individual          *individual;
 //    BreedingOperator    *pipeline;
-
-public:
-    explicit Session(const Problem &problem);
-    virtual ~Session();
-
-    const Problem &       getProblem() const;
-
-//    EvolutionaryNetwork * getNetwork() const;
-//    Builder *             getBuilder() const;
-    Fitness *             getFitness() const;
-//    Cost  *               getCost() const;
-//    FeatureMap *          getFeaturemap() const;
-//    Individual *          getIndividual() const;
-//    BreedingOperator *    getPipeline() const;
-
-//    virtual void setNetwork(EvolutionaryNetwork &network_prototype) = 0;
-//    virtual void setBuilder(Builder &builder_prototype) = 0;
-    virtual void setFitness(Fitness &fitness_prototype) = 0;
-//    virtual void setCost(Cost &cost_prototype) = 0;
-//    virtual void setFeaturemap(FeatureMap &featuremap_prototype) = 0;
-//    virtual void setIndividual(Individual &individual_prototype) = 0;
-//    virtual void setPipeline(BreedingOperator &pipeline_prototype) = 0;
-
-
-    unsigned int getEpochs() const;
-    unsigned int getEpisodes() const;
-    unsigned int getGenerations() const;
-    bool isComplete() const;
-    unsigned int getEvalthreads() const;
-    unsigned int getVarythreads() const;
-    float getLearningRate() const;
-    float getDiscountFactor() const;
-
-    void setEpochs(unsigned int epochs);
-    void setEpisodes(unsigned int episodes);
-    void setGenerations(unsigned int generations);
-    void setComplete(bool complete);
-    void setEvalthreads(unsigned int evalthreads);
-    void setVarythreads(unsigned int varythreads);
-    void setLearningRate(float learning_rate);
-    void setDiscountFactor(float discount_factor);
 
 };
 

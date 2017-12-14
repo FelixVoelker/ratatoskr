@@ -6,10 +6,10 @@
 //#include "../../../../core/evaluation/EvolutionaryNetwork.h"
 #include "../../../../core/Session.h"
 //#include "../../../../core/initialization/Builder.h"
+#include "../../../../core/representation/Cost.h"
+#include "../../../../core/representation/FeatureMap.h"
 #include "../../../../core/representation/Fitness.h"
-//#include "../../../../core/representation/Cost.h"
-//#include "../../../../core/representation/FeatureMap.h"
-//#include "../../../../core/representation/Individual.h"
+#include "../../../../core/representation/Individual.h"
 //#include "../../../../core/variation/BreedingOperator.h"
 
 using namespace boost::python;
@@ -26,10 +26,10 @@ public:
 
 //    void setNetwork(EvolutionaryNetwork &network_prototype) override;
 //    void setBuilder(Builder &builder_prototype) override;
+    void setCost(Cost &relevance_prototype) override;
+    void setFeaturemap(FeatureMap &featuremap_prototype) override;
     void setFitness(Fitness &fitness_prototype) override;
-//    void setCost(Cost &relevance_prototype) override;
-//    void setFeaturemap(FeatureMap &featuremap_prototype) override;
-//    void setIndividual(Individual &individual_prototype) override;
+    void setIndividual(Individual &individual_prototype) override;
 //    void setPipeline(BreedingOperator &pipeline_prototype) override;
 
     void pyFitness(boost::shared_ptr<Fitness> fitness_prototype);

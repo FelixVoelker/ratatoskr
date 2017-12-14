@@ -18,7 +18,7 @@ set(CORE_SOURCES
         core/representation/Cost.cpp core/representation/Cost.h
         core/representation/FeatureMap.cpp core/representation/FeatureMap.h
         core/representation/Fitness.h core/representation/Fitness.cpp
-#        core/representation/Individual.cpp core/representation/Individual.h
+        core/representation/Individual.cpp core/representation/Individual.h
 #        core/representation/Population.cpp core/representation/Population.h
 #        core/statistics/Statistics.cpp core/statistics/Statistics.h
         core/util/Clonable.h
@@ -55,7 +55,7 @@ set(PYTHON_API_CORE
         python/ext/wrapper/core/CostWrapper.cpp python/ext/wrapper/core/CostWrapper.h
         python/ext/wrapper/core/FeatureMapWrapper.cpp python/ext/wrapper/core/FeatureMapWrapper.h
         python/ext/wrapper/core/FitnessWrapper.cpp python/ext/wrapper/core/FitnessWrapper.h
-#        python/ext/wrapper/core/IndividualWrapper.cpp python/ext/wrapper/core/IndividualWrapper.h
+        python/ext/wrapper/core/IndividualWrapper.cpp python/ext/wrapper/core/IndividualWrapper.h
         python/ext/wrapper/core/ProblemWrapper.cpp python/ext/wrapper/core/ProblemWrapper.h
         python/ext/wrapper/core/SessionWrapper.cpp python/ext/wrapper/core/SessionWrapper.h
         python/ext/core_ext.cpp
@@ -82,7 +82,7 @@ set(UNIT_SOURCES
 #        unit/core/util/TestBreedingOperator.cpp unit/core/util/TestBreedingOperator.h
 #        unit/core/util/TestBuilder.cpp unit/core/util/TestBuilder.h
         unit/core/util/SimpleFeatureMap.cpp unit/core/util/SimpleFeatureMap.h
-#        unit/core/util/TestIndividual.cpp unit/core/util/TestIndividual.h
+        unit/core/util/SimpleIndividual.cpp unit/core/util/SimpleIndividual.h
         unit/core/util/SimpleProblem.cpp unit/core/util/SimpleProblem.h
         unit/core/util/SimpleSession.cpp unit/core/util/SimpleSession.h
 #        unit/core/util/TestVariationSource.cpp unit/core/util/TestVariationSource.h

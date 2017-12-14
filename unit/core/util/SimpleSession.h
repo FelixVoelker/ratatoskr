@@ -17,9 +17,10 @@ public:
     explicit SimpleSession(Problem &problem);
 
 //    void setBuilder(Builder &builder_prototype) override;
+    void setCost(Cost &cost_prototype) override;
+    void setFeaturemap(FeatureMap &featuremap_prototype) override;
     void setFitness(Fitness &fitness_prototype) override;
-//    void setFeaturemap(FeatureMap &featuremap_prototype) override;
-//    void setIndividual(Individual &individual_prototype) override;
+    void setIndividual(Individual &individual_prototype) override;
 //    void setPipeline(BreedingOperator &pipeline_prototype) override;
 
 };

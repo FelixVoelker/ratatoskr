@@ -1,10 +1,12 @@
 #include <boost/python.hpp>
 #include <boost/python/suite/indexing/vector_indexing_suite.hpp>
+#include "wrapper/core/CostWrapper.h"
+#include "wrapper/core/FeatureMapWrapper.h"
+#include "wrapper/core/FitnessWrapper.h"
+#include "wrapper/core/IndividualWrapper.h"
 #include "wrapper/core/ProblemWrapper.h"
 #include "wrapper/core/SessionWrapper.h"
-#include "wrapper/core/FitnessWrapper.h"
-#include "wrapper/core/FeatureMapWrapper.h"
-#include "wrapper/core/CostWrapper.h"
+
 
 using namespace boost::python;
 
@@ -41,14 +43,15 @@ BOOST_PYTHON_MODULE(core) {
             .def("__ge__", &Cost::operator>=, &CostWrapper::default_geq)
             .def("__eq__", &Cost::operator==, &CostWrapper::default_eq)
             .def("__neq__", &Cost::operator!=, &CostWrapper::default_neq);
-//
-//    class_<IndividualWrapper, boost::noncopyable>("Individual", init<boost::shared_ptr<Session>>())
-//            .add_property("evaluated",
-//                          static_cast<bool(Individual::*)()const>(&Individual::evaluated),
-//                          static_cast<void(Individual::*)(const bool)>(&Individual::evaluated))
-//            .def("tostring", pure_virtual(&Individual::toString))
-//            .def("setCost", &Individual::getRelevance, return_value_policy<reference_existing_object>())
-//            .def("getFeaturemap", &Individual::getFeaturemap, return_value_policy<reference_existing_object>());
+
+    class_<IndividualWrapper, boost::noncopyable>("Individual", init<boost::shared_ptr<Session>>())
+            .add_property("evaluated", &Individual::isEvaluated, &Individual::setEvaluated)
+            .def("__copy__", &Individual::clone, return_value_policy<manage_new_object>())
+            .def("relevance", &Individual::relevance)
+            .def("tostring", pure_virtual(&Individual::toString))
+            .def("getCost", &Individual::getCost, return_internal_reference<>())
+            .def("getFeaturemap", &Individual::getFeaturemap, return_internal_reference<>())
+            .def("getFitness", &Individual::getFitness, return_internal_reference<>());
 
     class_<SessionWrapper, boost::noncopyable>("Session", init<boost::shared_ptr<Problem>>())
             .add_property("epochs", &Session::getEpochs, &Session::setEpochs)
