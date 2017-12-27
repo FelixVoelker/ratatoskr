@@ -5,7 +5,7 @@
 #include "evaluation/Problem.h"
 
 //class EvolutionaryNetwork;
-//class Builder;
+class Builder;
 class Fitness;
 class Cost;
 class FeatureMap;
@@ -31,7 +31,7 @@ public:
     const Problem &       getProblem() const;
 
 //    EvolutionaryNetwork * getNetwork() const;
-//    Builder *             getBuilder() const;
+    Builder *             getBuilder() const;
     Fitness *             getFitness() const;
     Cost  *               getCost() const;
     FeatureMap *          getFeaturemap() const;
@@ -39,7 +39,7 @@ public:
 //    BreedingOperator *    getPipeline() const;
 
 //    virtual void setNetwork(EvolutionaryNetwork &network_prototype) = 0;
-//    virtual void setBuilder(Builder &builder_prototype) = 0;
+    virtual void setBuilder(Builder &builder_prototype) = 0;
     virtual void setFitness(Fitness &fitness_prototype) = 0;
     virtual void setCost(Cost &cost_prototype) = 0;
     virtual void setFeaturemap(FeatureMap &featuremap_prototype) = 0;
@@ -84,7 +84,7 @@ protected:
      * Necessary prototypes.
      */
 //    EvolutionaryNetwork *network;
-//    Builder             *builder;
+    Builder             *builder;
     Fitness             *fitness;
     Cost                *cost;
     FeatureMap          *featuremap;

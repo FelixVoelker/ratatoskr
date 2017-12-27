@@ -14,7 +14,7 @@ set(CORE_SOURCES
 #        core/evaluation/EvolutionaryNetwork.cpp core/evaluation/EvolutionaryNetwork.h
         core/evaluation/Problem.cpp core/evaluation/Problem.h
 #        core/experience/Replayer.cpp core/experience/Replayer.h
-#        core/initialization/Builder.cpp core/initialization/Builder.h
+        core/initialization/Builder.cpp core/initialization/Builder.h
         core/representation/Cost.cpp core/representation/Cost.h
         core/representation/FeatureMap.cpp core/representation/FeatureMap.h
         core/representation/Fitness.h core/representation/Fitness.cpp
@@ -45,28 +45,28 @@ set(CC_API
 #        cc/problem/ndga/OneMaxProblem.cpp cc/getProblem/ndga/OneMaxProblem.h
         )
 
-add_library(ndec_cc SHARED ${CORE_SOURCES} ${CC_API})
-target_link_libraries(ndec_cc ${Boost_LIBRARIES} ${PYTHON_LIBRARIES})
+add_library(ratatoskr_cc SHARED ${CORE_SOURCES} ${CC_API})
+target_link_libraries(ratatoskr_cc ${Boost_LIBRARIES} ${PYTHON_LIBRARIES})
 
-add_executable(ndec_cc_debug cc/main.cpp)
-target_link_libraries(ndec_cc_debug ndec_cc)
+add_executable(ratatoskr_cc_debug cc/main.cpp)
+target_link_libraries(ratatoskr_cc_debug ndec_cc)
 
 set(PYTHON_API_CORE
+        python/ext/wrapper/core/BuilderWrapper.cpp python/ext/wrapper/core/BuilderWrapper.h
         python/ext/wrapper/core/CostWrapper.cpp python/ext/wrapper/core/CostWrapper.h
         python/ext/wrapper/core/FeatureMapWrapper.cpp python/ext/wrapper/core/FeatureMapWrapper.h
         python/ext/wrapper/core/FitnessWrapper.cpp python/ext/wrapper/core/FitnessWrapper.h
         python/ext/wrapper/core/IndividualWrapper.cpp python/ext/wrapper/core/IndividualWrapper.h
         python/ext/wrapper/core/ProblemWrapper.cpp python/ext/wrapper/core/ProblemWrapper.h
         python/ext/wrapper/core/SessionWrapper.cpp python/ext/wrapper/core/SessionWrapper.h
-        python/ext/core_ext.cpp
-        )
+        python/ext/core_ext.cpp)
 
 set(PYTHON_API_NDGA
         python/ext/wrapper/ndga/ProblemWrapper.cpp python/ext/wrapper/ndga/ProblemWrapper.h
         python/ext/ndga_ext.cpp)
 
 add_library(core SHARED ${PYTHON_API_CORE})
-target_link_libraries(core ndec_cc)
+target_link_libraries(core ratatoskr_cc)
 set_target_properties(core PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/python/ratatoskr PREFIX "")
 #set_target_properties(core PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/python/ratatoskr SUFFIX ".pyd")
 
@@ -75,12 +75,12 @@ target_link_libraries(ndga core)
 set_target_properties(ndga PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/python/ratatoskr PREFIX "")
 #set_target_properties(ndga PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/python/ratatoskr SUFFIX ".pyd")
 
-add_custom_target(ndec_py)
-add_dependencies(ndec_py core ndga)
+add_custom_target(ratatoskr_py)
+add_dependencies(ratatoskr_py core ndga)
 
 set(UNIT_SOURCES
 #        unit/core/util/TestBreedingOperator.cpp unit/core/util/TestBreedingOperator.h
-#        unit/core/util/TestBuilder.cpp unit/core/util/TestBuilder.h
+        unit/core/util/SimpleBuilder.cpp unit/core/util/SimpleBuilder.h
         unit/core/util/SimpleFeatureMap.cpp unit/core/util/SimpleFeatureMap.h
         unit/core/util/SimpleIndividual.cpp unit/core/util/SimpleIndividual.h
         unit/core/util/SimpleProblem.cpp unit/core/util/SimpleProblem.h
@@ -92,7 +92,7 @@ set(UNIT_SOURCES
         catch.hpp)
 
 add_executable(unit ${UNIT_SOURCES})
-target_link_libraries(unit ndec_cc)
+target_link_libraries(unit ratatoskr_cc)
 
 
 

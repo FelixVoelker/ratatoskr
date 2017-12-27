@@ -5,7 +5,7 @@ Builder::Builder(const Session &session) : Singleton(session) {
 }
 
 Individual * Builder::build() const {
-    auto ind = dynamic_cast<Individual *>(prototype->clone());
+    auto ind = prototype->clone();
     initialize(*ind);
     return ind;
 }

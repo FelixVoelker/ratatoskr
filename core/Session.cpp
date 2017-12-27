@@ -1,11 +1,11 @@
 #include "Session.h"
-#include "representation/Individual.h"
+#include "initialization/Builder.h"
 
 Session::Session(const Problem &problem) : problem(problem) {}
 
 Session::~Session() {
     delete individual;
-//    delete builder;
+    delete builder;
 //    delete network;
 //    delete pipeline;
 }
@@ -17,10 +17,10 @@ const Problem & Session::getProblem() const {
 //EvolutionaryNetwork * Session::getNetwork() const {
 //    return network;
 //}
-//
-//Builder * Session::getBuilder() const {
-//    return builder;
-//}
+
+Builder * Session::getBuilder() const {
+    return builder;
+}
 
 Fitness * Session::getFitness() const {
     return fitness;

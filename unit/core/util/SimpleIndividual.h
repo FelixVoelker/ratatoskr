@@ -20,6 +20,11 @@ public:
 
     SimpleIndividual * clone() const override;
 
+    void setLabel(std::string label);
+
+protected:
+    std::string label = "";
+
 };
 
 

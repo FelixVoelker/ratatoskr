@@ -2,10 +2,9 @@
 
 
 #include <catch.hpp>
+#include "util/SimpleBuilder.h"
 #include "util/SimpleProblem.h"
 #include "util/SimpleSession.h"
-#include "../../core/representation/Cost.h"
-#include "util/SimpleIndividual.h"
 
 /**
  * Unit tests for the core functionality of an evolutionary system.
@@ -37,6 +36,13 @@ TEST_CASE("Core", "[core]") {
             REQUIRE(*c1 < *c3);
         }
 
+        SECTION("Checking cloning...") {
+            auto *cc = c1->clone();
+            REQUIRE(cc != c1);
+            REQUIRE(cc->getCost() == c1->getCost());
+            delete(cc);
+        }
+
         delete(c1);
         delete(c2);
         delete(c3);
@@ -59,6 +65,12 @@ TEST_CASE("Core", "[core]") {
             REQUIRE(*f2 < *f3);
             REQUIRE(*f1 < *f3);
         }
+        SECTION("Checking cloning...") {
+            auto *fc = f1->clone();
+            REQUIRE(fc != f1);
+            REQUIRE(f1->getFitness() == fc->getFitness());
+            delete(fc);
+        }
 
         delete(f1);
         delete(f2);
@@ -76,12 +88,20 @@ TEST_CASE("Core", "[core]") {
         }
 
         SECTION("Checking cloning...") {
-            auto *i2 = i1->clone();
-            REQUIRE(i1 != i2);
-            REQUIRE(i1->getCost().getCost() == i2->getCost().getCost());
-            REQUIRE(i1->getFitness().getFitness() == i2->getFitness().getFitness());
-            delete(i2);
+            auto *ic = i1->clone();
+            REQUIRE(i1 != ic);
+            REQUIRE(i1->getCost().getCost() == ic->getCost().getCost());
+            REQUIRE(i1->getFitness().getFitness() == ic->getFitness().getFitness());
+            delete(ic);
         }
+    }
+    SECTION("Builder") {
+        auto *builder = session->getBuilder();
+        auto *ind = builder->build();
+        SECTION("Checking initialization...") {
+            REQUIRE(ind->toString().compare("passed") == 0);
+        }
+        delete(ind);
     }
     /*SECTION("Problem") {
         auto task = new SimpleProblem(1);

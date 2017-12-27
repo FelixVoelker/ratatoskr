@@ -16,7 +16,7 @@ class SimpleSession : public Session {
 public:
     explicit SimpleSession(Problem &problem);
 
-//    void setBuilder(Builder &builder_prototype) override;
+    void setBuilder(Builder &builder_prototype) override;
     void setCost(Cost &cost_prototype) override;
     void setFeaturemap(FeatureMap &featuremap_prototype) override;
     void setFitness(Fitness &fitness_prototype) override;
