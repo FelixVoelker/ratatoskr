@@ -1,7 +1,7 @@
 #include "Session.h"
 #include "initialization/Builder.h"
 
-Session::Session(const Problem &problem) : problem(problem) {}
+Session::Session(Problem &problem) : problem(problem) {}
 
 Session::~Session() {
     delete individual;
@@ -10,7 +10,7 @@ Session::~Session() {
 //    delete pipeline;
 }
 
-const Problem & Session::getProblem() const {
+Problem & Session::getProblem() const {
     return problem;
 }
 

@@ -19,7 +19,7 @@ set(CORE_SOURCES
         core/representation/FeatureMap.cpp core/representation/FeatureMap.h
         core/representation/Fitness.h core/representation/Fitness.cpp
         core/representation/Individual.cpp core/representation/Individual.h
-#        core/representation/Population.cpp core/representation/Population.h
+        core/representation/Population.cpp core/representation/Population.h
 #        core/statistics/Statistics.cpp core/statistics/Statistics.h
         core/util/Clonable.h
         core/util/Prototype.h

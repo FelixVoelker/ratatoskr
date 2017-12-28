@@ -25,10 +25,10 @@ class FeatureMap;
 class Session {
 
 public:
-    explicit Session(const Problem &problem);
+    explicit Session(Problem &problem);
     virtual ~Session();
 
-    const Problem &       getProblem() const;
+    Problem & getProblem() const;
 
 //    EvolutionaryNetwork * getNetwork() const;
     Builder *             getBuilder() const;
@@ -78,7 +78,7 @@ protected:
     float learning_rate = 0.1;
     float discount_factor = 0.1;
 
-    const Problem &problem;
+    Problem &problem;
 
     /**
      * Necessary prototypes.

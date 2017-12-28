@@ -7,6 +7,7 @@
 #include "wrapper/core/IndividualWrapper.h"
 #include "wrapper/core/ProblemWrapper.h"
 #include "wrapper/core/SessionWrapper.h"
+#include "../../core/representation/Population.h"
 
 
 using namespace boost::python;
@@ -56,6 +57,11 @@ BOOST_PYTHON_MODULE(core) {
             .def("getCost", &IndividualWrapper::getCost, return_internal_reference<>())
             .def("getFeaturemap", &IndividualWrapper::getFeaturemap, return_internal_reference<>())
             .def("getFitness", &IndividualWrapper::getFitness, return_internal_reference<>());
+
+    class_<Population>("Population", init<Session &>())
+            .def("bestIndividual", &Population::bestIndividual, return_internal_reference<>())
+            .def("averageIndividual", &Population::averageIndividual, return_internal_reference<>())
+            .def("worstIndividual", &Population::worstIndividual, return_internal_reference<>());
 
     class_<SessionWrapper, boost::noncopyable>("Session", init<boost::shared_ptr<ProblemWrapper>>())
             .add_property("epochs", &SessionWrapper::getEpochs, &SessionWrapper::setEpochs)

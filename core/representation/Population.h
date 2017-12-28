@@ -1,64 +1,57 @@
-#ifndef NDEC_POPULATION_H
-#define NDEC_POPULATION_H
+#ifndef RATATOSKR_POPULATION_H
+#define RATATOSKR_POPULATION_H
 
 
 #include <vector>
 #include "../initialization/Builder.h"
 
-
 /**
- * TODO: Comments
- * Represents the state of the evolutionary system. The class organizes a set of individuals as a
- * population and provides the functionality to maintain it as well as compare several individuals with each other.
- * Furthermore, it ensures the modularization with respect to the representation's builder and individuals.
+ * Represents the population as the state of an evolutionary system. Accordingly, the class incorporates a set of
+ * individuals and provides the functionality for maintainance and comparison on the population level.
  *
  * @author  Felix Voelker
- * @version 0.1
- * @since   5.7.2017
+ * @version 0.0.2
+ * @since   28.12.2017
  */
 class Population : public Singleton {
-
-private:
-    Builder *builder;
-
-    vector<Individual *> individuals;
 
 public:
     explicit Population(const Session &session);
 
     /**
-     * Populates the evolutionary system's population by calling the given Builder.
-     * This creates entirely fresh individuals.
+     * Replaces each individual of the population with newly built ones.
      */
-    void initialize();
+    void populate();
 
     /**
-     * Cleans up the entire population.
+     * Exterminates each individual within the population.
      */
-    void finalize();
+    void exterminate();
 
     /**
-     * Changes the population from one generation to the next.
-     */
-    void changeGeneration(vector<Individual *> *offspring);
-
-    /**
-     * Estimates and returns the best individual within the population of the current generation according
-     * to its given fitness measure.
+     * Finds the individual with the best fitness value within the population.
      */
     Individual * bestIndividual() const;
 
     /**
-    * Estimates and returns the worse individual within the population of the current generation according
-    * to its given fitness measure.
-    */
+     * Computes a new individual with the average fitness and cost value of the entire population.
+     */
+    Individual * averageIndividual() const;
+
+    /**
+     * Finds the individual with the worst fitness value within the population.
+     */
     Individual * worstIndividual() const;
 
+    std::vector<Individual *> getIndividuals() const;
+    void setIndividuals(std::vector<Individual *> individuals);
 
+private:
+    Builder *builder;
 
-    vector<Individual *> getIndividuals() const;
+    std::vector<Individual *> individuals;
 
 };
 
 
-#endif //NDEC_POPULATION_H
+#endif //RATATOSKR_POPULATION_H

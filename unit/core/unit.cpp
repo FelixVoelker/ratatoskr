@@ -5,13 +5,14 @@
 #include "util/SimpleBuilder.h"
 #include "util/SimpleProblem.h"
 #include "util/SimpleSession.h"
+#include "../../core/representation/Population.h"
 
 /**
  * Unit tests for the core functionality of an evolutionary system.
  *
  * @author  Felix Voelker
  * @version 0.0.2
- * @since   1.12.2017
+ * @since   28.12.2017
  */
 TEST_CASE("Core", "[core]") {
     auto problem = new SimpleProblem(1);
@@ -60,11 +61,13 @@ TEST_CASE("Core", "[core]") {
             REQUIRE(!f2->isIdeal());
             REQUIRE(f3->isIdeal());
         }
+
         SECTION("Checking comparison of fitnesses...") {
             REQUIRE(*f1 > *f2);
             REQUIRE(*f2 < *f3);
             REQUIRE(*f1 < *f3);
         }
+
         SECTION("Checking cloning...") {
             auto *fc = f1->clone();
             REQUIRE(fc != f1);
@@ -98,10 +101,56 @@ TEST_CASE("Core", "[core]") {
     SECTION("Builder") {
         auto *builder = session->getBuilder();
         auto *ind = builder->build();
+
         SECTION("Checking initialization...") {
-            REQUIRE(ind->toString().compare("passed") == 0);
+            REQUIRE(ind->toString() == "passed");
         }
+
         delete(ind);
+    }
+    SECTION("Population") {
+        session->getProblem().setPopsize(3);
+        auto *pop = new Population(*session);
+        pop->populate();
+
+        SECTION("Checking populating...") {
+            for (auto *ind : pop->getIndividuals()) {
+                REQUIRE(ind->toString() == "passed");
+            }
+
+        }
+
+        SECTION("Checking extermination...") {
+            pop->exterminate();
+            for (auto ind : pop->getIndividuals()) {
+                REQUIRE(ind == nullptr);
+            }
+        }
+
+        pop->populate();
+        pop->getIndividuals().at(0)->getCost().setCost(0);
+        pop->getIndividuals().at(0)->getFitness().setFitness(0);
+        pop->getIndividuals().at(1)->getCost().setCost(3);
+        pop->getIndividuals().at(1)->getFitness().setFitness(5);
+        pop->getIndividuals().at(2)->getCost().setCost(7.5);
+        pop->getIndividuals().at(2)->getFitness().setFitness(2.5);
+
+        SECTION("Finding the best individual...") {
+            REQUIRE(pop->bestIndividual() == pop->getIndividuals().at(0));
+        }
+
+        SECTION("Finding the worst individual...") {
+            REQUIRE(pop->worstIndividual() == pop->getIndividuals().at(1));
+        }
+
+        SECTION("Computing the average individual...") {
+            auto *average = pop->averageIndividual();
+            REQUIRE(average->getCost().getCost() == 3.5);
+            REQUIRE(average->getFitness().getFitness() == 2.5);
+            delete average;
+        }
+
+        delete pop;
     }
     /*SECTION("Problem") {
         auto task = new SimpleProblem(1);

@@ -2,48 +2,57 @@
 
 Population::Population(const Session &session) : Singleton(session) {
     builder = session.getBuilder();
-
-    individuals = vector<Individual *>(session.getProblem().popsize());
+    individuals = std::vector<Individual *>(session.getProblem().getPopsize());
 }
 
-void Population::initialize() {
+void Population::populate() {
     for (auto &individual : individuals) {
         individual = builder->build();
     }
 }
 
-void Population::finalize() {
-    for (auto individual : individuals) {
+void Population::exterminate() {
+    for (auto &individual : individuals) {
         delete individual;
+        individual = nullptr;
     }
-}
-
-void Population::changeGeneration(vector<Individual *> *offspring) {
-    finalize();
-    individuals = *offspring;
-    delete offspring;
 }
 
 Individual * Population::bestIndividual() const {
     Individual *best_individual = individuals.at(0);
     for (int k = 1; k < individuals.size(); k++) {
-        if (individuals.at(k)->getRelevance().getFitness() > best_individual->getRelevance().getFitness()) {
+        if (individuals.at(k)->getFitness() > best_individual->getFitness())
             best_individual = individuals.at(k);
-        }
     }
     return best_individual;
+}
+
+Individual * Population::averageIndividual() const {
+    float average_cost = individuals.at(0)->getCost().getCost();
+    float average_fitness = individuals.at(0)->getFitness().getFitness();
+    for (int k = 1; k < individuals.size(); k++) {
+        average_cost += individuals.at(k)->getCost().getCost();
+        average_fitness += individuals.at(k)->getFitness().getFitness();
+    }
+    Individual *average_individual = individuals.at(0)->clone();
+    average_individual->getCost().setCost(average_cost / individuals.size());
+    average_individual->getFitness().setFitness(average_fitness / individuals.size());
+    return average_individual;
 }
 
 Individual * Population::worstIndividual() const {
     Individual *worst_individual = individuals.at(0);
     for (int k = 1; k < individuals.size(); k++) {
-        if (individuals.at(k)->getRelevance().getFitness() < worst_individual->getRelevance().getFitness()) {
+        if (individuals.at(k)->getFitness() < worst_individual->getFitness())
             worst_individual = individuals.at(k);
-        }
     }
     return worst_individual;
 }
 
-vector<Individual *> Population::getIndividuals() const {
+std::vector<Individual *> Population::getIndividuals() const {
     return individuals;
+}
+
+void Population::setIndividuals(std::vector<Individual *> individuals) {
+    this->individuals = individuals;
 }
