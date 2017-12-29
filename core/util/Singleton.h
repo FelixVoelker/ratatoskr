@@ -23,4 +23,4 @@ public:
 };
 
 
-#endif // RATATOSKR_SINGLETON_H
+#endif //RATATOSKR_SINGLETON_H

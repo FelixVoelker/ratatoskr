@@ -5,7 +5,7 @@
 #include <thread>
 #include "../util/Singleton.h"
 #include "BreedingOperator.h"
-#include "../util/Randomizer.h"
+#include "../util/Thread.h"
 
 /**
  * TODO: Comments
@@ -22,7 +22,7 @@ private:
 
     const unsigned int varythreads;
     vector<thread>     *threads;
-    vector<Randomizer> *random;
+    vector<Thread> *random;
 
     BreedingOperator *variation_pipeline;
 

@@ -5,7 +5,7 @@
 #include <random>
 #include "../../../core/initialization/Builder.h"
 #include "NDGASession.h"
-#include "../../../core/util/Randomizer.h"
+#include "../../../core/util/Thread.h"
 
 /**
  * TODO: Comments
@@ -19,7 +19,7 @@
 class RandomBitVectorBuilder : public Builder {
 
 private:
-    Randomizer *random;
+    Thread *random;
 
     /**
      * Samples each gene of the chromosome from a uniform distribution over {0,1}.

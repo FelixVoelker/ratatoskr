@@ -8,6 +8,7 @@
 #include "wrapper/core/ProblemWrapper.h"
 #include "wrapper/core/SessionWrapper.h"
 #include "../../core/representation/Population.h"
+#include "../../core/util/Thread.h"
 
 
 using namespace boost::python;
@@ -62,6 +63,16 @@ BOOST_PYTHON_MODULE(core) {
             .def("bestIndividual", &Population::bestIndividual, return_internal_reference<>())
             .def("averageIndividual", &Population::averageIndividual, return_internal_reference<>())
             .def("worstIndividual", &Population::worstIndividual, return_internal_reference<>());
+
+    class_<Thread>("Thread", init<Session &, unsigned int, unsigned int>())
+            .def_readonly("random", &Thread::random)
+            .add_property("chunk_onset", &Thread::getChunkOnset)
+            .add_property("chunk_offset", &Thread::getChunkOffset);
+
+    class_<Thread::Random>("Random")
+            .def("sample", &Thread::Random::sample)
+            .def("sampleIntFromUniformDistribution", &Thread::Random::sampleIntFromUniformDistribution)
+            .def("sampleIntFromDiscreteDistribution", &Thread::Random::sampleIntFromDiscreteDistribution);
 
     class_<SessionWrapper, boost::noncopyable>("Session", init<boost::shared_ptr<ProblemWrapper>>())
             .add_property("epochs", &SessionWrapper::getEpochs, &SessionWrapper::setEpochs)

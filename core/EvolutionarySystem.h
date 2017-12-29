@@ -3,7 +3,7 @@
 
 #include "representation/Population.h"
 #include "evaluation/Evaluator.h"
-#include "util/Randomizer.h"
+#include "util/Thread.h"
 #include "variation/Breeder.h"
 #include "statistics/Statistics.h"
 #include "experience/Replayer.h"

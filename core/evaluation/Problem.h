@@ -2,8 +2,6 @@
 #define RATATOSKR_PROBLEM_H
 
 
-#include "../util/Clonable.h"
-
 class Individual;
 
 /**
@@ -18,7 +16,7 @@ class Individual;
  * @version 0.0.2
  * @since   25.10.2017
  */
-class Problem : public Clonable {
+class Problem {
 
 protected:
     // Parameters

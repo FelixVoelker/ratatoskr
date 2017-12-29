@@ -2,11 +2,11 @@
 
 #include "RandomBitVectorBuilder.h"
 #include "BitVectorIndividual.h"
-#include "../../../core/util/Randomizer.h"
+#include "../../../core/util/Thread.h"
 
 
 RandomBitVectorBuilder::RandomBitVectorBuilder(const NDGASession &session) : Builder(session) {
-    random = new Randomizer();
+    random = new Thread();
 }
 
 RandomBitVectorBuilder::~RandomBitVectorBuilder() {

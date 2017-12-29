@@ -6,7 +6,7 @@ Breeder::Breeder(const Session &session)
           varythreads(session.getVarythreads()) {
     variation_pipeline = session.getPipeline();
     threads = new vector<thread>(varythreads);
-    random = new vector<Randomizer>(varythreads);
+    random = new vector<Thread>(varythreads);
 }
 
 Breeder::~Breeder() {

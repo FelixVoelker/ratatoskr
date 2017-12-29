@@ -21,10 +21,9 @@ set(CORE_SOURCES
         core/representation/Individual.cpp core/representation/Individual.h
         core/representation/Population.cpp core/representation/Population.h
 #        core/statistics/Statistics.cpp core/statistics/Statistics.h
-        core/util/Clonable.h
         core/util/Prototype.h
-#        core/util/Randomizer.cpp core/util/Randomizer.h
         core/util/Singleton.h
+        core/util/Thread.cpp core/util/Thread.h
 #        core/variation/Breeder.cpp core/variation/Breeder.h
 #        core/variation/BreedingOperator.cpp core/variation/BreedingOperator.h
 #        core/variation/SelectionOperator.cpp core/variation/SelectionOperator.h

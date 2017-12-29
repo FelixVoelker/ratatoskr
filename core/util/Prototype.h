@@ -3,7 +3,6 @@
 
 
 #include "Singleton.h"
-#include "Clonable.h"
 
 /**
  * Represents the basic interface for all components that are defined as prototypes in a session. The evolutionary
@@ -11,15 +10,20 @@
  *
  * @author  Felix Voelker
  * @version 0.0.2
- * @since   11.10.2017
+ * @since   28.12.2017
  */
-class Prototype : public Singleton, public Clonable {
-
-protected:
-    Prototype(const Prototype &obj) = default;
+class Prototype : public Singleton {
 
 public:
     explicit Prototype(const Session &session) : Singleton(session) {};
+
+    /**
+     * Returns a copy of the calling object.
+     */
+    virtual Prototype * clone() const = 0;
+
+protected:
+    Prototype(const Prototype &obj) = default;
 
 };
 

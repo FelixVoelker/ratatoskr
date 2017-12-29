@@ -1,5 +1,5 @@
-#ifndef NDEC_VARIATIONSOURCE_H
-#define NDEC_VARIATIONSOURCE_H
+#ifndef RATATOSKR_VARIATIONSOURCE_H
+#define RATATOSKR_VARIATIONSOURCE_H
 
 
 #include <vector>
@@ -7,36 +7,35 @@
 #include <stdexcept>
 #include "../util/Singleton.h"
 #include "../representation/Population.h"
-#include "../util/Randomizer.h"
 
 /**
- * TODO: Comments
  * The blueprint class for all variation sources that form the basic elements of variation pipelines in NDEC.
  * Each source defines a particular genetic operator and selects its Genetic Operation Parameters (GOPs) randomly.
  * Therefore, its assembling variation pipeline builds delivers the components for a variation control of
  * the evolutionary system.
  *
  * @author  Felix Voelker
- * @version 0.1
- * @since   5.8.2017
+ * @version 0.0.2
+ * @since   29.12.2017
  */
 class VariationSource : public Singleton {
 
-private:
+public:
+    explicit VariationSource(const Session &session, std::vector<VariationSource *> &source);
+    ~VariationSource();
+
     /**
-     * An exception that is thrown if a variation source is not initialized correctly.
+     * Creates offspring individuals by varying the individuals of the current population recursively, i.e.
+     * the source's genetic operation is performed with individuals from the previous layer of
+     * the variation pipeline.
+     * @param pop Current state of the evolutionary system's population.
+     * @return
      */
-    class InitializationException : public runtime_error {
-
-    public:
-        InitializationException(unsigned long sources, unsigned long expected);
-
-    };
+    std::vector<Individual *> vary(std::vector<Individual *> &parents, unsigned int epoch) const;
 
 protected:
-    vector<VariationSource *> sources;
+    std::vector<VariationSource *> sources;
 
-protected:
     /**
      * Specifies the number of previous sources that the variation source expects as input.
      */
@@ -49,28 +48,20 @@ protected:
      * @param parents Parent individuals for the operation.
      * @return Offspring individuals.
      */
-    virtual vector<Individual *> perform(vector<Individual *> &parents, unsigned int epoch, Randomizer &random) const = 0;
+    virtual std::vector<Individual *> perform(std::vector<Individual *> &parents, unsigned int epoch) const = 0;
 
-public:
-    explicit VariationSource(const Session &session);
-    virtual ~VariationSource();
-
+private:
     /**
-     * Connects this variation source with the sources of the previous layer.
-     * @param sources
+     * An exception that is thrown if a variation source is not initialized correctly.
      */
-    virtual void connect(vector<VariationSource *> &sources);
+    class InitializationException : public std::runtime_error {
 
-    /**
-     * Creates offspring individuals by varying the individuals of the current population recursively, i.e.
-     * the source's genetic operation is performed with individuals from the previous layer of
-     * the variation pipeline.
-     * @param pop Current state of the evolutionary system's population.
-     * @return
-     */
-    vector<Individual *> vary(const vector<Individual *> &parents, unsigned int epoch, Randomizer &random) const;
+    public:
+        InitializationException(unsigned long sources, unsigned long expected);
+
+    };
 
 };
 
 
-#endif //NDEC_VARIATIONSOURCE_H
+#endif //RATATOSKR_VARIATIONSOURCE_H

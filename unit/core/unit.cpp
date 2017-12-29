@@ -6,6 +6,7 @@
 #include "util/SimpleProblem.h"
 #include "util/SimpleSession.h"
 #include "../../core/representation/Population.h"
+#include "../../core/util/Thread.h"
 
 /**
  * Unit tests for the core functionality of an evolutionary system.
@@ -17,6 +18,7 @@
 TEST_CASE("Core", "[core]") {
     auto problem = new SimpleProblem(1);
     auto session = new SimpleSession(*problem);
+
     SECTION("Cost") {
         auto *c1 = new Cost(*session);
         c1->setCost(2);
@@ -48,6 +50,7 @@ TEST_CASE("Core", "[core]") {
         delete(c2);
         delete(c3);
     }
+
     SECTION("Fitness") {
         auto *f1 = new Fitness(*session);
         f1->setFitness(2);
@@ -79,6 +82,7 @@ TEST_CASE("Core", "[core]") {
         delete(f2);
         delete(f3);
     }
+
     SECTION("Individual") {
         auto *i1 = session->getIndividual();
         i1->getFitness().setFitness(2.5);
@@ -98,6 +102,7 @@ TEST_CASE("Core", "[core]") {
             delete(ic);
         }
     }
+
     SECTION("Builder") {
         auto *builder = session->getBuilder();
         auto *ind = builder->build();
@@ -108,6 +113,7 @@ TEST_CASE("Core", "[core]") {
 
         delete(ind);
     }
+
     SECTION("Population") {
         session->getProblem().setPopsize(3);
         auto *pop = new Population(*session);
@@ -151,6 +157,48 @@ TEST_CASE("Core", "[core]") {
         }
 
         delete pop;
+    }
+
+    SECTION("Thread") {
+        auto t = new Thread(0, 3);
+
+        SECTION("Checking sampling from uniform distribution...") {
+            std::vector<unsigned int> counts = std::vector<unsigned int>(3);
+            counts.at(0) = 0;
+            counts.at(1) = 0;
+            counts.at(2) = 0;
+
+            for (unsigned int k = 1; k <= 1000; k++) {
+                counts.at(t->random.sampleIntFromUniformDistribution(3)) += 1;
+            }
+
+            unsigned int tolerance = 100;
+            REQUIRE(counts.at(0) - tolerance <= counts.at(1));
+            REQUIRE(counts.at(1) <= counts.at(0) + tolerance);
+            REQUIRE(counts.at(2) - tolerance <= counts.at(1));
+            REQUIRE(counts.at(1) <= counts.at(2) + tolerance);
+        }
+
+        SECTION("Checking sampling from discrete distribution...") {
+            std::vector<float> weights = std::vector<float>(3);
+            weights.at(0) = 10;
+            weights.at(1) = 5;
+            weights.at(2) = 1;
+
+            std::vector<unsigned int> counts = std::vector<unsigned int>(3);
+            counts.at(0) = 0;
+            counts.at(1) = 0;
+            counts.at(2) = 0;
+
+            for (unsigned int k = 1; k <= 1000; k++) {
+                counts.at(t->random.sampleIntFromDiscreteDistribution(weights)) += 1;
+            }
+
+            REQUIRE(counts.at(0) > counts.at(1));
+            REQUIRE(counts.at(1) > counts.at(2));
+        }
+
+        delete(t);
     }
     /*SECTION("Problem") {
         auto task = new SimpleProblem(1);
