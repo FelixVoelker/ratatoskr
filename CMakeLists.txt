@@ -27,7 +27,7 @@ set(CORE_SOURCES
 #        core/variation/Breeder.cpp core/variation/Breeder.h
 #        core/variation/BreedingOperator.cpp core/variation/BreedingOperator.h
 #        core/variation/SelectionOperator.cpp core/variation/SelectionOperator.h
-#        core/variation/VariationSource.cpp core/variation/VariationSource.h
+        core/variation/VariationSource.cpp core/variation/VariationSource.h
 #        core/EvolutionarySystem.cpp core/EvolutionarySystem.h
         core/Session.cpp core/Session.h
         )
@@ -58,6 +58,7 @@ set(PYTHON_API_CORE
         python/ext/wrapper/core/IndividualWrapper.cpp python/ext/wrapper/core/IndividualWrapper.h
         python/ext/wrapper/core/ProblemWrapper.cpp python/ext/wrapper/core/ProblemWrapper.h
         python/ext/wrapper/core/SessionWrapper.cpp python/ext/wrapper/core/SessionWrapper.h
+        python/ext/wrapper/core/VariationSourceWrapper.cpp python/ext/wrapper/core/VariationSourceWrapper.h
         python/ext/core_ext.cpp)
 
 set(PYTHON_API_NDGA
@@ -84,7 +85,7 @@ set(UNIT_SOURCES
         unit/core/util/SimpleIndividual.cpp unit/core/util/SimpleIndividual.h
         unit/core/util/SimpleProblem.cpp unit/core/util/SimpleProblem.h
         unit/core/util/SimpleSession.cpp unit/core/util/SimpleSession.h
-#        unit/core/util/TestVariationSource.cpp unit/core/util/TestVariationSource.h
+        unit/core/util/SimpleVariationSource.cpp unit/core/util/SimpleVariationSource.h
         unit/core/unit.cpp
 #        unit/common.cpp
 #        unit/ndga.cpp

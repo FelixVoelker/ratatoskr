@@ -26,7 +26,7 @@ public:
      * Computes the relevance of an individual according to the given fraction, i.e. the alignment factor
      * between its fitness and cost.
      * @param fraction Decimal number within the interval [0,1] with 0 being fitness only and 1 being cost only.
-     * Out of scope numbers are projected on the boundary of the interval.
+     *                 Out of scope numbers are projected on the boundary of the interval.
      */
     float relevance(float fraction);
 

@@ -3,60 +3,76 @@
 
 
 #include <vector>
-#include <random>
 #include <stdexcept>
 #include "../util/Singleton.h"
 #include "../representation/Population.h"
+#include "../util/Thread.h"
 
 /**
- * The blueprint class for all variation sources that form the basic elements of variation pipelines in NDEC.
- * Each source defines a particular genetic operator and selects its Genetic Operation Parameters (GOPs) randomly.
- * Therefore, its assembling variation pipeline builds delivers the components for a variation control of
- * the evolutionary system.
+ * The abstract base class for all variation sources that form the nodes of a variation tree, i.e. a structure that
+ * breeds offspring according to the genetic operations in a Neuro-Dynamic Evolutionary Algorithm (NDEA) and therefore
+ * contributes to the assembly of variation controls for the evolutionary system. Each source defines a particular
+ * genetic operation and selects its parameters randomly, needs however to be setup before it can be used.
  *
  * @author  Felix Voelker
  * @version 0.0.2
- * @since   29.12.2017
+ * @since   30.12.2017
  */
 class VariationSource : public Singleton {
 
 public:
-    explicit VariationSource(const Session &session, std::vector<VariationSource *> &source);
+    explicit VariationSource(const Session &session);
     ~VariationSource();
 
     /**
-     * Creates offspring individuals by varying the individuals of the current population recursively, i.e.
-     * the source's genetic operation is performed with individuals from the previous layer of
-     * the variation pipeline.
-     * @param pop Current state of the evolutionary system's population.
-     * @return
+     * Sets up the variation source as the parent of the given child sources, i.e. it builds a variation tree.
+     * Accordingly, calling this method is a mandatory step before the source can be used to breed offsprings.
+     * @param  sources A list of child sources.
+     * @throws InitializationException if the number of children does not match the expected number of sources.
      */
-    std::vector<Individual *> vary(std::vector<Individual *> &parents, unsigned int epoch) const;
+    void setup(std::vector<VariationSource *> &sources);
+
+    /**
+     * Creates offspring individuals by varying the given parent individuals recursively, i.e. the variation source's
+     * genetic operation is performed on the offspring of the child sources.
+     * @param parents A list of parent individuals.
+     * @param epoch   Current epoch of the evolutionary run.
+     * @param thread  The breeding thread.
+     * @throws InitializationException if setup has not been called.
+     */
+    std::vector<Individual *> vary(std::vector<Individual *> &parents, unsigned int epoch, Thread &thread) const;
 
 protected:
     std::vector<VariationSource *> sources;
 
     /**
-     * Specifies the number of previous sources that the variation source expects as input.
+     * Specifies the expected number of the variation source's children.
      */
     virtual unsigned long expectedSources() const = 0;
 
     /**
-     * Performs the genetic operation that is associated with this source. This method is to differentiate between
-     * breeding and selection operations. For internal use only.
-     * @param pop     Current state of the evolutionary system's population.
-     * @param parents Parent individuals for the operation.
-     * @return Offspring individuals.
+     * Performs the genetic operation that is associated with this variation source. This method is to differentiate
+     * between breeding and selection operations. For internal use only.
+     * @param parents A list of parent individuals.
+     * @param epoch   Current epoch of the evolutionary run.
+     * @param thread  The breeding thread.
      */
-    virtual std::vector<Individual *> perform(std::vector<Individual *> &parents, unsigned int epoch) const = 0;
+    virtual std::vector<Individual *> perform(std::vector<Individual *> &parents, unsigned int epoch, Thread &thread) const = 0;
 
 private:
+    bool initialized = false;
+
     /**
      * An exception that is thrown if a variation source is not initialized correctly.
+     *
+     * @author  FelixVoelker
+     * @version 0.0.2
+     * @since   30.12.2017
      */
     class InitializationException : public std::runtime_error {
 
     public:
+        InitializationException();
         InitializationException(unsigned long sources, unsigned long expected);
 
     };

@@ -11,7 +11,7 @@ void BreedingOperator::connect(vector<VariationSource *> &sources) {
         if (sources.empty())
             throw ZeroSourcesException();
         else
-            VariationSource::connect(sources);
+            VariationSource::setup(sources);
     } catch (ZeroSourcesException &e) {
         cout << e.what() << endl;
         exit(1);

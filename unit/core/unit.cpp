@@ -7,6 +7,8 @@
 #include "util/SimpleSession.h"
 #include "../../core/representation/Population.h"
 #include "../../core/util/Thread.h"
+#include "util/SimpleVariationSource.h"
+#include "util/SimpleIndividual.h"
 
 /**
  * Unit tests for the core functionality of an evolutionary system.
@@ -200,6 +202,28 @@ TEST_CASE("Core", "[core]") {
 
         delete(t);
     }
+
+    SECTION("VariationSource") {
+        auto *sources = new std::vector<VariationSource *>(0);
+        auto *t = new Thread(0, 3);
+
+        auto *vs = new SimpleVariationSource(*session);
+        vs->setup(*sources);
+
+        SECTION("Checking workflow...") {
+            session->getProblem().setPopsize(1);
+            auto *pop = new Population(*session);
+            pop->populate();
+            std::vector<Individual *> parents = pop->getIndividuals();
+            std::vector<Individual *> offsprings = vs->vary(parents, 0, *t);
+            REQUIRE(dynamic_cast<SimpleIndividual *>(offsprings.at(0))->toString() == "bred");
+            delete(pop);
+        }
+
+        delete(vs);
+        delete(t);
+        delete(sources);
+    }
     /*SECTION("Problem") {
         auto task = new SimpleProblem(1);
         auto session = new SimpleSession(*task);
@@ -253,17 +277,7 @@ TEST_CASE("Core", "[core]") {
         delete task;
     }
 
-    SECTION("VariationSource") {
-        SECTION("Check initialization...") {
-            bool initialized = false;
-            vector<VariationSource *> sources(1);
-            sources.at(0) = new FitnessProportionateSelection(*session);
-            TestSource source = TestSource(*session);
-            source.connect(sources);
-            initialized = true;
-            REQUIRE(initialized);
-        }
-    }*/
+*/
 
     delete session;
     delete problem;

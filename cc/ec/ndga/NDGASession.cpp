@@ -22,7 +22,7 @@ NDGASession::NDGASession(const NDGAProblem &problem) : Session(problem) {
     selectors.at(1) = new FitnessProportionateSelection(*this);
     vector<VariationSource *> crossover(1);
     crossover.at(0) = new BitVectorCrossover(*this);
-    crossover.at(0)->connect(selectors);
+    crossover.at(0)->setup(selectors);
     pipeline = new BitVectorMutation(*this);
     pipeline->connect(crossover);
 }

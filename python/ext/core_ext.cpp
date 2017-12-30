@@ -7,6 +7,7 @@
 #include "wrapper/core/IndividualWrapper.h"
 #include "wrapper/core/ProblemWrapper.h"
 #include "wrapper/core/SessionWrapper.h"
+#include "wrapper/core/VariationSourceWrapper.h"
 #include "../../core/representation/Population.h"
 #include "../../core/util/Thread.h"
 
@@ -16,6 +17,12 @@ using namespace boost::python;
 BOOST_PYTHON_MODULE(core) {
     class_<std::vector<float>>("std::vector<float>")
             .def(vector_indexing_suite<std::vector<float>>());
+
+    class_<std::vector<Individual *>>("std::vector<Individual>")
+            .def(vector_indexing_suite<std::vector<Individual *>>());
+
+    class_<std::vector<VariationSource *>>("std::vector<VariationSource>")
+            .def(vector_indexing_suite<std::vector<VariationSource *>>());
 
     class_<ProblemWrapper, boost::noncopyable>("Problem", init<unsigned int>())
             .add_property("popsize", &ProblemWrapper::getPopsize, &ProblemWrapper::setPopsize)
@@ -64,7 +71,7 @@ BOOST_PYTHON_MODULE(core) {
             .def("averageIndividual", &Population::averageIndividual, return_internal_reference<>())
             .def("worstIndividual", &Population::worstIndividual, return_internal_reference<>());
 
-    class_<Thread>("Thread", init<Session &, unsigned int, unsigned int>())
+    class_<Thread>("Thread", init<unsigned int, unsigned int>())
             .def_readonly("random", &Thread::random)
             .add_property("chunk_onset", &Thread::getChunkOnset)
             .add_property("chunk_offset", &Thread::getChunkOffset);
@@ -73,6 +80,11 @@ BOOST_PYTHON_MODULE(core) {
             .def("sample", &Thread::Random::sample)
             .def("sampleIntFromUniformDistribution", &Thread::Random::sampleIntFromUniformDistribution)
             .def("sampleIntFromDiscreteDistribution", &Thread::Random::sampleIntFromDiscreteDistribution);
+
+    class_<VariationSourceWrapper, boost::noncopyable>("VariationSource", init<boost::shared_ptr<SessionWrapper>>())
+            .def("setup", &VariationSource::setup)
+            .def("expectedSources", pure_virtual(&VariationSourceWrapper::expectedSources))
+            .def("perform", pure_virtual(&VariationSourceWrapper::perform));
 
     class_<SessionWrapper, boost::noncopyable>("Session", init<boost::shared_ptr<ProblemWrapper>>())
             .add_property("epochs", &SessionWrapper::getEpochs, &SessionWrapper::setEpochs)
