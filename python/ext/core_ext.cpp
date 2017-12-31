@@ -6,6 +6,7 @@
 #include "wrapper/core/FitnessWrapper.h"
 #include "wrapper/core/IndividualWrapper.h"
 #include "wrapper/core/ProblemWrapper.h"
+#include "wrapper/core/SelectionOperatorWrapper.h"
 #include "wrapper/core/SessionWrapper.h"
 #include "wrapper/core/VariationSourceWrapper.h"
 #include "../../core/representation/Population.h"
@@ -82,9 +83,12 @@ BOOST_PYTHON_MODULE(core) {
             .def("sampleIntFromDiscreteDistribution", &Thread::Random::sampleIntFromDiscreteDistribution);
 
     class_<VariationSourceWrapper, boost::noncopyable>("VariationSource", init<boost::shared_ptr<SessionWrapper>>())
-            .def("setup", &VariationSource::setup)
+            .def("setup", &VariationSourceWrapper::setup)
             .def("expectedSources", pure_virtual(&VariationSourceWrapper::expectedSources))
             .def("perform", pure_virtual(&VariationSourceWrapper::perform));
+
+    class_<SelectionOperatorWrapper, boost::noncopyable>("SelectionOperator", init<boost::shared_ptr<SessionWrapper>>())
+            .def("select", pure_virtual(&SelectionOperatorWrapper::select), return_internal_reference<>());
 
     class_<SessionWrapper, boost::noncopyable>("Session", init<boost::shared_ptr<ProblemWrapper>>())
             .add_property("epochs", &SessionWrapper::getEpochs, &SessionWrapper::setEpochs)

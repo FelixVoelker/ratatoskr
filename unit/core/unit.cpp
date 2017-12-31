@@ -9,6 +9,7 @@
 #include "../../core/util/Thread.h"
 #include "util/SimpleVariationSource.h"
 #include "util/SimpleIndividual.h"
+#include "util/SimpleSelectionOperator.h"
 
 /**
  * Unit tests for the core functionality of an evolutionary system.
@@ -221,6 +222,32 @@ TEST_CASE("Core", "[core]") {
         }
 
         delete(vs);
+        delete(t);
+        delete(sources);
+    }
+
+    SECTION("SelectionOperator") {
+        auto *sources = new std::vector<VariationSource *>(0);
+        auto *t = new Thread(0, 3);
+
+        auto *so = new SimpleSelectionOperator(*session);
+        so->setup(*sources);
+
+        SECTION("Checking selection...") {
+            session->getProblem().setPopsize(3);
+            auto *pop = new Population(*session);
+            pop->populate();
+            std::vector<Individual *> parents = pop->getIndividuals();
+            dynamic_cast<SimpleIndividual *>(parents.at(0))->setLabel("first");
+            dynamic_cast<SimpleIndividual *>(parents.at(1))->setLabel("second");
+            dynamic_cast<SimpleIndividual *>(parents.at(2))->setLabel("third");
+            std::vector<Individual *> offsprings = so->vary(parents, 0, *t);
+            REQUIRE(offsprings.size() == 1);
+            REQUIRE(dynamic_cast<SimpleIndividual *>(offsprings.at(0))->toString() == "first");
+            delete pop;
+        }
+
+        delete(so);
         delete(t);
         delete(sources);
     }

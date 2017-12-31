@@ -12,7 +12,7 @@
  * The abstract base class for all variation sources that form the nodes of a variation tree, i.e. a structure that
  * breeds offspring according to the genetic operations in a Neuro-Dynamic Evolutionary Algorithm (NDEA) and therefore
  * contributes to the assembly of variation controls for the evolutionary system. Each source defines a particular
- * genetic operation and selects its parameters randomly, needs however to be setup before it can be used.
+ * genetic operation and selects its parameters randomly. However, it needs to be set up before it can be used.
  *
  * @author  Felix Voelker
  * @version 0.0.2
