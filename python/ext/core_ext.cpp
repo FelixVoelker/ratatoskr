@@ -1,5 +1,6 @@
 #include <boost/python.hpp>
 #include <boost/python/suite/indexing/vector_indexing_suite.hpp>
+#include "wrapper/core/BreedingOperatorWrapper.h"
 #include "wrapper/core/BuilderWrapper.h"
 #include "wrapper/core/CostWrapper.h"
 #include "wrapper/core/FeatureMapWrapper.h"
@@ -87,8 +88,12 @@ BOOST_PYTHON_MODULE(core) {
             .def("expectedSources", pure_virtual(&VariationSourceWrapper::expectedSources))
             .def("perform", pure_virtual(&VariationSourceWrapper::perform));
 
-    class_<SelectionOperatorWrapper, boost::noncopyable>("SelectionOperator", init<boost::shared_ptr<SessionWrapper>>())
+    class_<SelectionOperatorWrapper, bases<VariationSourceWrapper>, boost::noncopyable>("SelectionOperator", init<boost::shared_ptr<SessionWrapper>>())
             .def("select", pure_virtual(&SelectionOperatorWrapper::select), return_internal_reference<>());
+
+    class_<BreedingOperatorWrapper, bases<VariationSourceWrapper>, boost::noncopyable>("BreedingOperator", init<boost::shared_ptr<SessionWrapper>>())
+            .def("expectedSources", pure_virtual(&BreedingOperatorWrapper::expectedSources))
+            .def("breed", pure_virtual(&BreedingOperatorWrapper::breed), return_internal_reference<>());
 
     class_<SessionWrapper, boost::noncopyable>("Session", init<boost::shared_ptr<ProblemWrapper>>())
             .add_property("epochs", &SessionWrapper::getEpochs, &SessionWrapper::setEpochs)

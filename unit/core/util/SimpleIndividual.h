@@ -23,6 +23,8 @@ public:
     void setLabel(std::string label);
 
 protected:
+    SimpleIndividual(const SimpleIndividual &obj);
+
     std::string label = "";
 
 };

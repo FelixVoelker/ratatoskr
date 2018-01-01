@@ -30,7 +30,7 @@ public:
      * @param  sources A list of child sources.
      * @throws InitializationException if the number of children does not match the expected number of sources.
      */
-    void setup(std::vector<VariationSource *> &sources);
+    virtual void setup(std::vector<VariationSource *> &sources);
 
     /**
      * Creates offspring individuals by varying the given parent individuals recursively, i.e. the variation source's
@@ -59,9 +59,6 @@ protected:
      */
     virtual std::vector<Individual *> perform(std::vector<Individual *> &parents, unsigned int epoch, Thread &thread) const = 0;
 
-private:
-    bool initialized = false;
-
     /**
      * An exception that is thrown if a variation source is not initialized correctly.
      *
@@ -72,10 +69,12 @@ private:
     class InitializationException : public std::runtime_error {
 
     public:
-        InitializationException();
-        InitializationException(unsigned long sources, unsigned long expected);
+        explicit InitializationException(std::string error_message);
 
     };
+
+private:
+    bool initialized = false;
 
 };
 

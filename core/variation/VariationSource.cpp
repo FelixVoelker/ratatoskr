@@ -12,8 +12,12 @@ VariationSource::~VariationSource() {
 
 void VariationSource::setup(std::vector<VariationSource *> &sources) {
     try {
-        if (sources.size() != expectedSources())
-            throw InitializationException(sources.size(), expectedSources());
+        if (sources.size() != expectedSources()) {
+            std::string error_message = "Number of given sources does not match the expected number.";
+            error_message += " Actual: " + std::to_string(this->sources.size());
+            error_message += " Expected: " + std::to_string(expectedSources()) + ".";
+            throw InitializationException(error_message);
+        }
 
         this->sources = sources;
         initialized = true;
@@ -26,7 +30,7 @@ void VariationSource::setup(std::vector<VariationSource *> &sources) {
 std::vector<Individual *> VariationSource::vary(std::vector<Individual *> &parents, const unsigned int epoch, Thread &thread) const {
     try {
         if (!initialized)
-            throw InitializationException();
+            throw InitializationException("Variation Source has not been set up.");
 
         std::vector<Individual *> offsprings;
         for (auto source : sources) {
@@ -45,9 +49,5 @@ std::vector<Individual *> VariationSource::vary(std::vector<Individual *> &paren
     }
 }
 
-VariationSource::InitializationException::InitializationException()
-        : runtime_error("Variation Source has not been initialized.") {}
-
-VariationSource::InitializationException::InitializationException(unsigned long sources, unsigned long expected)
-        : runtime_error("Number of given sources does not match the expected number. Actual: " + std::to_string(sources)
-                        + ", Expected: " + std::to_string(expected) + ".") {}
+VariationSource::InitializationException::InitializationException(std::string error_message)
+        : runtime_error(error_message) {}

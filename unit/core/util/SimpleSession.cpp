@@ -12,7 +12,7 @@ SimpleSession::SimpleSession(Problem &problem) : Session(problem) {
     builder = new SimpleBuilder(*this);
 //    vector<VariationSource *> sources(1);
 //    sources.at(0) = new FitnessProportionateSelection(*this);
-//    pipeline = new TestBreedingOperator(*this);
+//    pipeline = new SimpleBreedingOperator(*this);
 //    pipeline->setup(sources);
 }
 

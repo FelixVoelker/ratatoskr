@@ -1,23 +1,23 @@
 #include <iostream>
 #include "BreedingOperator.h"
 
-BreedingOperator::ZeroSourcesException::ZeroSourcesException()
-        : runtime_error("BreedingOperator needs at least one source.") {}
+BreedingOperator::BreedingOperator(Session &session) : VariationSource(session) {}
 
-BreedingOperator::BreedingOperator(const Session &session) : VariationSource(session) {}
-
-void BreedingOperator::connect(vector<VariationSource *> &sources) {
+void BreedingOperator::setup(std::vector<VariationSource *> &sources) {
     try {
         if (sources.empty())
-            throw ZeroSourcesException();
+            throw InitializationException("Breeding operator has zero sources but needs at least one.");
         else
             VariationSource::setup(sources);
-    } catch (ZeroSourcesException &e) {
-        cout << e.what() << endl;
+    } catch (InitializationException &e) {
+        std::cout << e.what() << std::endl;
         exit(1);
     }
 }
 
-vector<Individual *> BreedingOperator::perform(vector<Individual *> &parents, unsigned int epoch, Randomizer &random) const {
-    return breed(parents, random);
+std::vector<Individual *> BreedingOperator::perform(std::vector<Individual *> &parents,
+                                                    unsigned int epoch,
+                                                    Thread &thread) const
+{
+    return breed(parents, thread);
 }

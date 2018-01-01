@@ -25,7 +25,7 @@ set(CORE_SOURCES
         core/util/Singleton.h
         core/util/Thread.cpp core/util/Thread.h
 #        core/variation/Breeder.cpp core/variation/Breeder.h
-#        core/variation/BreedingOperator.cpp core/variation/BreedingOperator.h
+        core/variation/BreedingOperator.cpp core/variation/BreedingOperator.h
         core/variation/SelectionOperator.cpp core/variation/SelectionOperator.h
         core/variation/VariationSource.cpp core/variation/VariationSource.h
 #        core/EvolutionarySystem.cpp core/EvolutionarySystem.h
@@ -51,6 +51,7 @@ add_executable(ratatoskr_cc_debug cc/main.cpp)
 target_link_libraries(ratatoskr_cc_debug ndec_cc)
 
 set(PYTHON_API_CORE
+        python/ext/wrapper/core/BreedingOperatorWrapper.cpp python/ext/wrapper/core/BreedingOperatorWrapper.h
         python/ext/wrapper/core/BuilderWrapper.cpp python/ext/wrapper/core/BuilderWrapper.h
         python/ext/wrapper/core/CostWrapper.cpp python/ext/wrapper/core/CostWrapper.h
         python/ext/wrapper/core/FeatureMapWrapper.cpp python/ext/wrapper/core/FeatureMapWrapper.h
@@ -80,7 +81,7 @@ add_custom_target(ratatoskr_py)
 add_dependencies(ratatoskr_py core ndga)
 
 set(UNIT_SOURCES
-#        unit/core/util/TestBreedingOperator.cpp unit/core/util/TestBreedingOperator.h
+        unit/core/util/SimpleBreedingOperator.cpp unit/core/util/SimpleBreedingOperator.h
         unit/core/util/SimpleBuilder.cpp unit/core/util/SimpleBuilder.h
         unit/core/util/SimpleFeatureMap.cpp unit/core/util/SimpleFeatureMap.h
         unit/core/util/SimpleIndividual.cpp unit/core/util/SimpleIndividual.h

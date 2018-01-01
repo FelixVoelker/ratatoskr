@@ -10,6 +10,7 @@
 #include "util/SimpleVariationSource.h"
 #include "util/SimpleIndividual.h"
 #include "util/SimpleSelectionOperator.h"
+#include "util/SimpleBreedingOperator.h"
 
 /**
  * Unit tests for the core functionality of an evolutionary system.
@@ -46,12 +47,12 @@ TEST_CASE("Core", "[core]") {
             auto *cc = c1->clone();
             REQUIRE(cc != c1);
             REQUIRE(cc->getCost() == c1->getCost());
-            delete(cc);
+            delete cc;
         }
 
-        delete(c1);
-        delete(c2);
-        delete(c3);
+        delete c1;
+        delete c2;
+        delete c3;
     }
 
     SECTION("Fitness") {
@@ -78,12 +79,12 @@ TEST_CASE("Core", "[core]") {
             auto *fc = f1->clone();
             REQUIRE(fc != f1);
             REQUIRE(f1->getFitness() == fc->getFitness());
-            delete(fc);
+            delete fc;
         }
 
-        delete(f1);
-        delete(f2);
-        delete(f3);
+        delete f1;
+        delete f2;
+        delete f3;
     }
 
     SECTION("Individual") {
@@ -102,7 +103,7 @@ TEST_CASE("Core", "[core]") {
             REQUIRE(i1 != ic);
             REQUIRE(i1->getCost().getCost() == ic->getCost().getCost());
             REQUIRE(i1->getFitness().getFitness() == ic->getFitness().getFitness());
-            delete(ic);
+            delete ic;
         }
     }
 
@@ -114,7 +115,7 @@ TEST_CASE("Core", "[core]") {
             REQUIRE(ind->toString() == "passed");
         }
 
-        delete(ind);
+        delete ind;
     }
 
     SECTION("Population") {
@@ -201,16 +202,14 @@ TEST_CASE("Core", "[core]") {
             REQUIRE(counts.at(1) > counts.at(2));
         }
 
-        delete(t);
+        delete t;
     }
 
     SECTION("VariationSource") {
-        auto *sources = new std::vector<VariationSource *>(0);
-        auto *t = new Thread(0, 3);
-
         auto *vs = new SimpleVariationSource(*session);
-        vs->setup(*sources);
+        vs->setup(*new std::vector<VariationSource *>(0));
 
+        auto *t = new Thread(0, 3);
         SECTION("Checking workflow...") {
             session->getProblem().setPopsize(1);
             auto *pop = new Population(*session);
@@ -218,21 +217,18 @@ TEST_CASE("Core", "[core]") {
             std::vector<Individual *> parents = pop->getIndividuals();
             std::vector<Individual *> offsprings = vs->vary(parents, 0, *t);
             REQUIRE(dynamic_cast<SimpleIndividual *>(offsprings.at(0))->toString() == "bred");
-            delete(pop);
+            delete pop;
         }
 
-        delete(vs);
-        delete(t);
-        delete(sources);
+        delete vs;
+        delete t;
     }
 
     SECTION("SelectionOperator") {
-        auto *sources = new std::vector<VariationSource *>(0);
-        auto *t = new Thread(0, 3);
-
         auto *so = new SimpleSelectionOperator(*session);
-        so->setup(*sources);
+        so->setup(*new std::vector<VariationSource *>(0));
 
+        auto *t = new Thread(0, 3);
         SECTION("Checking selection...") {
             session->getProblem().setPopsize(3);
             auto *pop = new Population(*session);
@@ -247,9 +243,33 @@ TEST_CASE("Core", "[core]") {
             delete pop;
         }
 
-        delete(so);
-        delete(t);
-        delete(sources);
+        delete so;
+        delete t;
+    }
+
+    SECTION("BreedingOperator") {
+        auto *so = new SimpleSelectionOperator(*session);
+        so->setup(*new std::vector<VariationSource *>(0));
+        auto *bo = new SimpleBreedingOperator(*session);
+        bo->setup(*new std::vector<VariationSource *> = { so });
+
+        auto *t = new Thread(0, 3);
+        SECTION("Checking breeding...") {
+            session->getProblem().setPopsize(3);
+            auto *pop = new Population(*session);
+            pop->populate();
+            std::vector<Individual *> parents = pop->getIndividuals();
+            dynamic_cast<SimpleIndividual *>(parents.at(0))->setLabel("first");
+            dynamic_cast<SimpleIndividual *>(parents.at(1))->setLabel("second");
+            dynamic_cast<SimpleIndividual *>(parents.at(2))->setLabel("third");
+            std::vector<Individual *> offsprings = bo->vary(parents, 0, *t);
+            REQUIRE(offsprings.at(0) != parents.at(0));
+            REQUIRE(dynamic_cast<SimpleIndividual *>(offsprings.at(0))->toString() == "first");
+            delete pop;
+        }
+
+        delete bo;
+        delete t;
     }
     /*SECTION("Problem") {
         auto task = new SimpleProblem(1);

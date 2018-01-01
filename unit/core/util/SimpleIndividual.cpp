@@ -13,3 +13,7 @@ void SimpleIndividual::setLabel(std::string label) {
 SimpleIndividual * SimpleIndividual::clone() const {
     return new SimpleIndividual(*this);
 }
+
+SimpleIndividual::SimpleIndividual(const SimpleIndividual &obj) : Individual(obj) {
+    this->label = obj.label;
+}
