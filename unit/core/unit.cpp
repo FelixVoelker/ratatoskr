@@ -164,7 +164,7 @@ TEST_CASE("Core", "[core]") {
     }
 
     SECTION("Thread") {
-        auto t = new Thread(0, 3);
+        auto t = new Thread(0, 0, 3);
 
         SECTION("Checking sampling from uniform distribution...") {
             std::vector<unsigned int> counts = std::vector<unsigned int>(3);
@@ -209,7 +209,7 @@ TEST_CASE("Core", "[core]") {
         auto *vs = new SimpleVariationSource(*session);
         vs->setup(*new std::vector<VariationSource *>(0));
 
-        auto *t = new Thread(0, 3);
+        auto *t = new Thread(0, 0, 3);
         SECTION("Checking workflow...") {
             session->getProblem().setPopsize(1);
             auto *pop = new Population(*session);
@@ -228,7 +228,7 @@ TEST_CASE("Core", "[core]") {
         auto *so = new SimpleSelectionOperator(*session);
         so->setup(*new std::vector<VariationSource *>(0));
 
-        auto *t = new Thread(0, 3);
+        auto *t = new Thread(0, 0, 3);
         SECTION("Checking selection...") {
             session->getProblem().setPopsize(3);
             auto *pop = new Population(*session);
@@ -253,7 +253,7 @@ TEST_CASE("Core", "[core]") {
         auto *bo = new SimpleBreedingOperator(*session);
         bo->setup(*new std::vector<VariationSource *> = { so });
 
-        auto *t = new Thread(0, 3);
+        auto *t = new Thread(0, 0, 3);
         SECTION("Checking breeding...") {
             session->getProblem().setPopsize(3);
             auto *pop = new Population(*session);
