@@ -15,9 +15,6 @@ void BreedingOperator::setup(std::vector<VariationSource *> &sources) {
     }
 }
 
-std::vector<Individual *> BreedingOperator::perform(std::vector<Individual *> &parents,
-                                                    unsigned int epoch,
-                                                    Thread &thread) const
-{
+std::vector<Individual *> BreedingOperator::perform(std::vector<Individual *> &parents, Thread &thread) const {
     return breed(parents, thread);
 }

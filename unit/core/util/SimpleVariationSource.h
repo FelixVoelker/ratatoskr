@@ -19,7 +19,7 @@ public:
 protected:
     unsigned long expectedSources() const override;
 
-    std::vector<Individual *> perform(std::vector<Individual *> &parents, unsigned int epoch, Thread &thread) const override;
+    std::vector<Individual *> perform(std::vector<Individual *> &parents, Thread &thread) const override;
 };
 
 

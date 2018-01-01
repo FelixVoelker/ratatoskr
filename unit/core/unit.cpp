@@ -215,7 +215,7 @@ TEST_CASE("Core", "[core]") {
             auto *pop = new Population(*session);
             pop->populate();
             std::vector<Individual *> parents = pop->getIndividuals();
-            std::vector<Individual *> offsprings = vs->vary(parents, 0, *t);
+            std::vector<Individual *> offsprings = vs->vary(parents, *t);
             REQUIRE(dynamic_cast<SimpleIndividual *>(offsprings.at(0))->toString() == "bred");
             delete pop;
         }
@@ -237,7 +237,7 @@ TEST_CASE("Core", "[core]") {
             dynamic_cast<SimpleIndividual *>(parents.at(0))->setLabel("first");
             dynamic_cast<SimpleIndividual *>(parents.at(1))->setLabel("second");
             dynamic_cast<SimpleIndividual *>(parents.at(2))->setLabel("third");
-            std::vector<Individual *> offsprings = so->vary(parents, 0, *t);
+            std::vector<Individual *> offsprings = so->vary(parents, *t);
             REQUIRE(offsprings.size() == 1);
             REQUIRE(dynamic_cast<SimpleIndividual *>(offsprings.at(0))->toString() == "first");
             delete pop;
@@ -262,7 +262,7 @@ TEST_CASE("Core", "[core]") {
             dynamic_cast<SimpleIndividual *>(parents.at(0))->setLabel("first");
             dynamic_cast<SimpleIndividual *>(parents.at(1))->setLabel("second");
             dynamic_cast<SimpleIndividual *>(parents.at(2))->setLabel("third");
-            std::vector<Individual *> offsprings = bo->vary(parents, 0, *t);
+            std::vector<Individual *> offsprings = bo->vary(parents, *t);
             REQUIRE(offsprings.at(0) != parents.at(0));
             REQUIRE(dynamic_cast<SimpleIndividual *>(offsprings.at(0))->toString() == "first");
             delete pop;

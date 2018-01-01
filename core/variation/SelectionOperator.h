@@ -25,11 +25,11 @@ protected:
      * Selects a parent according to the operator's strategy.
      * @param parents A list of parent individuals.
      * @param epoch   Current epoch of the evolutionary run.
-     * @param thread  The selecting thread.
+     * @param thread  The variating thread.
      */
-    virtual Individual * select(std::vector<Individual *> &parents, unsigned int epoch, Thread &thread) const = 0;
+    virtual Individual * select(std::vector<Individual *> &parents, Thread &thread) const = 0;
 
-    std::vector<Individual *> perform(std::vector<Individual *> &parents, unsigned int epoch, Thread &thread) const override;
+    std::vector<Individual *> perform(std::vector<Individual *> &parents, Thread &thread) const override;
 
 };
 

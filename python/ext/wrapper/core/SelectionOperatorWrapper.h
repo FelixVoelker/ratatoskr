@@ -19,7 +19,7 @@ class SelectionOperatorWrapper : public SelectionOperator, public wrapper<Select
 public:
     explicit SelectionOperatorWrapper(boost::shared_ptr<Session> session);
 
-    Individual * select(std::vector<Individual *> &parents, unsigned int epoch, Thread &thread) const override;
+    Individual * select(std::vector<Individual *> &parents, Thread &thread) const override;
 };
 
 

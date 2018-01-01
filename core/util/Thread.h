@@ -47,12 +47,14 @@ public:
      * @param onset  Onset of the thread's corresponding chunk.
      * @param offset Offset of the thread's corresponding chunk.
      */
-    explicit Thread(unsigned int onset, unsigned int offset);
+    explicit Thread(unsigned int *epoch, unsigned int onset, unsigned int offset);
 
+    unsigned int & getEpoch() const;
     unsigned int getChunkOnset() const;
     unsigned int getChunkOffset() const;
 
 private:
+    unsigned int *epoch;
     unsigned int onset;
     unsigned int offset;
 

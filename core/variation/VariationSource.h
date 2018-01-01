@@ -37,10 +37,10 @@ public:
      * genetic operation is performed on the offspring of the child sources.
      * @param parents A list of parent individuals.
      * @param epoch   Current epoch of the evolutionary run.
-     * @param thread  The breeding thread.
+     * @param thread  The variating thread.
      * @throws InitializationException if setup has not been called.
      */
-    std::vector<Individual *> vary(std::vector<Individual *> &parents, unsigned int epoch, Thread &thread) const;
+    std::vector<Individual *> vary(std::vector<Individual *> &parents, Thread &thread) const;
 
 protected:
     std::vector<VariationSource *> sources;
@@ -55,9 +55,9 @@ protected:
      * between breeding and selection operations. For internal use only.
      * @param parents A list of parent individuals.
      * @param epoch   Current epoch of the evolutionary run.
-     * @param thread  The breeding thread.
+     * @param thread  The variating thread.
      */
-    virtual std::vector<Individual *> perform(std::vector<Individual *> &parents, unsigned int epoch, Thread &thread) const = 0;
+    virtual std::vector<Individual *> perform(std::vector<Individual *> &parents, Thread &thread) const = 0;
 
     /**
      * An exception that is thrown if a variation source is not initialized correctly.

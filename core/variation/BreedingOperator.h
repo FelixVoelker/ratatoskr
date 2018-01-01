@@ -25,11 +25,11 @@ protected:
     /**
      * Breeds new offsprings from given parent individuals according to the operator's strategy.
      * @param parents A list of parent individuals.
-     * @param thread  The breeding thread.
+     * @param thread  The variating thread.
      */
     virtual std::vector<Individual *> & breed(std::vector<Individual *> &parents, Thread &thread) const = 0;
 
-    std::vector<Individual *> perform(std::vector<Individual *> &parents, unsigned int epoch, Thread &thread) const override;
+    std::vector<Individual *> perform(std::vector<Individual *> &parents, Thread &thread) const override;
 
 };
 
