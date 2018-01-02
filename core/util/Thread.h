@@ -3,7 +3,6 @@
 
 
 #include <random>
-#include "Singleton.h"
 
 /**
  * Represents a thread that processes a specific chunk of the evolutionary system's population. It maintains all
@@ -47,16 +46,16 @@ public:
      * @param onset  Onset of the thread's corresponding chunk.
      * @param offset Offset of the thread's corresponding chunk.
      */
-    explicit Thread(unsigned int *epoch, unsigned int onset, unsigned int offset);
+    explicit Thread(unsigned int onset, unsigned int offset, unsigned int &epoch);
 
-    unsigned int & getEpoch() const;
     unsigned int getChunkOnset() const;
     unsigned int getChunkOffset() const;
+    unsigned int getEpoch() const;
 
 private:
-    unsigned int *epoch;
     unsigned int onset;
     unsigned int offset;
+    unsigned int &epoch;
 
 };
 

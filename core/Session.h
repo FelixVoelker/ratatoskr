@@ -9,8 +9,8 @@ class Builder;
 class Fitness;
 class Cost;
 class FeatureMap;
-//class Individual;
-//class BreedingOperator;
+class Individual;
+class BreedingOperator;
 
 /**
  * TODO: Comments

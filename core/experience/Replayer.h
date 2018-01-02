@@ -2,7 +2,7 @@
 #define NDEC_REPLAYER_H
 
 
-#include "../evaluation/EvolutionaryNetwork.h"
+#include "EvolutionaryNetwork.h"
 
 /**
  * TODO: Comments

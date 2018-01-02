@@ -11,8 +11,8 @@ include_directories(${BOOST_INCLUDEDIR} )
 
 set(CORE_SOURCES
 #        core/evaluation/Evaluator.cpp core/evaluation/Evaluator.h
-#        core/evaluation/EvolutionaryNetwork.cpp core/evaluation/EvolutionaryNetwork.h
         core/evaluation/Problem.cpp core/evaluation/Problem.h
+#        core/evaluation/EvolutionaryNetwork.cpp core/evaluation/EvolutionaryNetwork.h
 #        core/experience/Replayer.cpp core/experience/Replayer.h
         core/initialization/Builder.cpp core/initialization/Builder.h
         core/representation/Cost.cpp core/representation/Cost.h

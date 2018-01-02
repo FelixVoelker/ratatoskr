@@ -1,7 +1,7 @@
 #include <typeinfo>
 #include <iostream>
 #include "NDGASession.h"
-#include "../../../core/evaluation/EvolutionaryNetwork.h"
+#include "../../../core/experience/EvolutionaryNetwork.h"
 #include "FeatureVector.h"
 #include "BitVectorIndividual.h"
 #include "RandomBitVectorBuilder.h"

@@ -3,7 +3,7 @@
 
 
 #include <thread>
-#include "EvolutionaryNetwork.h"
+#include "../experience/EvolutionaryNetwork.h"
 
 /**
  * Represents the evaluator of the evolutionary system that drives the evaluation step of a neuro-dynamic evolutionary

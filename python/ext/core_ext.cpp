@@ -26,11 +26,6 @@ BOOST_PYTHON_MODULE(core) {
     class_<std::vector<VariationSource *>>("std::vector<VariationSource>")
             .def(vector_indexing_suite<std::vector<VariationSource *>>());
 
-    class_<ProblemWrapper, boost::noncopyable>("Problem", init<unsigned int>())
-            .add_property("popsize", &ProblemWrapper::getPopsize, &ProblemWrapper::setPopsize)
-            .def("__copy__", pure_virtual(&ProblemWrapper::clone), return_value_policy<manage_new_object>());
-//            .def("eval", pure_virtual(&Problem::eval));
-
     class_<BuilderWrapper, boost::noncopyable>("Builder", init<boost::shared_ptr<SessionWrapper>>())
             .def("initialize", pure_virtual(&BuilderWrapper::initialize));
 
@@ -73,10 +68,11 @@ BOOST_PYTHON_MODULE(core) {
             .def("averageIndividual", &Population::averageIndividual, return_internal_reference<>())
             .def("worstIndividual", &Population::worstIndividual, return_internal_reference<>());
 
-    class_<Thread>("Thread", init<unsigned int, unsigned int>())
+    class_<Thread>("Thread", init<unsigned int, unsigned int, unsigned int&>())
             .def_readonly("random", &Thread::random)
             .add_property("chunk_onset", &Thread::getChunkOnset)
-            .add_property("chunk_offset", &Thread::getChunkOffset);
+            .add_property("chunk_offset", &Thread::getChunkOffset)
+            .add_property("epoch", &Thread::getEpoch);
 
     class_<Thread::Random>("Random")
             .def("sample", &Thread::Random::sample)
@@ -94,6 +90,10 @@ BOOST_PYTHON_MODULE(core) {
     class_<BreedingOperatorWrapper, bases<VariationSourceWrapper>, boost::noncopyable>("BreedingOperator", init<boost::shared_ptr<SessionWrapper>>())
             .def("expectedSources", pure_virtual(&BreedingOperatorWrapper::expectedSources))
             .def("breed", pure_virtual(&BreedingOperatorWrapper::breed), return_internal_reference<>());
+
+    class_<ProblemWrapper, boost::noncopyable>("Problem", init<unsigned int>())
+            .add_property("popsize", &ProblemWrapper::getPopsize, &ProblemWrapper::setPopsize)
+            .def("eval", pure_virtual(&ProblemWrapper::eval));
 
     class_<SessionWrapper, boost::noncopyable>("Session", init<boost::shared_ptr<ProblemWrapper>>())
             .add_property("epochs", &SessionWrapper::getEpochs, &SessionWrapper::setEpochs)

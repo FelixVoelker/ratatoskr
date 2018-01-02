@@ -1,13 +1,8 @@
 #include "Thread.h"
 
-Thread::Thread(unsigned int *epoch, unsigned int onset, unsigned int offset) {
-    this->epoch = epoch;
+Thread::Thread(unsigned int onset, unsigned int offset, unsigned int &epoch) : epoch(epoch) {
     this->onset = onset;
     this->offset = offset;
-}
-
-unsigned int & Thread::getEpoch() const {
-    return *epoch;
 }
 
 unsigned int Thread::getChunkOnset() const {
@@ -16,6 +11,10 @@ unsigned int Thread::getChunkOnset() const {
 
 unsigned int Thread::getChunkOffset() const {
     return offset;
+}
+
+unsigned int Thread::getEpoch() const {
+    return epoch;
 }
 
 double Thread::Random::sample() {

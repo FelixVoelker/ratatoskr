@@ -6,7 +6,6 @@
 #include "util/SimpleProblem.h"
 #include "util/SimpleSession.h"
 #include "../../core/representation/Population.h"
-#include "../../core/util/Thread.h"
 #include "util/SimpleVariationSource.h"
 #include "util/SimpleIndividual.h"
 #include "util/SimpleSelectionOperator.h"
@@ -163,8 +162,9 @@ TEST_CASE("Core", "[core]") {
         delete pop;
     }
 
+    unsigned int epoch = 0;
     SECTION("Thread") {
-        auto t = new Thread(0, 0, 3);
+        auto t = new Thread(0, 3, epoch);
 
         SECTION("Checking sampling from uniform distribution...") {
             std::vector<unsigned int> counts = std::vector<unsigned int>(3);
@@ -209,7 +209,7 @@ TEST_CASE("Core", "[core]") {
         auto *vs = new SimpleVariationSource(*session);
         vs->setup(*new std::vector<VariationSource *>(0));
 
-        auto *t = new Thread(0, 0, 3);
+        auto *t = new Thread(0, 3, epoch);
         SECTION("Checking workflow...") {
             session->getProblem().setPopsize(1);
             auto *pop = new Population(*session);
@@ -228,7 +228,7 @@ TEST_CASE("Core", "[core]") {
         auto *so = new SimpleSelectionOperator(*session);
         so->setup(*new std::vector<VariationSource *>(0));
 
-        auto *t = new Thread(0, 0, 3);
+        auto *t = new Thread(0, 3, epoch);
         SECTION("Checking selection...") {
             session->getProblem().setPopsize(3);
             auto *pop = new Population(*session);
@@ -252,8 +252,8 @@ TEST_CASE("Core", "[core]") {
         so->setup(*new std::vector<VariationSource *>(0));
         auto *bo = new SimpleBreedingOperator(*session);
         bo->setup(*new std::vector<VariationSource *> = { so });
+        auto *t = new Thread(0, 3, epoch);
 
-        auto *t = new Thread(0, 0, 3);
         SECTION("Checking breeding...") {
             session->getProblem().setPopsize(3);
             auto *pop = new Population(*session);
@@ -271,22 +271,20 @@ TEST_CASE("Core", "[core]") {
         delete bo;
         delete t;
     }
-    /*SECTION("Problem") {
-        auto task = new SimpleProblem(1);
-        auto session = new SimpleSession(*task);
-        auto pop = new Population(*session);
+
+    SECTION("Problem") {
+        auto *individual = session->getIndividual()->clone();
+        auto *t = new Thread(0, 1, epoch);
+
         SECTION("Evaluating an individual...") {
-            pop->initialize();
-
-            auto evaluator = new Evaluator(*session);
-            evaluator->evaluatePopulation(*pop);
-
-            REQUIRE(pop->getIndividuals().at(0)->getRelevance().getFitness().fitness() == 1);
+            problem->eval(*individual, *t);
+            REQUIRE(individual->getFitness().getFitness() == 1);
         }
 
-        delete session;
-        delete task;
+        delete t;
     }
+
+    /*
     SECTION("Evaluator") {
         auto task = new SimpleProblem(10);
         auto session = new SimpleSession(*task);

@@ -1,9 +1,5 @@
 #include "Problem.h"
 
-Problem::Problem(const Problem &obj) {
-    this->popsize = obj.popsize;
-}
-
 Problem::Problem(const unsigned int popsize) {
     this->popsize = popsize;
 }
@@ -14,4 +10,8 @@ unsigned int Problem::getPopsize() const {
 
 void Problem::setPopsize(const unsigned int popsize) {
     this->popsize = popsize;
+}
+
+Problem::Problem(const Problem &obj) {
+    this->popsize = obj.popsize;
 }

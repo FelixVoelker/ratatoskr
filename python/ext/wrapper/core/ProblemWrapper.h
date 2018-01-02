@@ -3,25 +3,24 @@
 
 
 #include <boost/python.hpp>
+#include "../../../../core/representation/Individual.h"
 #include "../../../../core/evaluation/Problem.h"
 
 using namespace boost::python;
 
 /**
- * Represents the Boost.Python wrapper that exposes task objects to the python api.
+ * Boost.Python wrapper to expose all virtual core functionality of Problem.
  *
  * @author  Felix Voelker
  * @version 0.0.2
- * @since   15.10.2017
+ * @since   2.1.2018
  */
 class ProblemWrapper : public Problem, public wrapper<Problem> {
 
 public:
     explicit ProblemWrapper(unsigned int popsize);
 
-//    void eval(Individual &individual) const override;
-
-    ProblemWrapper * clone() const override;
+    void eval(Individual &individual, Thread &thread) const override;
 
 };
 
