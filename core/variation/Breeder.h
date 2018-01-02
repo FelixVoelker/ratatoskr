@@ -1,60 +1,48 @@
-#ifndef NDEC_BREEDER_H
-#define NDEC_BREEDER_H
+#ifndef RATATOSKR_BREEDER_H
+#define RATATOSKR_BREEDER_H
 
 
-#include <thread>
-#include "../util/Singleton.h"
 #include "BreedingOperator.h"
-#include "../util/Thread.h"
 
 /**
- * TODO: Comments
- * Represents the breeder of the evolutionary system.
+ * The core module that drives the variation phase of an Neuro-Dynamic Evolutionary Algorithm (NDEA). This variation is
+ * performed on the entire population that is split into several uniformly divided chunks. These chunks are concurrently
+ * processed by the variation threads whose number equals the amount of chunks.
  *
  * @author  Felix Voelker
- * @version 0.1
- * @since   8.8.2017
+ * @version 0.0.2
+ * @since   2.1.2018
  */
 class Breeder : public Singleton {
 
-private:
-    const unsigned int popsize;
-
-    const unsigned int varythreads;
-    vector<thread>     *threads;
-    vector<Thread> *random;
-
-    BreedingOperator *variation_pipeline;
-
-protected:
-    /**
-     * Breeds the offspring for a given chunk of the next population only. This function is called by each of the
-     * breeding threads and performs variation for the chunk. If the pipeline produces too much offsprings to fit
-     * into the chunk, the remaining slots are assigned randomly.
-     * @param pop        Current state of the evolutionary system's population.
-     * @param parents The next population of the system.
-     * @param offset     Index to start adding offsprings.
-     * @param size       Size of the chunk.
-     * @param thread     Index of running thread.
-     */
-    void breedChunk(vector<Individual *> &parents,
-                    vector<Individual *> &offsprings,
-                    unsigned int epoch,
-                    unsigned int offset,
-                    unsigned int size,
-                    unsigned int thread) const;
-
 public:
-    explicit Breeder(const Session &session);
+    explicit Breeder(const Session &session, unsigned int &epoch);
     ~Breeder();
 
     /**
-     * Breeds a generation of offsprings.
-     * @param pop Current state of the evolutionary system's population.
+     * Breeds an entire new generation of offsprings concurrently.
+     * @param pop State of evolutionary system's population.
      */
-    vector<Individual *> * breedPopulation(const Population &pop, unsigned int epoch) const;
+    std::vector<Individual *> * breedPopulation(Population &pop) const;
 
+protected:
+    std::vector<Thread *> varythreads;
+
+    /** Components */
+    BreedingOperator *variation_tree;
+
+    /**
+     * Breeds the offspring for a given chunk of the population only. This function is called by each of the
+     * variating threads and passes the chunk to the variation tree. If the tree produces too much offsprings to fit
+     * into the chunk, the remaining slots are assigned randomly.
+     * @param parents    The parent individuals of the current generation.
+     * @param offsprings The offspring individuals of the next generation.
+     * @param thread     The variating thread.
+     */
+    void breedChunk(std::vector<Individual *> &parents,
+                    std::vector<Individual *> &offsprings,
+                    Thread &thread) const;
 };
 
 
-#endif //NDEC_BREEDER_H
+#endif //RATATOSKR_BREEDER_H

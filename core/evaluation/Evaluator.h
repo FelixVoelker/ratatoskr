@@ -2,54 +2,45 @@
 #define RATATOSKR_EVALUATOR_H
 
 
-#include <thread>
-#include "../experience/EvolutionaryNetwork.h"
+//#include "../experience/EvolutionaryNetwork.h"
+
+#include "../representation/Population.h"
 
 /**
- * Represents the evaluator of the evolutionary system that drives the evaluation step of a neuro-dynamic evolutionary
- * algorithm. This evaluation is performed on the entire population that is split into several uniformly divided chunks.
- * These chunks are concurrently processed by the evaluation threads whose number equals the amount of chunks.
- *
- * @param popsize       The size of the population.
- * @param evalthreads   Non-zero positive number of evaluation threads.
+ * The core module that drives the evaluation phase of an Neuro-Dynamic Evolutionary Algorithm (NDEA). This evaluation
+ * is performed on the entire population that is split into several uniformly divided chunks. These chunks are
+ * concurrently processed by the evaluation threads whose number equals the amount of chunks.
  *
  * @author  Felix Voelker
  * @version 0.0.2
- * @since   9.10.2017
+ * @since   2.1.2018
  */
 class Evaluator : public Singleton {
 
-private:
-    // Parameters
-    unsigned int popsize;
-    unsigned int evalthreads;
-
-    // Components
-    const EvaluationFunction *eval;
-    const EvolutionaryNetwork *network;
-
-    // Auxilaries
-    vector<thread> *threads;
-
-    /**
-     * Evaluates a given chunk of the population only. This function is called by each of the evaluation threads
-     * and performs the problem specific evaluation on the individuals in the chunk.
-     *
-     * @param individuals The individuals within the population.
-     * @param offset      Starting index of the chunk.
-     * @param size        Size of the chunk.
-     */
-    void evaluateChunk(vector<Individual *> &individuals, unsigned int offset, unsigned int size) const;
-
 public:
-    explicit Evaluator(const Session &session);
+    explicit Evaluator(const Session &session, unsigned int &epoch);
     ~Evaluator();
 
     /**
      * Evaluates an entire population by estimating the fitness and cost of each individual concurrently.
      * @param pop State of evolutionary system's population.
      */
-    void evaluatePopulation(const Population &pop) const;
+    void evaluatePopulation(Population &pop) const;
+
+protected:
+    std::vector<Thread *> evalthreads;
+
+    /** Components */
+    Problem &problem;
+//    EvolutionaryNetwork *network;
+
+    /**
+     * Evaluates a given chunk of the population only. This function is called by each of the evaluation threads
+     * and performs the problem specific evaluation on the individuals in the chunk.
+     * @param individuals The individuals within the population.
+     * @param thread      The evaluating thread.
+     */
+    void evaluateChunk(std::vector<Individual *> &individuals, Thread &thread) const;
 
 };
 

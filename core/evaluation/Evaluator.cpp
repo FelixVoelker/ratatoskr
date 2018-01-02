@@ -1,47 +1,46 @@
 #include "Evaluator.h"
 
-Evaluator::Evaluator(const Session &session) : Singleton(session),
-                                               popsize(session.getProblem().popsize()),
-                                               evalthreads(session.getEvalthreads()),
-                                               eval(session.getProblem().eval()),
-                                               network(session.getNetwork()),
-                                               threads(new vector<thread>(evalthreads)) {}
+Evaluator::Evaluator(const Session &session, unsigned int &epoch)
+        : Singleton(session),
+          evalthreads(std::vector<Thread *>(session.getEvalthreads())),
+          problem(session.getProblem())
+//          network(session.getNetwork())
+{
+    unsigned int onset  = 0;
+    unsigned int offset = session.getProblem().getPopsize() / session.getEvalthreads();
+    for (unsigned int k = 0; k < evalthreads.size() - 1; k++) {
+        evalthreads.at(k) = new Thread(onset, offset, epoch);
+        onset += offset;
+    }
+    evalthreads.at(evalthreads.size() - 1) = new Thread(onset, session.getProblem().getPopsize() - onset , epoch);
+}
 
 Evaluator::~Evaluator() {
-    delete threads;
-}
-
-void Evaluator::evaluateChunk(vector<Individual *> &individuals,
-                              const unsigned int offset,
-                              const unsigned int size) const {
-    EvaluationFunction &e = *eval;
-    for (unsigned int k = offset; k < offset + size; k++)
-        e(*individuals.at(k));
-}
-
-void Evaluator::evaluatePopulation(const Population &pop) const {
-    auto individuals = pop.getIndividuals();
-
-    unsigned int offset = 0;
-    auto chunk_size = static_cast<unsigned int>(individuals.size() / evalthreads);
-    for (unsigned int k = 0; k < evalthreads - 1; k++) {
-        threads->at(k) = thread(&Evaluator::evaluateChunk,
-                               this, std::ref(individuals),
-                               offset,
-                               chunk_size);
-        offset += chunk_size;
+    for (auto *evalthread : evalthreads) {
+        delete(evalthread);
     }
-    threads->at(evalthreads - 1) = thread(&Evaluator::evaluateChunk,
-                                         this,
-                                         std::ref(individuals),
-                                         offset,
-                                         individuals.size() - offset);
-
-    for (auto &thread : *threads)
-        thread.join();
-
-
-    vector<float> cost = network->output(pop);
-    for (unsigned int k = 0; k < pop.getIndividuals().size(); k++)
-        pop.getIndividuals().at(k)->getRelevance().cost(cost.at(k));
 }
+
+void Evaluator::evaluatePopulation(Population &pop) const {
+    auto &individuals = pop.getIndividuals();
+
+    std::vector<std::thread> threads(evalthreads.size());
+    for (unsigned int k = 0; k < evalthreads.size(); k++) {
+        threads.at(k) = std::thread(&Evaluator::evaluateChunk, this, std::ref(individuals), std::ref(*evalthreads.at(k)));
+    }
+
+    for (auto &thread : threads) {
+        thread.join();
+    }
+
+//    vector<float> cost = network->output(pop);
+//    for (unsigned int k = 0; k < pop.getIndividuals().size(); k++)
+//        pop.getIndividuals().at(k)->getRelevance().cost(cost.at(k));
+}
+
+void Evaluator::evaluateChunk(std::vector<Individual *> &individuals, Thread &thread) const {
+    for (unsigned int k = 0; k < thread.getChunkOffset(); k++) {
+        problem.eval(*individuals.at(k + thread.getChunkOnset()), thread);
+    }
+}
+

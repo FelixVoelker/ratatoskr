@@ -10,11 +10,12 @@ include_directories(${PYTHON_INCLUDE_DIRS})
 include_directories(${BOOST_INCLUDEDIR} )
 
 set(CORE_SOURCES
-#        core/evaluation/Evaluator.cpp core/evaluation/Evaluator.h
+        core/evaluation/Evaluator.cpp core/evaluation/Evaluator.h
         core/evaluation/Problem.cpp core/evaluation/Problem.h
-#        core/evaluation/EvolutionaryNetwork.cpp core/evaluation/EvolutionaryNetwork.h
+#        core/experience/EvolutionaryNetwork.cpp core/experience/EvolutionaryNetwork.h
 #        core/experience/Replayer.cpp core/experience/Replayer.h
         core/initialization/Builder.cpp core/initialization/Builder.h
+        core/initialization/Initializer.cpp core/initialization/Initializer.h
         core/representation/Cost.cpp core/representation/Cost.h
         core/representation/FeatureMap.cpp core/representation/FeatureMap.h
         core/representation/Fitness.h core/representation/Fitness.cpp
@@ -24,13 +25,12 @@ set(CORE_SOURCES
         core/util/Prototype.h
         core/util/Singleton.h
         core/util/Thread.cpp core/util/Thread.h
-#        core/variation/Breeder.cpp core/variation/Breeder.h
+        core/variation/Breeder.cpp core/variation/Breeder.h
         core/variation/BreedingOperator.cpp core/variation/BreedingOperator.h
         core/variation/SelectionOperator.cpp core/variation/SelectionOperator.h
         core/variation/VariationSource.cpp core/variation/VariationSource.h
 #        core/EvolutionarySystem.cpp core/EvolutionarySystem.h
-        core/Session.cpp core/Session.h
-        )
+        core/Session.cpp core/Session.h)
 
 set(CC_API
 #        cc/ec/common/FitnessProportionateSelection.cpp cc/ec/common/FitnessProportionateSelection.h

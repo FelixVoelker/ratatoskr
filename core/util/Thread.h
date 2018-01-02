@@ -3,6 +3,7 @@
 
 
 #include <random>
+#include <thread>
 
 /**
  * Represents a thread that processes a specific chunk of the evolutionary system's population. It maintains all

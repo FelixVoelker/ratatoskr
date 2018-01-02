@@ -1,14 +1,7 @@
 #include "Population.h"
 
 Population::Population(const Session &session) : Singleton(session) {
-    builder = session.getBuilder();
     individuals = std::vector<Individual *>(session.getProblem().getPopsize());
-}
-
-void Population::populate() {
-    for (auto &individual : individuals) {
-        individual = builder->build();
-    }
 }
 
 void Population::exterminate() {
@@ -49,10 +42,11 @@ Individual * Population::worstIndividual() const {
     return worst_individual;
 }
 
-std::vector<Individual *> Population::getIndividuals() const {
+std::vector<Individual *> & Population::getIndividuals() {
+    std::vector<Individual *> &individuals = this->individuals;
     return individuals;
 }
 
-void Population::setIndividuals(std::vector<Individual *> individuals) {
+void Population::setIndividuals(std::vector<Individual *> &individuals) {
     this->individuals = individuals;
 }

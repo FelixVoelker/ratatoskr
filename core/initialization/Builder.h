@@ -11,7 +11,7 @@
  *
  * @author  Felix Voelker
  * @version 0.0.2
- * @since   27.12.2017
+ * @since   2.1.2018
  */
 class Builder : public Singleton {
 
@@ -30,7 +30,7 @@ protected:
     * Initializes an individual according to the builder's strategy.
     * @param ind The individual to be initialized.
     */
-    virtual void initialize(Individual &ind) const = 0;
+    virtual void initialize(Individual &individual) const = 0;
 };
 
 

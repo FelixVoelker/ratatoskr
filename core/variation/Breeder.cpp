@@ -1,64 +1,63 @@
 #include "Breeder.h"
 
-Breeder::Breeder(const Session &session)
+Breeder::Breeder(const Session &session, unsigned int &epoch)
         : Singleton(session),
-          popsize(session.getProblem().popsize()),
-          varythreads(session.getVarythreads()) {
-    variation_pipeline = session.getPipeline();
-    threads = new vector<thread>(varythreads);
-    random = new vector<Thread>(varythreads);
+          varythreads(std::vector<Thread *>(session.getVarythreads()))
+{
+    variation_tree = session.getVariationTree();
+    unsigned int onset  = 0;
+    unsigned int offset = session.getProblem().getPopsize() / session.getVarythreads();
+    for (unsigned int k = 0; k < varythreads.size() - 1; k++) {
+        varythreads.at(k) = new Thread(onset, offset, epoch);
+        onset += offset;
+    }
+    varythreads.at(varythreads.size() - 1) = new Thread(onset, session.getProblem().getPopsize() - onset , epoch);
 }
 
 Breeder::~Breeder() {
-    delete threads;
-    delete random;
+    for (auto *varythread : varythreads) {
+        delete(varythread);
+    }
 }
 
-void Breeder::breedChunk(vector<Individual *> &parents,
-                         vector<Individual *> &offsprings,
-                         const unsigned int epoch,
-                         const unsigned int offset,
-                         const unsigned int size,
-                         const unsigned int thread) const {
+std::vector<Individual *> * Breeder::breedPopulation(Population &pop) const {
+    auto &parents = pop.getIndividuals();
+    auto offsprings = new std::vector<Individual *>(parents.size());
+
+    std::vector<std::thread> threads(varythreads.size());
+    for (unsigned int k = 0; k < varythreads.size(); k++) {
+        threads.at(k) = std::thread(&Breeder::breedChunk, this, std::ref(parents), std::ref(*offsprings), std::ref(*varythreads.at(k)));
+    }
+
+    for (auto &thread : threads) {
+        thread.join();
+    }
+
+    return offsprings;
+}
+
+void Breeder::breedChunk(std::vector<Individual *> &parents,
+                         std::vector<Individual *> &offsprings,
+                         Thread &thread) const {
     unsigned int survivors = 0;
-    for (unsigned int k = offset; k < offset + size; k += survivors) {
-        vector<Individual *> offspring = variation_pipeline->vary(parents, epoch, random->at(thread));
-        if (offset + size < k + offspring.size()) {
-            survivors = static_cast<unsigned int>(k + offspring.size() - offset - size);
+    for (unsigned int k = 0; k < thread.getChunkOffset(); k += survivors) {
+        std::vector<Individual *> offspring = variation_tree->vary(parents, thread);
+        if (thread.getChunkOnset() + thread.getChunkOffset() < thread.getChunkOnset() + k + offspring.size()) {
+            survivors = thread.getChunkOffset() - k;
             for (unsigned int l = 0; l < survivors; l++) {
-                unsigned int index = random->at(thread).randomInt(offspring.size());
-                offsprings.at(k + l) = offspring.at(index);
+                unsigned int index = thread.random.sampleIntFromUniformDistribution(static_cast<unsigned int>(offspring.size()));
+                offsprings.at(thread.getChunkOnset() + k + l) = offspring.at(index);
                 offspring.erase(offspring.begin() + index);
             }
-            for (auto o : offspring)
+            for (auto o : offspring) {
                 delete o;
+            }
         } else {
             survivors = static_cast<unsigned int>(offspring.size());
             for (unsigned int l = 0; l < survivors; l++) {
-                offsprings.at(k + l) = offspring.at(l);
+                offsprings.at(thread.getChunkOnset() + k + l) = offspring.at(l);
             }
         }
     }
 }
 
-vector<Individual *> * Breeder::breedPopulation(const Population &pop, const unsigned int epoch) const {
-    auto parents = pop.getIndividuals();
-    auto offsprings = new vector<Individual *>(popsize);
-
-    unsigned int offset = 0;
-    unsigned int chunk_size = popsize / varythreads;
-
-    vector<thread> threads(varythreads);
-    for (unsigned int k = 0; k < varythreads - 1; k++) {
-        threads.at(k) = thread(&Breeder::breedChunk, this, std::ref(parents), std::ref(*offsprings), epoch, offset, chunk_size, k);
-        offset += chunk_size;
-    }
-
-    threads.at(varythreads - 1) = thread(&Breeder::breedChunk, this, std::ref(parents), std::ref(*offsprings), epoch, offset, popsize - offset, varythreads - 1);
-
-    for (unsigned int k = 0; k < varythreads; k++) {
-        threads.at(k).join();
-    }
-
-    return offsprings;
-}

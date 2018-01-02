@@ -3,6 +3,8 @@
 #include "SimpleFeatureMap.h"
 #include "SimpleIndividual.h"
 #include "SimpleBuilder.h"
+#include "SimpleSelectionOperator.h"
+#include "SimpleBreedingOperator.h"
 
 SimpleSession::SimpleSession(Problem &problem) : Session(problem) {
     cost = new Cost(*this);
@@ -10,10 +12,11 @@ SimpleSession::SimpleSession(Problem &problem) : Session(problem) {
     fitness = new Fitness(*this);
     individual = new SimpleIndividual(*this);
     builder = new SimpleBuilder(*this);
-//    vector<VariationSource *> sources(1);
-//    sources.at(0) = new FitnessProportionateSelection(*this);
-//    pipeline = new SimpleBreedingOperator(*this);
-//    pipeline->setup(sources);
+    auto *so = new SimpleSelectionOperator(*this);
+    so->setup(*new std::vector<VariationSource *>(0));
+    variation_tree = new SimpleBreedingOperator(*this);
+    variation_tree->setup(*new std::vector<VariationSource *> = { so });
+
 }
 
 void SimpleSession::setBuilder(Builder &builder_prototype) {}

@@ -3,7 +3,7 @@
 
 
 #include <vector>
-#include "../initialization/Builder.h"
+#include "Individual.h"
 
 /**
  * Represents the population as the state of an evolutionary system. Accordingly, the class incorporates a set of
@@ -11,17 +11,12 @@
  *
  * @author  Felix Voelker
  * @version 0.0.2
- * @since   28.12.2017
+ * @since   2.1.2018
  */
 class Population : public Singleton {
 
 public:
     explicit Population(const Session &session);
-
-    /**
-     * Replaces each individual of the population with newly built ones.
-     */
-    void populate();
 
     /**
      * Exterminates each individual within the population.
@@ -43,12 +38,10 @@ public:
      */
     Individual * worstIndividual() const;
 
-    std::vector<Individual *> getIndividuals() const;
-    void setIndividuals(std::vector<Individual *> individuals);
+    std::vector<Individual *> & getIndividuals();
+    void setIndividuals(std::vector<Individual *> &individuals);
 
 private:
-    Builder *builder;
-
     std::vector<Individual *> individuals;
 
 };

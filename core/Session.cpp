@@ -38,9 +38,9 @@ Individual * Session::getIndividual() const {
     return individual;
 }
 
-//BreedingOperator * Session::getPipeline() const {
-//    return pipeline;
-//}
+BreedingOperator * Session::getVariationTree() const {
+    return variation_tree;
+}
 
 unsigned int Session::getEpochs() const {
     return epochs;
@@ -56,6 +56,10 @@ unsigned int Session::getGenerations() const {
 
 bool Session::isComplete() const {
     return complete;
+}
+
+unsigned int Session::getInitthreads() const {
+    return initthreads;
 }
 
 unsigned int Session::getEvalthreads() const {
@@ -88,6 +92,10 @@ void Session::setGenerations(unsigned int generations) {
 
 void Session::setComplete(bool complete) {
     this->complete = complete;
+}
+
+void Session::setInitthreads(unsigned int initthreads) {
+    this->initthreads = initthreads;
 }
 
 void Session::setEvalthreads(unsigned int evalthreads) {

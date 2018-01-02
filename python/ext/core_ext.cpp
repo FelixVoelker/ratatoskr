@@ -121,7 +121,7 @@ BOOST_PYTHON_MODULE(core) {
 //            .def("setCost", pure_virtual(static_cast<void(Session::*)(Cost&)>(&Session::getCost)))
 //            .def("getFeaturemap", pure_virtual(static_cast<void(Session::*)(FeatureMap&)>(&Session::getFeaturemap)))
 //            .def("getIndividual", pure_virtual(static_cast<void(Session::*)(Individual&)>(&Session::getIndividual)))
-//            .def("getPipeline", pure_virtual(static_cast<void(Session::*)(BreedingOperator&)>(&Session::getPipeline)));
+//            .def("getPipeline", pure_virtual(static_cast<void(Session::*)(BreedingOperator&)>(&Session::getVariationTree)));
 
 //    class_<Statistics>("Statistics", init<Session &>())
 //            .def("bestFitnesses", static_cast<vector<float>(Statistics::*)(unsigned int)const>(&Statistics::bestFitnesses))

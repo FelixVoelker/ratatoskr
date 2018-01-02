@@ -27,7 +27,7 @@ void SessionWrapper::setIndividual(Individual &individual_prototype) {
 }
 
 //void SessionWrapper::setPipeline(BreedingOperator &pipeline_prototype) {
-//    this->get_override("getPipeline")(pipeline_prototype);
+//    this->get_override("getVariationTree")(pipeline_prototype);
 //}
 
 void SessionWrapper::pyBuilder(boost::shared_ptr<Builder> builder_prototype) {

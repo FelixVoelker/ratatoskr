@@ -36,7 +36,7 @@ public:
     Cost  *               getCost() const;
     FeatureMap *          getFeaturemap() const;
     Individual *          getIndividual() const;
-//    BreedingOperator *    getPipeline() const;
+    BreedingOperator *    getVariationTree() const;
 
 //    virtual void setNetwork(EvolutionaryNetwork &network_prototype) = 0;
     virtual void setBuilder(Builder &builder_prototype) = 0;
@@ -51,6 +51,7 @@ public:
     unsigned int getEpisodes() const;
     unsigned int getGenerations() const;
     bool isComplete() const;
+    unsigned int getInitthreads() const;
     unsigned int getEvalthreads() const;
     unsigned int getVarythreads() const;
     float getLearningRate() const;
@@ -60,6 +61,7 @@ public:
     void setEpisodes(unsigned int episodes);
     void setGenerations(unsigned int generations);
     void setComplete(bool complete);
+    void setInitthreads(unsigned int initthreads);
     void setEvalthreads(unsigned int evalthreads);
     void setVarythreads(unsigned int varythreads);
     void setLearningRate(float learning_rate);
@@ -72,6 +74,7 @@ protected:
 
     bool complete = false; // Determines whether an evolution progresses until the maximum generation.
 
+    unsigned int initthreads = 1; // Number of used threads during initialization phase.
     unsigned int evalthreads  = 1; // Number of used threads during evaluation phase.
     unsigned int varythreads = 1; // Number of used threads during variation phase.
 
@@ -89,7 +92,7 @@ protected:
     Cost                *cost;
     FeatureMap          *featuremap;
     Individual          *individual;
-//    BreedingOperator    *pipeline;
+    BreedingOperator    *variation_tree;
 
 };
 
