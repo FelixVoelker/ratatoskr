@@ -13,6 +13,7 @@
 #include "../../core/initialization/Initializer.h"
 #include "../../core/evaluation/Evaluator.h"
 #include "../../core/variation/Breeder.h"
+#include "../../core/statistics/Statistics.h"
 
 /**
  * Unit tests for the core functionality of an evolutionary system.
@@ -286,6 +287,47 @@ TEST_CASE("Core", "[core]") {
         }
 
         delete t;
+    }
+
+    SECTION("Statistics") {
+        session->getProblem().setPopsize(3);
+        session->setEpochs(1);
+        session->setEpisodes(3);
+        session->setGenerations(1);
+
+        auto *pop = new Population(*session);
+        pop->getIndividuals().at(0) = session->getBuilder()->build();
+        pop->getIndividuals().at(1) = session->getBuilder()->build();
+        pop->getIndividuals().at(2) = session->getBuilder()->build();
+
+        auto *statistics = new Statistics(*session);
+        pop->getIndividuals().at(0)->getFitness().setFitness(0);
+        pop->getIndividuals().at(1)->getFitness().setFitness(1.5);
+        pop->getIndividuals().at(2)->getFitness().setFitness(8.5);
+        statistics->record(*pop, 0, 0);
+        pop->getIndividuals().at(0)->getFitness().setFitness(7);
+        pop->getIndividuals().at(1)->getFitness().setFitness(5);
+        pop->getIndividuals().at(2)->getFitness().setFitness(3);
+        statistics->record(*pop, 0, 0);
+        pop->getIndividuals().at(0)->getFitness().setFitness(2.5);
+        pop->getIndividuals().at(1)->getFitness().setFitness(0);
+        pop->getIndividuals().at(2)->getFitness().setFitness(5.5);
+        statistics->record(*pop, 0, 0);
+
+        SECTION("Checking best fitness...") {
+            REQUIRE(statistics->bestFitnesses(0).at(0) == 1);
+        }
+
+        SECTION("Checking average fitness...") {
+            REQUIRE(statistics->averageFitnesses(0).at(0) == 10.0f / 9.0f + 15.0f / 9.0f + 8.0f / 9.0f );
+        }
+
+        SECTION("Checking worst fitness...") {
+            REQUIRE(statistics->worstFitnesses(0).at(0) == 7);
+        }
+
+        delete statistics;
+        delete pop;
     }
 
     session->setInitthreads(2);

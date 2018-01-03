@@ -1,5 +1,5 @@
-#ifndef NDEC_EVOLUTIONARYNETWORK_H
-#define NDEC_EVOLUTIONARYNETWORK_H
+#ifndef RATATOSKR_EVOLUTIONARYNETWORK_H
+#define RATATOSKR_EVOLUTIONARYNETWORK_H
 
 
 #include "../representation/Population.h"
@@ -7,25 +7,40 @@
 /**
  * TODO: Comments
  * @author  Felix Voelker
- * @version 0.1
- * @since   3.9.2017
+ * @version 0.0.2
+ * @since   3.1.2018
  */
 class EvolutionaryNetwork : public Singleton {
 
-protected:
-    vector<vector<float>> *lookup_table;
+public:
+    explicit EvolutionaryNetwork(const Session &session);
 
+    /**
+     *
+     * @param individuals
+     * @return
+     */
+    virtual std::vector<float> output(std::vector<Individual *> &individuals) const = 0;
+
+    /**
+     *
+     * @param parents
+     * @param offsprings
+     */
+    virtual void update(std::vector<Individual *> &parents, std::vector<Individual *> &offsprings) = 0;
+
+protected:
     float learning_rate;
     float discount_factor;
 
-public:
-    explicit EvolutionaryNetwork(const Session &session);
-    ~EvolutionaryNetwork();
-
-    vector<float> output(const Population &pop) const;
-    void update(Population &pop, vector<Individual *> offsprings);
+    /**
+     *
+     * @param individuals
+     * @return
+     */
+    virtual std::vector<unsigned int> preprocess(std::vector<Individual *> &individuals) const = 0;
 
 };
 
 
-#endif //NDEC_EVOLUTIONARYNETWORK_H
+#endif //RATATOSKR_EVOLUTIONARYNETWORK_H

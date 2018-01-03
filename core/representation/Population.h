@@ -17,6 +17,7 @@ class Population : public Singleton {
 
 public:
     explicit Population(const Session &session);
+    ~Population();
 
     /**
      * Exterminates each individual within the population.

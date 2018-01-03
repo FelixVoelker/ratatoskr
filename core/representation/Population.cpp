@@ -4,6 +4,10 @@ Population::Population(const Session &session) : Singleton(session) {
     individuals = std::vector<Individual *>(session.getProblem().getPopsize());
 }
 
+Population::~Population() {
+    std::vector<Individual *>().swap(individuals);
+}
+
 void Population::exterminate() {
     for (auto &individual : individuals) {
         delete individual;

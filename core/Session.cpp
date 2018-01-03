@@ -1,22 +1,21 @@
 #include "Session.h"
-#include "initialization/Builder.h"
 
 Session::Session(Problem &problem) : problem(problem) {}
 
 Session::~Session() {
     delete individual;
     delete builder;
-//    delete network;
-//    delete pipeline;
+    delete network;
+    delete variation_tree;
 }
 
 Problem & Session::getProblem() const {
     return problem;
 }
 
-//EvolutionaryNetwork * Session::getNetwork() const {
-//    return network;
-//}
+EvolutionaryNetwork * Session::getNetwork() const {
+    return network;
+}
 
 Builder * Session::getBuilder() const {
     return builder;

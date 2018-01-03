@@ -1,5 +1,5 @@
-#ifndef NDEC_REPLAYER_H
-#define NDEC_REPLAYER_H
+#ifndef RATATOSKR_REPLAYER_H
+#define RATATOSKR_REPLAYER_H
 
 
 #include "EvolutionaryNetwork.h"
@@ -8,20 +8,20 @@
  * TODO: Comments
  *
  * @author  Felix Voelker
- * @version 0.1
- * @since   3.9.2017
+ * @version 0.0.2
+ * @since   3.1.2018
  */
 class Replayer : public Singleton {
-
-protected:
-    EvolutionaryNetwork *network;
 
 public:
     explicit Replayer(const Session &session);
 
-    void replay(Population &pop, vector<Individual *> &offsprings) const;
+    void replay(Population &pop, std::vector<Individual *> &offsprings) const;
+
+protected:
+    EvolutionaryNetwork *network;
 
 };
 
 
-#endif //NDEC_REPLAYER_H
+#endif //RATATOSKR_REPLAYER_H

@@ -12,8 +12,8 @@ include_directories(${BOOST_INCLUDEDIR} )
 set(CORE_SOURCES
         core/evaluation/Evaluator.cpp core/evaluation/Evaluator.h
         core/evaluation/Problem.cpp core/evaluation/Problem.h
-#        core/experience/EvolutionaryNetwork.cpp core/experience/EvolutionaryNetwork.h
-#        core/experience/Replayer.cpp core/experience/Replayer.h
+        core/experience/EvolutionaryNetwork.cpp core/experience/EvolutionaryNetwork.h
+        core/experience/Replayer.cpp core/experience/Replayer.h
         core/initialization/Builder.cpp core/initialization/Builder.h
         core/initialization/Initializer.cpp core/initialization/Initializer.h
         core/representation/Cost.cpp core/representation/Cost.h
@@ -21,7 +21,7 @@ set(CORE_SOURCES
         core/representation/Fitness.h core/representation/Fitness.cpp
         core/representation/Individual.cpp core/representation/Individual.h
         core/representation/Population.cpp core/representation/Population.h
-#        core/statistics/Statistics.cpp core/statistics/Statistics.h
+        core/statistics/Statistics.cpp core/statistics/Statistics.h
         core/util/Prototype.h
         core/util/Singleton.h
         core/util/Thread.cpp core/util/Thread.h
@@ -29,7 +29,7 @@ set(CORE_SOURCES
         core/variation/BreedingOperator.cpp core/variation/BreedingOperator.h
         core/variation/SelectionOperator.cpp core/variation/SelectionOperator.h
         core/variation/VariationSource.cpp core/variation/VariationSource.h
-#        core/EvolutionarySystem.cpp core/EvolutionarySystem.h
+        core/EvolutionarySystem.cpp core/EvolutionarySystem.h
         core/Session.cpp core/Session.h)
 
 set(CC_API
@@ -41,6 +41,7 @@ set(CC_API
 #        cc/ec/ndga/NDGAProblem.cpp cc/ec/ndga/NDGAProblem.h
 #        cc/ec/ndga/NDGASession.cpp cc/ec/ndga/NDGASession.h
 #        cc/ec/ndga/RandomBitVectorBuilder.cpp cc/ec/ndga/RandomBitVectorBuilder.h
+#        cc/ec/ndga/TransitionTable.cpp cc/ec/ndga/TransitionTable.h)
 #        cc/problem/ndga/OneMaxProblem.cpp cc/getProblem/ndga/OneMaxProblem.h
         )
 
@@ -83,6 +84,7 @@ add_dependencies(ratatoskr_py core ndga)
 set(UNIT_SOURCES
         unit/core/util/SimpleBreedingOperator.cpp unit/core/util/SimpleBreedingOperator.h
         unit/core/util/SimpleBuilder.cpp unit/core/util/SimpleBuilder.h
+        unit/core/util/SimpleEvolutionaryNetwork.cpp unit/core/util/SimpleEvolutionaryNetwork.h
         unit/core/util/SimpleFeatureMap.cpp unit/core/util/SimpleFeatureMap.h
         unit/core/util/SimpleIndividual.cpp unit/core/util/SimpleIndividual.h
         unit/core/util/SimpleProblem.cpp unit/core/util/SimpleProblem.h

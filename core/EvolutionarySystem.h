@@ -1,49 +1,55 @@
-#ifndef NDEC_EVOLUTIONARYSYSTEM_H
-#define NDEC_EVOLUTIONARYSYSTEM_H
+#ifndef RATATOSKR_EVOLUTIONARYSYSTEM_H
+#define RATATOSKR_EVOLUTIONARYSYSTEM_H
+
 
 #include "representation/Population.h"
 #include "evaluation/Evaluator.h"
-#include "util/Thread.h"
 #include "variation/Breeder.h"
 #include "statistics/Statistics.h"
 #include "experience/Replayer.h"
-
+#include "initialization/Initializer.h"
 
 /**
- * TODO: Comments
  * Represents the entire evolutionary system that controls the evolutionary run.
  *
- * @author Felix Voelker
- * @version 0.1
- * @since   8.8.2017
+ * @author  Felix Voelker
+ * @version 0.0.2
+ * @since   3.1.2018
  */
 class EvolutionarySystem {
-
-private:
-    Population population;
-
-    Evaluator evaluator;
-    Breeder   breeder;
-    Replayer  replayer;
-
-    Statistics statistics;
-
-    unsigned int EPOCHS;
-    unsigned int EPISODES;
-    unsigned int GENERATIONS;
-
-    bool complete;
-
-    void evolve(unsigned int epoch);
 
 public:
     explicit EvolutionarySystem(Session &session);
 
+    /**
+     *
+     */
     void run();
 
-    Statistics getStatistics();
+    Statistics & getStatistics();
+
+private:
+    bool complete;
+    unsigned int epochs;
+    unsigned int episodes;
+    unsigned int generations;
+
+    unsigned int epoch;
+
+    /** Components */
+    Population  population;
+    Initializer initializer;
+    Evaluator   evaluator;
+    Breeder     breeder;
+    Replayer    replayer;
+    Statistics  statistics;
+
+    /**
+     *
+     */
+    void evolve();
 
 };
 
 
-#endif //NDEC_EVOLUTIONARYSYSTEM_H
+#endif //RATATOSKR_EVOLUTIONARYSYSTEM_H

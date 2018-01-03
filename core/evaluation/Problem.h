@@ -23,6 +23,7 @@ public:
      * @param popsize Number of individuals within the population.
      */
     explicit Problem(unsigned int popsize);
+    Problem(const Problem &obj);
 
     /**
      * Assigns a fitness value to an individual according to the specification of the problem.
@@ -35,8 +36,6 @@ public:
 
 protected:
     unsigned int popsize;
-
-    Problem(const Problem &obj);
 
 };
 

@@ -3,49 +3,53 @@
 
 EvolutionarySystem::EvolutionarySystem(Session &session)
         : population(Population(session)),
-          evaluator(Evaluator(session)),
-          breeder(Breeder(session)),
+          initializer(Initializer(session, epoch)),
+          evaluator(Evaluator(session, epoch)),
+          breeder(Breeder(session, epoch)),
           statistics(Statistics(session)),
-          replayer(Replayer(session)) {
-    EPOCHS = session.getEpochs();
-    EPISODES = session.getEpisodes();
-    GENERATIONS = session.getGenerations();
+          replayer(Replayer(session))
+{
     complete = session.isComplete();
+    epochs = session.getEpochs();
+    episodes = session.getEpisodes();
+    generations = session.getGenerations();
 }
-
-void EvolutionarySystem::evolve(const unsigned int epoch) {
-    population.initialize();
-    for (unsigned int generation = 0; generation < GENERATIONS; generation++) {
-        evaluator.evaluatePopulation(population);
-
-        statistics.record(population, epoch, generation);
-
-        if (!complete)
-            if (population.bestIndividual()->getRelevance().getFitness().isIdeal())
-                break;
-
-        vector<Individual *> *offsprings = breeder.breedPopulation(population, epoch);
-        replayer.replay(population, *offsprings);
-        population.changeGeneration(offsprings);
-    }
-    evaluator.evaluatePopulation(population);
-    statistics.record(population, epoch, GENERATIONS);
-    population.finalize();
-}
-
 
 void EvolutionarySystem::run() {
-    for (unsigned int epoch = 0; epoch < EPOCHS; epoch++) {
-        cout << "Starting epoch " << epoch << "..." << endl;
-        for (unsigned int episode = 0; episode < EPISODES; episode++) {
-            if (episode % 250 == 0)
-                cout << "Epoch " << epoch << ": " << EPISODES - episode << " getEpisodes left." << endl;
-            evolve(epoch);
+    epoch = 0;
+    for (unsigned int &k = epoch; k < epochs; k++) {
+        std::cout << "Starting epoch " << epoch << "..." << std::endl;
+        for (unsigned int episode = 0; episode < episodes; episode++) {
+            if (episode % 250 == 0) {
+                std::cout << "Epoch " << epoch << ": " << episodes - episode << " getEpisodes left." << std::endl;
+            }
+            evolve();
         }
-        cout << "Finished epoch " << epoch << "." << endl;
+        std::cout << "Finished epoch " << epoch << "." << std::endl;
     }
 }
 
-Statistics EvolutionarySystem::getStatistics() {
+Statistics & EvolutionarySystem::getStatistics() {
     return statistics;
+}
+
+void EvolutionarySystem::evolve() {
+    initializer.initializePopulation(population);
+    for (unsigned int generation = 0; generation < generations; generation++) {
+        evaluator.evaluatePopulation(population);
+        statistics.record(population, epoch, generation);
+
+        if (!complete) {
+            if (population.bestIndividual()->getFitness().isIdeal()) {
+                break;
+            }
+        }
+
+        std::vector<Individual *> *offsprings = breeder.breedPopulation(population);
+        replayer.replay(population, *offsprings);
+        population.setIndividuals(*offsprings);
+    }
+    evaluator.evaluatePopulation(population);
+    statistics.record(population, epoch, generations);
+    population.exterminate();
 }

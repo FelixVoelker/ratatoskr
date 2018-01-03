@@ -5,6 +5,7 @@
 #include "SimpleBuilder.h"
 #include "SimpleSelectionOperator.h"
 #include "SimpleBreedingOperator.h"
+#include "SimpleEvolutionaryNetwork.h"
 
 SimpleSession::SimpleSession(Problem &problem) : Session(problem) {
     cost = new Cost(*this);
@@ -16,7 +17,7 @@ SimpleSession::SimpleSession(Problem &problem) : Session(problem) {
     so->setup(*new std::vector<VariationSource *>(0));
     variation_tree = new SimpleBreedingOperator(*this);
     variation_tree->setup(*new std::vector<VariationSource *> = { so });
-
+    network = new SimpleEvolutionaryNetwork(*this);
 }
 
 void SimpleSession::setBuilder(Builder &builder_prototype) {}

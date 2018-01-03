@@ -4,7 +4,7 @@
 
 #include "evaluation/Problem.h"
 
-//class EvolutionaryNetwork;
+class EvolutionaryNetwork;
 class Builder;
 class Fitness;
 class Cost;
@@ -30,7 +30,7 @@ public:
 
     Problem & getProblem() const;
 
-//    EvolutionaryNetwork * getNetwork() const;
+    EvolutionaryNetwork * getNetwork() const;
     Builder *             getBuilder() const;
     Fitness *             getFitness() const;
     Cost  *               getCost() const;
@@ -86,7 +86,7 @@ protected:
     /**
      * Necessary prototypes.
      */
-//    EvolutionaryNetwork *network;
+    EvolutionaryNetwork *network;
     Builder             *builder;
     Fitness             *fitness;
     Cost                *cost;

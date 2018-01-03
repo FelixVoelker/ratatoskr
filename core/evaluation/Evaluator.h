@@ -2,8 +2,7 @@
 #define RATATOSKR_EVALUATOR_H
 
 
-//#include "../experience/EvolutionaryNetwork.h"
-
+#include "../experience/EvolutionaryNetwork.h"
 #include "../representation/Population.h"
 
 /**
@@ -32,7 +31,7 @@ protected:
 
     /** Components */
     Problem &problem;
-//    EvolutionaryNetwork *network;
+    EvolutionaryNetwork *network;
 
     /**
      * Evaluates a given chunk of the population only. This function is called by each of the evaluation threads
@@ -40,7 +39,7 @@ protected:
      * @param individuals The individuals within the population.
      * @param thread      The evaluating thread.
      */
-    void evaluateChunk(std::vector<Individual *> &individuals, Thread &thread) const;
+    void evaluateChunk(std::vector<Individual *> &individuals, std::vector<float> costs, Thread &thread) const;
 
 };
 

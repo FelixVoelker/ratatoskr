@@ -11,7 +11,9 @@
 #include "wrapper/core/SessionWrapper.h"
 #include "wrapper/core/VariationSourceWrapper.h"
 #include "../../core/representation/Population.h"
+#include "../../core/statistics/Statistics.h"
 #include "../../core/util/Thread.h"
+#include "../../core/EvolutionarySystem.h"
 
 
 using namespace boost::python;
@@ -115,20 +117,12 @@ BOOST_PYTHON_MODULE(core) {
             .def("fitness", pure_virtual(&SessionWrapper::setFitness))
             .def("individual", pure_virtual(&SessionWrapper::setIndividual));
 
+    class_<Statistics>("Statistics", init<Session &>())
+            .def("bestFitnesses", &Statistics::bestFitnesses)
+            .def("averageFitnesses", &Statistics::averageFitnesses)
+            .def("worstFitnesses", &Statistics::worstFitnesses);
 
-//            .def("getNetwork", pure_virtual(static_cast<void(Session::*)(EvolutionaryNetwork&)>(&Session::getNetwork)))
-//            .def("getBuilder", pure_virtual(static_cast<void(Session::*)(Builder&)>(&Session::getBuilder)))
-//            .def("setCost", pure_virtual(static_cast<void(Session::*)(Cost&)>(&Session::getCost)))
-//            .def("getFeaturemap", pure_virtual(static_cast<void(Session::*)(FeatureMap&)>(&Session::getFeaturemap)))
-//            .def("getIndividual", pure_virtual(static_cast<void(Session::*)(Individual&)>(&Session::getIndividual)))
-//            .def("getPipeline", pure_virtual(static_cast<void(Session::*)(BreedingOperator&)>(&Session::getVariationTree)));
-
-//    class_<Statistics>("Statistics", init<Session &>())
-//            .def("bestFitnesses", static_cast<vector<float>(Statistics::*)(unsigned int)const>(&Statistics::bestFitnesses))
-//            .def("averageFitnesses", static_cast<vector<float>(Statistics::*)(unsigned int)const>(&Statistics::averageFitnesses))
-//            .def("worstFitnesses", static_cast<vector<float>(Statistics::*)(unsigned int)const>(&Statistics::worstFitnesses));
-
-//    class_<EvolutionarySystem>("EvolutionarySystem", init<Session &>())
-//            .add_property("statistics", &EvolutionarySystem::getStatistics)
-//            .def("run", &EvolutionarySystem::run);
+    class_<EvolutionarySystem>("EvolutionarySystem", init<Session &>())
+            .add_property("statistics", make_function(&EvolutionarySystem::getStatistics, return_internal_reference<>()))
+            .def("run", &EvolutionarySystem::run);
 }
