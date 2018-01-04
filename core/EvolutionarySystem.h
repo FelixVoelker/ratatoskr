@@ -2,15 +2,20 @@
 #define RATATOSKR_EVOLUTIONARYSYSTEM_H
 
 
-#include "representation/Population.h"
 #include "evaluation/Evaluator.h"
-#include "variation/Breeder.h"
-#include "statistics/Statistics.h"
 #include "experience/Replayer.h"
 #include "initialization/Initializer.h"
+#include "representation/Population.h"
+#include "statistics/Statistics.h"
+#include "variation/Breeder.h"
 
 /**
- * Represents the entire evolutionary system that controls the evolutionary run.
+ * The core system that runs a Neuro-Dynamic Evolutionary Algorithm (NDEA), i.e. it evolves its evolutionary system
+ * either over a total number of generations or until an ideal individual has been acquired. Each evolution forms here
+ * a simulation that is called an episode of the algorithm. In Neuro-Dynamic Evolutionary Computation (NDEC), a neural
+ * network is trained in order to approximate some cost structure. This is done over a total number of consecutive
+ * episodes that are organized into epochs. The core system does not only execute this workflow, it is also
+ * self-contained in regard of the problem to be solved and the session to run.
  *
  * @author  Felix Voelker
  * @version 0.0.2
@@ -22,7 +27,7 @@ public:
     explicit EvolutionarySystem(Session &session);
 
     /**
-     *
+     * Runs consecutive episodes of the evolutionary system until the total number of epochs has been processed.
      */
     void run();
 
@@ -45,7 +50,7 @@ private:
     Statistics  statistics;
 
     /**
-     *
+     * Evolves the evolutionary system over a number of generations or until an ideal individual has been found.
      */
     void evolve();
 

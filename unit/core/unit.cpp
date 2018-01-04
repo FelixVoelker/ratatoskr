@@ -14,6 +14,7 @@
 #include "../../core/evaluation/Evaluator.h"
 #include "../../core/variation/Breeder.h"
 #include "../../core/statistics/Statistics.h"
+#include "../../core/EvolutionarySystem.h"
 
 /**
  * Unit tests for the core functionality of an evolutionary system.
@@ -378,4 +379,23 @@ TEST_CASE("Core", "[core]") {
     delete pop;
     delete session;
     delete problem;
+
+    SECTION("EvolutionarySystem") {
+        problem = new SimpleProblem(1);
+        session = new SimpleSession(*problem);
+        session->setEpochs(2);
+        session->setEpisodes(2);
+        session->setGenerations(2);
+        auto system = new EvolutionarySystem(*session);
+
+        SECTION("Running a dummy...") {
+            system->run();
+            REQUIRE(true);
+        }
+
+        delete system;
+        delete session;
+        delete problem;
+    }
+
 }
