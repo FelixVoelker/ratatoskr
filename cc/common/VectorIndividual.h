@@ -5,26 +5,28 @@
 #include <vector>
 #include "../../core/representation/Individual.h"
 #include "Configuration.h"
-
+#include "FeatureVector.h"
 
 /**
- * TODO: Comments
- * An individual of conventional Genetic Algorithms, i.e. its representation is a vector of binary values.
+ * A vector individual as used by several types of Neuro-Dynamic Evolutionary Algorithms (NDEAs). This numerical vector
+ * is called a chromosome whose elements are denoted as genes. These genes can be arbitrary numeric numbers, e.g.
+ * binary values as in the case of a Neuro-Dynamic Genetic Algorithm (NDGA).
  *
  * @author  Felix Voelker
- * @version 0.1
- * @since   12.7.2017
+ * @version 0.0.2
+ * @since   9.1.2018
  */
 class VectorIndividual : public Individual {
 
 public:
     explicit VectorIndividual(common::Configuration &configuration,
                               Cost *cost,
-                              FeatureMap *featuremap,
+                              FeatureVector *featurevector,
                               Fitness *fitness);
 
     /**
-     * Returns the bit string representation of the chromosome.
+     * Returns a human readable representation of the chromosome. This representation is a bit string for a binary
+     * vector and a row vector for arbitrary numerical vectors.
      */
     std::string toString() override;
 

@@ -62,39 +62,8 @@ TEST_CASE("NDGA", "[ndga]") {
     session.xover_rate = 1;
     session.mutation_rate = 1;
 
-    Randomizer random = Randomizer();
-
-    auto pop = Population(session);
-    pop.initialize();
-    vector<Individual *> &individuals = pop.getIndividuals();
-    auto ind = (BitVectorIndividual *) individuals.at(0);
-    vector<unsigned int> &chromosome = ind->getChromosome();
-    chromosome.at(0) = 0;
-    chromosome.at(1) = 1;
-    chromosome.at(2) = 0;
-    chromosome.at(3) = 1;
-    chromosome.at(4) = 0;
-    chromosome.at(5) = 0;
-    chromosome.at(6) = 1;
-    chromosome.at(7) = 1;
     SECTION("VectorIndividual") {
-        SECTION("Checking human-readable representation...") {
-            REQUIRE(ind->toString().compare("01010011") == 0);
-        }
-        SECTION("Checking cloning...") {
-            auto copy = ind->clone();
-            REQUIRE(&ind->getChromosome() != &copy->getChromosome());
-            REQUIRE(equal(ind->getChromosome().begin(),
-                          ind->getChromosome().end(),
-                          copy->getChromosome().begin()));
-            REQUIRE(equal(copy->getChromosome().begin(),
-                          copy->getChromosome().end(),
-                          ind->getChromosome().begin()));
-        }
-    }
 
-    SECTION("FeatureVector") {
-        FeatureVector &featuremap = dynamic_cast<FeatureVector &>(ind->getFeaturemap());
 
     }
 
