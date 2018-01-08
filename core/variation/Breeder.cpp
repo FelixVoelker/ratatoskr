@@ -1,23 +1,21 @@
 #include "Breeder.h"
 
-Breeder::Breeder(const Session &session, unsigned int &epoch)
-        : Singleton(session),
-          varythreads(std::vector<Thread *>(session.getVarythreads()))
+Breeder::Breeder(Configuration &configuration, BreedingOperator *variation_tree, unsigned int &epoch)
+        : Singleton(configuration),
+          varythreads(std::vector<Thread *>(configuration.getBreederConfiguration().threads))
 {
-    variation_tree = session.getVariationTree();
+    this->variation_tree = variation_tree;
     unsigned int onset  = 0;
-    unsigned int offset = session.getProblem().getPopsize() / session.getVarythreads();
+    unsigned int offset = configuration.getProblemConfiguration().popsize / configuration.getBreederConfiguration().threads;
     for (unsigned int k = 0; k < varythreads.size() - 1; k++) {
         varythreads.at(k) = new Thread(onset, offset, epoch);
         onset += offset;
     }
-    varythreads.at(varythreads.size() - 1) = new Thread(onset, session.getProblem().getPopsize() - onset , epoch);
+    varythreads.at(varythreads.size() - 1) = new Thread(onset, configuration.getProblemConfiguration().popsize - onset , epoch);
 }
 
 Breeder::~Breeder() {
-    for (auto *varythread : varythreads) {
-        delete(varythread);
-    }
+    std::vector<Thread *>().swap(varythreads);
 }
 
 std::vector<Individual *> * Breeder::breedPopulation(Population &pop) const {

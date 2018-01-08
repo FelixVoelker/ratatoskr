@@ -1,6 +1,6 @@
 #include "EvolutionaryNetwork.h"
 
-EvolutionaryNetwork::EvolutionaryNetwork(const Session &session) : Singleton(session) {
-    learning_rate = session.getLearningRate();
-    discount_factor = session.getDiscountFactor();
+EvolutionaryNetwork::EvolutionaryNetwork(Configuration &configuration) : Singleton(configuration) {
+    discount_factor = configuration.getEvolutionaryNetworkConfiguration().discount_factor;
+    learning_rate = configuration.getEvolutionaryNetworkConfiguration().learning_rate;
 }

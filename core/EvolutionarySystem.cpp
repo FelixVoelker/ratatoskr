@@ -1,18 +1,22 @@
 #include <iostream>
 #include "EvolutionarySystem.h"
 
-EvolutionarySystem::EvolutionarySystem(Session &session)
-        : population(Population(session)),
-          initializer(Initializer(session, epoch)),
-          evaluator(Evaluator(session, epoch)),
-          breeder(Breeder(session, epoch)),
-          statistics(Statistics(session)),
-          replayer(Replayer(session))
+EvolutionarySystem::EvolutionarySystem(Configuration &configuration,
+                                       Builder *builder,
+                                       std::function<void(Individual &, Thread &)> &eval,
+                                       EvolutionaryNetwork *network,
+                                       BreedingOperator *variation_tree)
+        : population(Population(configuration)),
+          initializer(Initializer(configuration, builder, epoch)),
+          evaluator(Evaluator(configuration, eval, network, epoch)),
+          breeder(Breeder(configuration, variation_tree, epoch)),
+          statistics(Statistics(configuration)),
+          replayer(Replayer(configuration, network))
 {
-    complete = session.isComplete();
-    epochs = session.getEpochs();
-    episodes = session.getEpisodes();
-    generations = session.getGenerations();
+    complete = configuration.getEvolutionarySystemConfiguration().complete;
+    epochs = configuration.getEvolutionarySystemConfiguration().epochs;
+    episodes = configuration.getEvolutionarySystemConfiguration().episodes;
+    generations = configuration.getEvolutionarySystemConfiguration().generations;
 }
 
 void EvolutionarySystem::run() {
@@ -21,7 +25,7 @@ void EvolutionarySystem::run() {
         std::cout << "Starting epoch " << epoch << "..." << std::endl;
         for (unsigned int episode = 0; episode < episodes; episode++) {
             if (episode % 250 == 0) {
-                std::cout << "Epoch " << epoch << ": " << episodes - episode << " getEpisodes left." << std::endl;
+                std::cout << "Epoch " << epoch << ": " << episodes - episode << " episodes left." << std::endl;
             }
             evolve();
         }

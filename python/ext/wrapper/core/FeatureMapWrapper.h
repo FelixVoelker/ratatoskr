@@ -17,7 +17,7 @@ using namespace boost::python;
 class FeatureMapWrapper : public FeatureMap, public wrapper<FeatureMap> {
 
 public:
-    explicit FeatureMapWrapper(boost::shared_ptr<Session> session);
+    explicit FeatureMapWrapper(Configuration &configuration);
 
     FeatureMap * clone() const override;
 };

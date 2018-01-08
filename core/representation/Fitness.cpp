@@ -1,6 +1,6 @@
 #include "Fitness.h"
 
-Fitness::Fitness(const Session &session) : Prototype(session) {}
+Fitness::Fitness(Configuration &configuration) : Prototype(configuration) {}
 
 bool Fitness::isIdeal() const {
     return fitness == 0;

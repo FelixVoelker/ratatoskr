@@ -24,7 +24,7 @@ BOOST_PYTHON_MODULE(ndga) {
             .def_readwrite("genes", &NDGAProblem::genes)
             .def("evaluate", pure_virtual(&NDGAProblem::evaluate));
 
-    class_<NDGASession, bases<Session>>("NDGASession", init<NDGAProblem &>())
+    class_<NDGASession, bases<Configuration>>("NDGASession", init<NDGAProblem &>())
             .def_readwrite("mutationrate", &NDGASession::mutation_rate)
             .def_readwrite("xoverrate", &NDGASession::xover_rate);
 

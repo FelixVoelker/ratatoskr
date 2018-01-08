@@ -1,7 +1,7 @@
 #include "VariationSourceWrapper.h"
 
-VariationSourceWrapper::VariationSourceWrapper(boost::shared_ptr<Session> session)
-        : VariationSource(*session) {}
+VariationSourceWrapper::VariationSourceWrapper(Configuration &configuration)
+        : VariationSource(configuration) {}
 
 unsigned long VariationSourceWrapper::expectedSources() const {
     return this->get_override("expectedSources")();

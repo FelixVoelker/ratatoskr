@@ -16,7 +16,7 @@
 class Statistics {
 
 public:
-    explicit Statistics(Session &session);
+    explicit Statistics(Configuration &configuration);
     ~Statistics();
 
     /**

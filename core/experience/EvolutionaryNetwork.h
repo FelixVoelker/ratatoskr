@@ -13,7 +13,7 @@
 class EvolutionaryNetwork : public Singleton {
 
 public:
-    explicit EvolutionaryNetwork(const Session &session);
+    explicit EvolutionaryNetwork(Configuration &configuration);
 
     /**
      *

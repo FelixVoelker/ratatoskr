@@ -17,7 +17,7 @@ using namespace boost::python;
 class SelectionOperatorWrapper : public SelectionOperator, public wrapper<SelectionOperator> {
 
 public:
-    explicit SelectionOperatorWrapper(boost::shared_ptr<Session> session);
+    explicit SelectionOperatorWrapper(Configuration &configuration);
 
     Individual * select(std::vector<Individual *> &parents, Thread &thread) const override;
 };

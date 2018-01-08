@@ -17,7 +17,10 @@ using namespace boost::python;
 class IndividualWrapper : public Individual, public wrapper<Individual> {
 
 public:
-    explicit IndividualWrapper(boost::shared_ptr<Session> session);
+    explicit IndividualWrapper(Configuration &configuration,
+                               Cost *cost,
+                               FeatureMap *featuremap,
+                               Fitness *fitness);
 
     std::string toString() override;
 

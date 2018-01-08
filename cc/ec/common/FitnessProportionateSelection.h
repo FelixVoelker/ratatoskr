@@ -15,7 +15,7 @@
 class FitnessProportionateSelection : public SelectionOperator {
 
 public:
-    explicit FitnessProportionateSelection(const Session &session);
+    explicit FitnessProportionateSelection(const Configuration &session);
 
     /**
      * Selects an individual according to its index that is sampled from a fitness dependent probability distribution.

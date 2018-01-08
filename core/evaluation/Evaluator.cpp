@@ -1,18 +1,21 @@
 #include "Evaluator.h"
 
-Evaluator::Evaluator(const Session &session, unsigned int &epoch)
-        : Singleton(session),
-          evalthreads(std::vector<Thread *>(session.getEvalthreads())),
-          problem(session.getProblem()),
-          network(session.getNetwork())
+Evaluator::Evaluator(Configuration &configuration,
+                     std::function<void(Individual &, Thread &)> &eval,
+                     EvolutionaryNetwork *network,
+                     unsigned int &epoch)
+        : Singleton(configuration),
+          evalthreads(std::vector<Thread *>(configuration.getEvaluatorConfiguration().threads)),
+          eval(eval),
+          network(network)
 {
     unsigned int onset  = 0;
-    unsigned int offset = session.getProblem().getPopsize() / session.getEvalthreads();
+    unsigned int offset = configuration.getProblemConfiguration().popsize / configuration.getEvaluatorConfiguration().threads;
     for (unsigned int k = 0; k < evalthreads.size() - 1; k++) {
         evalthreads.at(k) = new Thread(onset, offset, epoch);
         onset += offset;
     }
-    evalthreads.at(evalthreads.size() - 1) = new Thread(onset, session.getProblem().getPopsize() - onset , epoch);
+    evalthreads.at(evalthreads.size() - 1) = new Thread(onset, configuration.getProblemConfiguration().popsize - onset , epoch);
 }
 
 Evaluator::~Evaluator() {
@@ -36,7 +39,7 @@ void Evaluator::evaluatePopulation(Population &pop) const {
 
 void Evaluator::evaluateChunk(std::vector<Individual *> &individuals, std::vector<float> costs, Thread &thread) const {
     for (unsigned int k = 0; k < thread.getChunkOffset(); k++) {
-        problem.eval(*individuals.at(k + thread.getChunkOnset()), thread);
+        eval(*individuals.at(k + thread.getChunkOnset()), thread);
         individuals.at(k + thread.getChunkOnset())->getCost().setCost(costs.at(k + thread.getChunkOnset()));
     }
 }

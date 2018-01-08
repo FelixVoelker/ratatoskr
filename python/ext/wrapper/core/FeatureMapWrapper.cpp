@@ -1,6 +1,6 @@
 #include "FeatureMapWrapper.h"
 
-FeatureMapWrapper::FeatureMapWrapper(boost::shared_ptr<Session> session) : FeatureMap(*session) {}
+FeatureMapWrapper::FeatureMapWrapper(Configuration &configuration) : FeatureMap(configuration) {}
 
 FeatureMap* FeatureMapWrapper::clone() const {
     return this->get_override("clone")();

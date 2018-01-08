@@ -14,7 +14,7 @@
 class SimpleEvolutionaryNetwork : public EvolutionaryNetwork {
 
 public:
-    explicit SimpleEvolutionaryNetwork(Session &session);
+    explicit SimpleEvolutionaryNetwork(Configuration &configuration);
 
     std::vector<float> output(std::vector<Individual *> &individuals) const override;
 

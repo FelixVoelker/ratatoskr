@@ -1,18 +1,23 @@
 #include "Problem.h"
 
-Problem::Problem(const unsigned int popsize) {
-    this->popsize = popsize;
+Problem::Problem(std::function<void(Individual &, Thread &)> eval, const unsigned int popsize) {
+    this->eval = eval;
+    this->configuration.popsize = popsize;
 }
 
 Problem::Problem(const Problem &obj) {
-    this->popsize = obj.popsize;
+    this->eval = obj.eval;
+    this->configuration = Configuration::ProblemConfiguration(obj.configuration);
 }
 
-
-unsigned int Problem::getPopsize() const {
-    return popsize;
+std::function<void(Individual &, Thread &)> & Problem::getEval() {
+    return eval;
 }
 
-void Problem::setPopsize(const unsigned int popsize) {
-    this->popsize = popsize;
+Configuration::ProblemConfiguration & Problem::getConfiguration() {
+    return configuration;
+}
+
+void Problem::setEval(std::function<void(Individual &, Thread &)> eval) {
+    this->eval = eval;
 }

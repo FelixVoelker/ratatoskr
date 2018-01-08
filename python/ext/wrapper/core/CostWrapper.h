@@ -18,7 +18,7 @@ using namespace boost::python;
 class CostWrapper : public Cost, public wrapper<Cost> {
 
 public:
-    explicit CostWrapper(boost::shared_ptr<Session> session);
+    explicit CostWrapper(Configuration &configuration);
 
     bool operator<(const Cost &other) const override;
     bool default_lt(const Cost &other) const;

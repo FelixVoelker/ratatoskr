@@ -2,7 +2,7 @@
 #include "NDGAProblem.h"
 #include "BitVectorIndividual.h"
 
-TransitionTable::TransitionTable(const Session &session) : EvolutionaryNetwork(session) {
+TransitionTable::TransitionTable(const Configuration &session) : EvolutionaryNetwork(session) {
     auto problem = dynamic_cast<NDGAProblem &>(session.getProblem());
     lookup_table = new std::vector<std::vector<float>>(
             session.getProblem().getPopsize(),

@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 //#include "problem/ndga/OneMaxProblem.h"
 //#include "ec/ndga/NDGASession.h"
 //#include "../core/EvolutionarySystem.h"

@@ -15,7 +15,7 @@
 class Prototype : public Singleton {
 
 public:
-    explicit Prototype(const Session &session) : Singleton(session) {};
+    explicit Prototype(Configuration &configuration) : Singleton(configuration) {};
 
     /**
      * Returns a copy of the calling object.

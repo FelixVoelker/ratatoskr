@@ -16,7 +16,7 @@
 class Population : public Singleton {
 
 public:
-    explicit Population(const Session &session);
+    explicit Population(Configuration &configuration);
     ~Population();
 
     /**

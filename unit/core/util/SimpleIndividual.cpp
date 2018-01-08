@@ -2,7 +2,10 @@
 
 #include <utility>
 
-SimpleIndividual::SimpleIndividual(Session &session) : Individual(session) {}
+SimpleIndividual::SimpleIndividual(Configuration &configuration, Cost *cost, FeatureMap *featuremap, Fitness *fitness)
+        : Individual(configuration, cost, featuremap, fitness)
+{
+}
 
 std::string SimpleIndividual::toString() { return label; }
 

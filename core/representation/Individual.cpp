@@ -1,9 +1,11 @@
 #include "Individual.h"
 
-Individual::Individual(const Session &session) : Prototype(session) {
-    cost = session.getCost();
-    featuremap = session.getFeaturemap();
-    fitness = session.getFitness();
+Individual::Individual(Configuration &configuration, Cost *cost, FeatureMap *featuremap, Fitness *fitness)
+        : Prototype(configuration)
+{
+    this->cost = cost;
+    this->featuremap = featuremap;
+    this->fitness = fitness;
 }
 
 Individual::~Individual() {

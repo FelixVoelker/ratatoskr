@@ -9,7 +9,7 @@
 #include "BitVectorCrossover.h"
 #include "../common/FitnessProportionateSelection.h"
 
-NDGASession::NDGASession(const NDGAProblem &problem) : Session(problem) {
+NDGASession::NDGASession(const NDGAProblem &problem) : Configuration(problem) {
     fitness = new Fitness(*this);
     cost = new Cost(*this);
     featuremap = new FeatureVector(*this);

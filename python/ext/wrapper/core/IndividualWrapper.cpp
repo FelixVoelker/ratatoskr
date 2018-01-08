@@ -1,6 +1,12 @@
 #include "IndividualWrapper.h"
 
-IndividualWrapper::IndividualWrapper(boost::shared_ptr<Session> session) : Individual(*session) {}
+IndividualWrapper::IndividualWrapper(Configuration &configuration,
+                                     Cost *cost,
+                                     FeatureMap *featuremap,
+                                     Fitness *fitness)
+        : Individual(configuration, cost, featuremap, fitness)
+{
+}
 
 std::string IndividualWrapper::toString() {
     return this->get_override("toString")();

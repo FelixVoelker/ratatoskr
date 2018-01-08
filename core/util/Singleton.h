@@ -2,7 +2,7 @@
 #define RATATOSKR_SINGLETON_H
 
 
-#include "../Session.h"
+#include "../Configuration.h"
 
 /**
  * Represents the basic interface for all components of the evolutionary system.
@@ -16,9 +16,9 @@ class Singleton {
 public:
     /**
      * Initializes a component according to a given session.
-     * @param session The session to be run by the evolutionary system.
+     * @param configuration The session to be run by the evolutionary system.
      */
-    explicit Singleton(const Session &session) {}
+    explicit Singleton(Configuration &configuration) {}
 
 };
 

@@ -38,7 +38,7 @@ protected:
     }
 
 public:
-    explicit IdentitySelectionOne(Session &session) : SelectionOperator(session) {}
+    explicit IdentitySelectionOne(Configuration &session) : SelectionOperator(session) {}
 
 };
 
@@ -52,7 +52,7 @@ protected:
     }
 
 public:
-    explicit IdentitySelectionTwo(Session &session) : SelectionOperator(session) {}
+    explicit IdentitySelectionTwo(Configuration &session) : SelectionOperator(session) {}
 
 };
 

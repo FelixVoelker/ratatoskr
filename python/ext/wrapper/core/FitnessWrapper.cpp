@@ -1,6 +1,6 @@
 #include "FitnessWrapper.h"
 
-FitnessWrapper::FitnessWrapper(boost::shared_ptr<Session> session) : Fitness(*session) {}
+FitnessWrapper::FitnessWrapper(Configuration &configuration) : Fitness(configuration) {}
 
 bool FitnessWrapper::isIdeal() const {
     if (override isIdeal = this->get_override("isIdeal"))

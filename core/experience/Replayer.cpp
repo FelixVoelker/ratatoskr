@@ -1,7 +1,7 @@
 #include "Replayer.h"
 
-Replayer::Replayer(const Session &session) : Singleton(session) {
-    network = session.getNetwork();
+Replayer::Replayer(Configuration &configuration, EvolutionaryNetwork *network) : Singleton(configuration) {
+    this->network = network;
 }
 
 void Replayer::replay(Population &pop, std::vector<Individual *> &offsprings) const {

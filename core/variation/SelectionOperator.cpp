@@ -1,6 +1,6 @@
 #include "SelectionOperator.h"
 
-SelectionOperator::SelectionOperator(Session &session) : VariationSource(session) {}
+SelectionOperator::SelectionOperator(Configuration &configuration) : VariationSource(configuration) {}
 
 unsigned long SelectionOperator::expectedSources() const {
     return 0;

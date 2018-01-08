@@ -14,7 +14,7 @@
 class SimpleBuilder : public Builder {
 
 public:
-    explicit SimpleBuilder(Session &session);
+    explicit SimpleBuilder(Configuration &configuration, Individual *individual);
 
 protected:
     void initialize(Individual &ind) const override;

@@ -1,12 +1,11 @@
 #include <iostream>
 #include "VariationSource.h"
 
-VariationSource::VariationSource(const Session &session) : Singleton(session) {}
+VariationSource::VariationSource(Configuration &configuration) : Singleton(configuration) {}
 
 VariationSource::~VariationSource() {
     if (initialized) {
-        for (auto source : sources)
-            delete source;
+        std::vector<VariationSource *>().swap(sources);
     }
 }
 

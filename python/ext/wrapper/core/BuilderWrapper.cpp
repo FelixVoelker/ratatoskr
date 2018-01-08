@@ -1,6 +1,6 @@
 #include "BuilderWrapper.h"
 
-BuilderWrapper::BuilderWrapper(boost::shared_ptr<Session> session) : Builder(*session) {}
+BuilderWrapper::BuilderWrapper(Configuration &configuration, Individual *prototype) : Builder(configuration, prototype) {}
 
 void BuilderWrapper::initialize(Individual &ind) const {
     this->get_override("initialize")();

@@ -6,7 +6,7 @@ std::vector<Individual *>& SimpleBreedingOperator::breed(std::vector<Individual 
     return *offsprings;
 }
 
-SimpleBreedingOperator::SimpleBreedingOperator(Session &session) : BreedingOperator(session) {}
+SimpleBreedingOperator::SimpleBreedingOperator(Configuration &configuration) : BreedingOperator(configuration) {}
 
 unsigned long SimpleBreedingOperator::expectedSources() const {
     return 1;

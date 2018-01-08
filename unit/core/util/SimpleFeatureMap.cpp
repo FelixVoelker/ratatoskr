@@ -1,6 +1,6 @@
 #include "SimpleFeatureMap.h"
 
-SimpleFeatureMap::SimpleFeatureMap(Session &session) : FeatureMap(session) {}
+SimpleFeatureMap::SimpleFeatureMap(Configuration &configuration) : FeatureMap(configuration) {}
 
 SimpleFeatureMap * SimpleFeatureMap::clone() const {
     return new SimpleFeatureMap(*this);

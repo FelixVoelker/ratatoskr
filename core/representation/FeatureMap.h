@@ -18,7 +18,7 @@
 class FeatureMap : public Prototype {
 
 public:
-    explicit FeatureMap(const Session &session);
+    explicit FeatureMap(Configuration &configuration);
 
     virtual FeatureMap * clone() const = 0;
 };

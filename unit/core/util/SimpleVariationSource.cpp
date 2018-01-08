@@ -1,8 +1,8 @@
 #include "SimpleVariationSource.h"
 #include "SimpleIndividual.h"
 
-SimpleVariationSource::SimpleVariationSource(Session &session)
-        : VariationSource(session) {}
+SimpleVariationSource::SimpleVariationSource(Configuration &configuration)
+        : VariationSource(configuration) {}
 
 unsigned long SimpleVariationSource::expectedSources() const { return 0; }
 

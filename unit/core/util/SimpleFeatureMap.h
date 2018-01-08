@@ -14,7 +14,7 @@
 class SimpleFeatureMap : public FeatureMap {
 
 public:
-    explicit SimpleFeatureMap(Session &session);
+    explicit SimpleFeatureMap(Configuration &configuration);
 
     SimpleFeatureMap * clone() const override;
 

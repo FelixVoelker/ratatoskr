@@ -4,6 +4,7 @@
 
 #include "Builder.h"
 #include "../representation/Population.h"
+#include "../util/Thread.h"
 
 /**
  * The core module that drives the initialization phase of an Neuro-Dynamic Evolutionary Algorithm (NDEA).
@@ -17,7 +18,7 @@
 class Initializer : public Singleton {
 
 public:
-    explicit Initializer(const Session &session, unsigned int &epoch);
+    explicit Initializer(Configuration &configuration, Builder *builder, unsigned int &epoch);
     ~Initializer();
 
     /**

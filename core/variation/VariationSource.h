@@ -21,7 +21,7 @@
 class VariationSource : public Singleton {
 
 public:
-    explicit VariationSource(const Session &session);
+    explicit VariationSource(Configuration &configuration);
     ~VariationSource();
 
     /**

@@ -16,7 +16,8 @@
 class Builder : public Singleton {
 
 public:
-    explicit Builder(const Session &session);
+    explicit Builder(Configuration &configuration, Individual *prototype);
+    ~Builder();
 
     /**
      * Builds a new individual by cloning the prototype then initializing it.

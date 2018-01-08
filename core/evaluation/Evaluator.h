@@ -2,8 +2,10 @@
 #define RATATOSKR_EVALUATOR_H
 
 
+#include <functional>
 #include "../experience/EvolutionaryNetwork.h"
 #include "../representation/Population.h"
+#include "../util/Thread.h"
 
 /**
  * The core module that drives the evaluation phase of an Neuro-Dynamic Evolutionary Algorithm (NDEA). This evaluation
@@ -17,7 +19,10 @@
 class Evaluator : public Singleton {
 
 public:
-    explicit Evaluator(const Session &session, unsigned int &epoch);
+    explicit Evaluator(Configuration &configuration,
+                       std::function<void(Individual &, Thread &)> &eval,
+                       EvolutionaryNetwork *network,
+                       unsigned int &epoch);
     ~Evaluator();
 
     /**
@@ -30,7 +35,7 @@ protected:
     std::vector<Thread *> evalthreads;
 
     /** Components */
-    Problem &problem;
+    std::function<void(Individual &, Thread &)> &eval;
     EvolutionaryNetwork *network;
 
     /**

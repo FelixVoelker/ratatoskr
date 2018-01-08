@@ -16,7 +16,7 @@
 class SelectionOperator : public VariationSource {
 
 public:
-    explicit SelectionOperator(Session &session);
+    explicit SelectionOperator(Configuration &configuration);
 
 protected:
     unsigned long expectedSources() const override;

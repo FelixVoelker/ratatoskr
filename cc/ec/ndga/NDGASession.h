@@ -2,7 +2,7 @@
 #define NDEC_NDGA_H
 
 #include "NDGAProblem.h"
-#include "../../../core/Session.h"
+#include "../../../core/Configuration.h"
 
 
 /**
@@ -13,7 +13,7 @@
  * @version 0.1
  * @since   12.7.2017
  */
-class NDGASession : public Session {
+class NDGASession : public Configuration {
 
 public:
     double xover_rate = 0.7;

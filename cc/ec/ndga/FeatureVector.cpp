@@ -2,12 +2,8 @@
 
 FeatureVector::FeatureVector(const NDGASession &session) : FeatureMap(session) {}
 
-vector<float> FeatureVector::compute(vector<unsigned int> &chromosome) const {
-    vector<float> features(chromosome.size());
-    for (int k = 0; k < chromosome.size(); k++) {
-        features.at(k) = chromosome.at(k);
-    }
-    return features;
+std::vector<float> & FeatureVector::compute(std::vector<float> &chromosome) const {
+    return chromosome;
 }
 
 FeatureVector * FeatureVector::clone() const {

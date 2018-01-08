@@ -14,7 +14,7 @@
 class SimpleVariationSource : public VariationSource {
 
 public:
-    explicit SimpleVariationSource(Session &session);
+    explicit SimpleVariationSource(Configuration &configuration);
 
 protected:
     unsigned long expectedSources() const override;

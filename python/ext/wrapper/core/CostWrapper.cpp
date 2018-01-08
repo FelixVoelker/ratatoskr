@@ -1,6 +1,6 @@
 #include "CostWrapper.h"
 
-CostWrapper::CostWrapper(boost::shared_ptr<Session> session) : Cost(*session) {}
+CostWrapper::CostWrapper(Configuration &configuration) : Cost(configuration) {}
 
 bool CostWrapper::operator<(const Cost &other) const {
     if (override o = this->get_override("operator<"))

@@ -1,12 +1,12 @@
 #include "Statistics.h"
 
-Statistics::Statistics(Session &session) {
-    episodes = session.getEpisodes();
+Statistics::Statistics(Configuration &configuration) {
+    episodes = configuration.getEvolutionarySystemConfiguration().episodes;
 
-    auto f = std::vector<float>(session.getGenerations() + 1, 0);
-    best_fitnesses = std::vector<std::vector<float>>(session.getEpochs(), f);
-    average_fitnesses = std::vector<std::vector<float>>(session.getEpochs(), f);
-    worst_fitnesses = std::vector<std::vector<float>>(session.getEpochs(), f);
+    auto f = std::vector<float>(configuration.getEvolutionarySystemConfiguration().generations + 1, 0);
+    best_fitnesses = std::vector<std::vector<float>>(configuration.getEvolutionarySystemConfiguration().epochs, f);
+    average_fitnesses = std::vector<std::vector<float>>(configuration.getEvolutionarySystemConfiguration().epochs, f);
+    worst_fitnesses = std::vector<std::vector<float>>(configuration.getEvolutionarySystemConfiguration().epochs, f);
 }
 
 Statistics::~Statistics() {

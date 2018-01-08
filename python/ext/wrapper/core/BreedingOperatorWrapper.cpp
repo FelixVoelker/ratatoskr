@@ -1,6 +1,6 @@
 #include "BreedingOperatorWrapper.h"
 
-BreedingOperatorWrapper::BreedingOperatorWrapper(boost::shared_ptr<Session> session) : BreedingOperator(*session) {}
+BreedingOperatorWrapper::BreedingOperatorWrapper(Configuration &configuration) : BreedingOperator(configuration) {}
 
 unsigned long BreedingOperatorWrapper::expectedSources() const {
     return this->get_override("expectedSources")();

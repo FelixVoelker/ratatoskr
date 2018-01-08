@@ -1,7 +1,7 @@
 #include <iostream>
 #include "BreedingOperator.h"
 
-BreedingOperator::BreedingOperator(Session &session) : VariationSource(session) {}
+BreedingOperator::BreedingOperator(Configuration &configuration) : VariationSource(configuration) {}
 
 void BreedingOperator::setup(std::vector<VariationSource *> &sources) {
     try {

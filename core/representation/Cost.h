@@ -16,7 +16,7 @@
 class Cost : public Prototype {
 
 public:
-    explicit Cost(const Session &session);
+    explicit Cost(Configuration &configuration);
 
     /**
      * Computes the error value for the TD-Learning update rule.

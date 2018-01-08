@@ -12,7 +12,7 @@
 class TransitionTable : public EvolutionaryNetwork {
 
 public:
-    explicit TransitionTable(const Session &session);
+    explicit TransitionTable(const Configuration &session);
     ~TransitionTable();
 
     std::vector<float> output(std::vector<Individual *> &individuals) const override;

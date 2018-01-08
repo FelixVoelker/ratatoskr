@@ -3,8 +3,6 @@
 
 #include <catch.hpp>
 #include "util/SimpleBuilder.h"
-#include "util/SimpleProblem.h"
-#include "util/SimpleSession.h"
 #include "../../core/representation/Population.h"
 #include "util/SimpleVariationSource.h"
 #include "util/SimpleIndividual.h"
@@ -15,24 +13,32 @@
 #include "../../core/variation/Breeder.h"
 #include "../../core/statistics/Statistics.h"
 #include "../../core/EvolutionarySystem.h"
+#include "util/SimpleFeatureMap.h"
+#include "util/SimpleEvolutionaryNetwork.h"
+#include "../../core/evaluation/Problem.h"
+#include "../../core/Session.h"
 
 /**
  * Unit tests for the core functionality of an evolutionary system.
  *
  * @author  Felix Voelker
  * @version 0.0.2
- * @since   28.12.2017
+ * @since   8.1.2018
  */
 TEST_CASE("Core", "[core]") {
-    auto problem = new SimpleProblem(1);
-    auto session = new SimpleSession(*problem);
+    std::function<void(Individual &, Thread &)> eval = [](Individual &individual, Thread &thread) {
+        individual.getFitness().setFitness(1);
+    };
+    auto *problem = new Problem(eval, 1);
+    auto *session = new Session(*problem);
+    auto &configuration = session->getConfiguration();
 
     SECTION("Cost") {
-        auto *c1 = new Cost(*session);
+        auto *c1 = new Cost(configuration);
         c1->setCost(2);
-        auto *c2 = new Cost(*session);
+        auto *c2 = new Cost(configuration);
         c2->setCost(5);
-        auto *c3 = new Cost(*session);
+        auto *c3 = new Cost(configuration);
         c3->setCost(0);
 
         SECTION("Checking computation of error...") {
@@ -60,11 +66,11 @@ TEST_CASE("Core", "[core]") {
     }
 
     SECTION("Fitness") {
-        auto *f1 = new Fitness(*session);
+        auto *f1 = new Fitness(configuration);
         f1->setFitness(2);
-        auto *f2 = new Fitness(*session);
+        auto *f2 = new Fitness(configuration);
         f2->setFitness(5);
-        auto *f3 = new Fitness(*session);
+        auto *f3 = new Fitness(configuration);
         f3->setFitness(0);
 
         SECTION("Checking optimality of fitnesses...") {
@@ -91,27 +97,30 @@ TEST_CASE("Core", "[core]") {
         delete f3;
     }
 
+    auto *cost = new Cost(configuration);
+    auto *featuremap = new SimpleFeatureMap(configuration);
+    auto *fitness = new Fitness(configuration);
+    auto *individual = new SimpleIndividual(configuration, cost, featuremap, fitness);
     SECTION("Individual") {
-        auto *i1 = session->getIndividual();
-        i1->getFitness().setFitness(2.5);
-        i1->getCost().setCost(5);
+        individual->getFitness().setFitness(2.5);
+        individual->getCost().setCost(5);
 
         SECTION("Checking computation of relevance...") {
-            REQUIRE(i1->relevance(-1) == static_cast<float>(1 / (1 + 2.5)));
-            REQUIRE(i1->relevance(0.5) == static_cast<float>(1 / (1 + 3.75)));
-            REQUIRE(i1->relevance(2) == static_cast<float>(1 / (1 + 5.0)));
+            REQUIRE(individual->relevance(-1) == static_cast<float>(1 / (1 + 2.5)));
+            REQUIRE(individual->relevance(0.5) == static_cast<float>(1 / (1 + 3.75)));
+            REQUIRE(individual->relevance(2) == static_cast<float>(1 / (1 + 5.0)));
         }
 
         SECTION("Checking cloning...") {
-            auto *ic = i1->clone();
-            REQUIRE(i1 != ic);
-            REQUIRE(i1->getCost().getCost() == ic->getCost().getCost());
-            REQUIRE(i1->getFitness().getFitness() == ic->getFitness().getFitness());
-            delete ic;
+            auto *copy = individual->clone();
+            REQUIRE(individual != copy);
+            REQUIRE(individual->getCost().getCost() == copy->getCost().getCost());
+            REQUIRE(individual->getFitness().getFitness() == copy->getFitness().getFitness());
+            delete copy;
         }
     }
 
-    auto *builder = session->getBuilder();
+    auto *builder = new SimpleBuilder(configuration, individual);
     SECTION("Builder") {
         auto *ind = builder->build();
 
@@ -122,9 +131,9 @@ TEST_CASE("Core", "[core]") {
         delete ind;
     }
 
+    problem->getConfiguration().popsize = 3;
+    auto *pop = new Population(configuration);
     SECTION("Population") {
-        session->getProblem().setPopsize(3);
-        auto *pop = new Population(*session);
         pop->getIndividuals().at(0) = builder->build();
         pop->getIndividuals().at(1) = builder->build();
         pop->getIndividuals().at(2) = builder->build();
@@ -160,14 +169,11 @@ TEST_CASE("Core", "[core]") {
             REQUIRE(average->getFitness().getFitness() == 2.5);
             delete average;
         }
-
-        delete pop;
     }
 
     unsigned int epoch = 0;
+    auto *thread = new Thread(0, 3, epoch);
     SECTION("Thread") {
-        auto t = new Thread(0, 3, epoch);
-
         SECTION("Checking sampling from uniform distribution...") {
             std::vector<unsigned int> counts = std::vector<unsigned int>(3);
             counts.at(0) = 0;
@@ -175,7 +181,7 @@ TEST_CASE("Core", "[core]") {
             counts.at(2) = 0;
 
             for (unsigned int k = 1; k <= 1000; k++) {
-                counts.at(t->random.sampleIntFromUniformDistribution(3)) += 1;
+                counts.at(thread->random.sampleIntFromUniformDistribution(3)) += 1;
             }
 
             unsigned int tolerance = 100;
@@ -197,111 +203,105 @@ TEST_CASE("Core", "[core]") {
             counts.at(2) = 0;
 
             for (unsigned int k = 1; k <= 1000; k++) {
-                counts.at(t->random.sampleIntFromDiscreteDistribution(weights)) += 1;
+                counts.at(thread->random.sampleIntFromDiscreteDistribution(weights)) += 1;
             }
 
             REQUIRE(counts.at(0) > counts.at(1));
             REQUIRE(counts.at(1) > counts.at(2));
         }
-
-        delete t;
     }
 
-    session->getProblem().setPopsize(3);
+    configuration.getInitializerConfiguration().threads = 2;
+    auto *initializer = new Initializer(configuration, builder, epoch);
+    initializer->initializePopulation(*pop);
+    SECTION("Initializer") {
+        SECTION("Initializating a population...") {
+            REQUIRE(pop->getIndividuals().at(0)->toString() == "passed");
+            REQUIRE(pop->getIndividuals().at(1)->toString() == "passed");
+            REQUIRE(pop->getIndividuals().at(2)->toString() == "passed");
+        }
+    }
+
+    configuration.getEvaluatorConfiguration().threads = 2;
+    auto *network = new SimpleEvolutionaryNetwork(configuration);
+    auto *evaluator = new Evaluator(configuration, eval, network, epoch);
+    SECTION("Evaluator") {
+        SECTION("Evaluating a population...") {
+            evaluator->evaluatePopulation(*pop);
+            REQUIRE(pop->getIndividuals().at(0)->getFitness().getFitness() == 1);
+            REQUIRE(pop->getIndividuals().at(1)->getFitness().getFitness() == 1);
+            REQUIRE(pop->getIndividuals().at(2)->getFitness().getFitness() == 1);
+        }
+    }
+
+
     SECTION("VariationSource") {
-        auto *vs = new SimpleVariationSource(*session);
+        auto *vs = new SimpleVariationSource(configuration);
         vs->setup(*new std::vector<VariationSource *>(0));
 
-        auto *t = new Thread(0, 3, epoch);
         SECTION("Checking workflow...") {
-            auto *pop = new Population(*session);
-            pop->getIndividuals().at(0) = builder->build();
-            pop->getIndividuals().at(1) = builder->build();
-            pop->getIndividuals().at(2) = builder->build();
             std::vector<Individual *> parents = pop->getIndividuals();
-            std::vector<Individual *> offsprings = vs->vary(parents, *t);
+            std::vector<Individual *> offsprings = vs->vary(parents, *thread);
             REQUIRE(dynamic_cast<SimpleIndividual *>(offsprings.at(0))->toString() == "bred");
-            delete pop;
         }
 
         delete vs;
-        delete t;
     }
 
+    auto *so = new SimpleSelectionOperator(configuration);
+    so->setup(*new std::vector<VariationSource *>(0));
     SECTION("SelectionOperator") {
-        auto *so = new SimpleSelectionOperator(*session);
-        so->setup(*new std::vector<VariationSource *>(0));
-
-        auto *t = new Thread(0, 3, epoch);
         SECTION("Checking selection...") {
-            auto *pop = new Population(*session);
-            pop->getIndividuals().at(0) = builder->build();
-            pop->getIndividuals().at(1) = builder->build();
-            pop->getIndividuals().at(2) = builder->build();
             std::vector<Individual *> parents = pop->getIndividuals();
             dynamic_cast<SimpleIndividual *>(parents.at(0))->setLabel("first");
             dynamic_cast<SimpleIndividual *>(parents.at(1))->setLabel("second");
             dynamic_cast<SimpleIndividual *>(parents.at(2))->setLabel("third");
-            std::vector<Individual *> offsprings = so->vary(parents, *t);
+            std::vector<Individual *> offsprings = so->vary(parents, *thread);
             REQUIRE(offsprings.size() == 1);
             REQUIRE(dynamic_cast<SimpleIndividual *>(offsprings.at(0))->toString() == "first");
-            delete pop;
         }
-
-        delete so;
-        delete t;
     }
 
+    auto *bo = new SimpleBreedingOperator(configuration);
+    bo->setup(*new std::vector<VariationSource *> = { so });
     SECTION("BreedingOperator") {
-        auto *so = new SimpleSelectionOperator(*session);
-        so->setup(*new std::vector<VariationSource *>(0));
-        auto *bo = new SimpleBreedingOperator(*session);
-        bo->setup(*new std::vector<VariationSource *> = { so });
-        auto *t = new Thread(0, 3, epoch);
-
         SECTION("Checking breeding...") {
-            auto *pop = new Population(*session);
-            pop->getIndividuals().at(0) = builder->build();
-            pop->getIndividuals().at(1) = builder->build();
-            pop->getIndividuals().at(2) = builder->build();
             std::vector<Individual *> parents = pop->getIndividuals();
             dynamic_cast<SimpleIndividual *>(parents.at(0))->setLabel("first");
             dynamic_cast<SimpleIndividual *>(parents.at(1))->setLabel("second");
             dynamic_cast<SimpleIndividual *>(parents.at(2))->setLabel("third");
-            std::vector<Individual *> offsprings = bo->vary(parents, *t);
+            std::vector<Individual *> offsprings = bo->vary(parents, *thread);
             REQUIRE(offsprings.at(0) != parents.at(0));
             REQUIRE(dynamic_cast<SimpleIndividual *>(offsprings.at(0))->toString() == "first");
-            delete pop;
         }
-
-        delete bo;
-        delete t;
     }
 
-    SECTION("Problem") {
-        auto *individual = session->getIndividual()->clone();
-        auto *t = new Thread(0, 1, epoch);
-
-        SECTION("Evaluating an individual...") {
-            problem->eval(*individual, *t);
-            REQUIRE(individual->getFitness().getFitness() == 1);
+    configuration.getBreederConfiguration().threads = 2;
+    auto *breeder = new Breeder(configuration, bo, epoch);
+    SECTION("Breeder") {
+        dynamic_cast<SimpleIndividual *>(pop->getIndividuals().at(0))->setLabel("first");
+        SECTION("Variating a population...") {
+            auto *offsprings = breeder->breedPopulation(*pop);
+            REQUIRE(offsprings->at(0) != pop->getIndividuals().at(0));
+            REQUIRE(offsprings->at(0)->toString() == pop->getIndividuals().at(0)->toString());
+            REQUIRE(offsprings->at(1) != pop->getIndividuals().at(1));
+            REQUIRE(offsprings->at(1)->toString() != pop->getIndividuals().at(1)->toString());
+            REQUIRE(offsprings->at(2) != pop->getIndividuals().at(2));
+            REQUIRE(offsprings->at(2)->toString() != pop->getIndividuals().at(2)->toString());
         }
 
-        delete t;
     }
 
+    delete thread;
+    delete initializer;
+    delete evaluator;
+    delete breeder;
+
+    configuration.getEvolutionarySystemConfiguration().epochs = 1;
+    configuration.getEvolutionarySystemConfiguration().episodes = 3;
+    configuration.getEvolutionarySystemConfiguration().generations = 1;
     SECTION("Statistics") {
-        session->getProblem().setPopsize(3);
-        session->setEpochs(1);
-        session->setEpisodes(3);
-        session->setGenerations(1);
-
-        auto *pop = new Population(*session);
-        pop->getIndividuals().at(0) = session->getBuilder()->build();
-        pop->getIndividuals().at(1) = session->getBuilder()->build();
-        pop->getIndividuals().at(2) = session->getBuilder()->build();
-
-        auto *statistics = new Statistics(*session);
+        auto *statistics = new Statistics(configuration);
         pop->getIndividuals().at(0)->getFitness().setFitness(0);
         pop->getIndividuals().at(1)->getFitness().setFitness(1.5);
         pop->getIndividuals().at(2)->getFitness().setFitness(8.5);
@@ -328,65 +328,10 @@ TEST_CASE("Core", "[core]") {
         }
 
         delete statistics;
-        delete pop;
     }
-
-    session->setInitthreads(2);
-    session->setEvalthreads(2);
-    session->setVarythreads(2);
-    auto *pop = new Population(*session);
-    auto *initializer = new Initializer(*session, epoch);
-    initializer->initializePopulation(*pop);
-    SECTION("Initializer") {
-        SECTION("Initializating a population...") {
-            REQUIRE(pop->getIndividuals().at(0)->toString() == "passed");
-            REQUIRE(pop->getIndividuals().at(1)->toString() == "passed");
-            REQUIRE(pop->getIndividuals().at(2)->toString() == "passed");
-        }
-    }
-
-    SECTION("Evaluator") {
-        auto *evaluator = new Evaluator(*session, epoch);
-
-        SECTION("Evaluating a population...") {
-            evaluator->evaluatePopulation(*pop);
-            REQUIRE(pop->getIndividuals().at(0)->getFitness().getFitness() == 1);
-            REQUIRE(pop->getIndividuals().at(1)->getFitness().getFitness() == 1);
-            REQUIRE(pop->getIndividuals().at(2)->getFitness().getFitness() == 1);
-        }
-
-        delete evaluator;
-    }
-
-    SECTION("Breeder") {
-        auto *breeder = new Breeder(*session, epoch);
-        dynamic_cast<SimpleIndividual *>(pop->getIndividuals().at(0))->setLabel("first");
-
-        SECTION("Variating a population...") {
-            auto *offsprings = breeder->breedPopulation(*pop);
-            REQUIRE(offsprings->at(0) != pop->getIndividuals().at(0));
-            REQUIRE(offsprings->at(0)->toString() == pop->getIndividuals().at(0)->toString());
-            REQUIRE(offsprings->at(1) != pop->getIndividuals().at(1));
-            REQUIRE(offsprings->at(1)->toString() != pop->getIndividuals().at(1)->toString());
-            REQUIRE(offsprings->at(2) != pop->getIndividuals().at(2));
-            REQUIRE(offsprings->at(2)->toString() != pop->getIndividuals().at(2)->toString());
-        }
-
-        delete breeder;
-    }
-
-    delete initializer;
-    delete pop;
-    delete session;
-    delete problem;
 
     SECTION("EvolutionarySystem") {
-        problem = new SimpleProblem(1);
-        session = new SimpleSession(*problem);
-        session->setEpochs(2);
-        session->setEpisodes(2);
-        session->setGenerations(2);
-        auto system = new EvolutionarySystem(*session);
+        auto *system = new EvolutionarySystem(configuration, builder, eval, network, bo);
 
         SECTION("Running a dummy...") {
             system->run();
@@ -394,8 +339,12 @@ TEST_CASE("Core", "[core]") {
         }
 
         delete system;
-        delete session;
-        delete problem;
     }
 
+    delete bo;
+    delete network;
+    delete builder;
+    delete pop;
+    delete session;
+    delete problem;
 }

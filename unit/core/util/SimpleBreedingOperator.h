@@ -14,7 +14,7 @@
 class SimpleBreedingOperator : public BreedingOperator {
 
 public:
-    explicit SimpleBreedingOperator(Session &session);
+    explicit SimpleBreedingOperator(Configuration &configuration);
 
     std::vector<Individual *> & breed(std::vector<Individual *> &parents, Thread &thread) const override;
 

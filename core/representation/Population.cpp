@@ -1,7 +1,7 @@
 #include "Population.h"
 
-Population::Population(const Session &session) : Singleton(session) {
-    individuals = std::vector<Individual *>(session.getProblem().getPopsize());
+Population::Population(Configuration &configuration) : Singleton(configuration) {
+    individuals = std::vector<Individual *>(configuration.getProblemConfiguration().popsize);
 }
 
 Population::~Population() {

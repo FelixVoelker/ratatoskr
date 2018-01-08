@@ -17,7 +17,7 @@
 class BreedingOperator : public VariationSource {
 
 public:
-    explicit BreedingOperator(Session &session);
+    explicit BreedingOperator(Configuration &configuration);
 
     void setup(std::vector<VariationSource *> &sources) override;
 

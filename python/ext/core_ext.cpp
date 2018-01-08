@@ -6,14 +6,12 @@
 #include "wrapper/core/FeatureMapWrapper.h"
 #include "wrapper/core/FitnessWrapper.h"
 #include "wrapper/core/IndividualWrapper.h"
-#include "wrapper/core/ProblemWrapper.h"
 #include "wrapper/core/SelectionOperatorWrapper.h"
-#include "wrapper/core/SessionWrapper.h"
 #include "wrapper/core/VariationSourceWrapper.h"
-#include "../../core/representation/Population.h"
+#include "../../core/evaluation/Problem.h"
 #include "../../core/statistics/Statistics.h"
-#include "../../core/util/Thread.h"
 #include "../../core/EvolutionarySystem.h"
+#include "../../core/Session.h"
 
 
 using namespace boost::python;
@@ -28,13 +26,13 @@ BOOST_PYTHON_MODULE(core) {
     class_<std::vector<VariationSource *>>("std::vector<VariationSource>")
             .def(vector_indexing_suite<std::vector<VariationSource *>>());
 
-    class_<BuilderWrapper, boost::noncopyable>("Builder", init<boost::shared_ptr<SessionWrapper>>())
+    class_<BuilderWrapper, boost::noncopyable>("Builder", init<Configuration &, Individual *>())
             .def("initialize", pure_virtual(&BuilderWrapper::initialize));
 
-    class_<FeatureMapWrapper, boost::noncopyable>("FeatureMap", init<boost::shared_ptr<SessionWrapper>>())
+    class_<FeatureMapWrapper, boost::noncopyable>("FeatureMap", init<Configuration &>())
             .def("__copy__", pure_virtual(&FeatureMapWrapper::clone), return_value_policy<manage_new_object>());
 
-    class_<FitnessWrapper, boost::noncopyable>("Fitness", init<boost::shared_ptr<SessionWrapper>>())
+    class_<FitnessWrapper, boost::noncopyable>("Fitness", init<Configuration &>())
             .add_property("fitness", &FitnessWrapper::getFitness, &FitnessWrapper::setFitness)
             .def("__copy__", &FitnessWrapper::clone, return_value_policy<manage_new_object>())
             .def("isideal", &FitnessWrapper::isIdeal, &FitnessWrapper::default_isIdeal)
@@ -45,7 +43,7 @@ BOOST_PYTHON_MODULE(core) {
             .def("__eq__", &FitnessWrapper::operator==, &FitnessWrapper::default_eq)
             .def("__neq__", &FitnessWrapper::operator!=, &FitnessWrapper::default_neq);
 
-    class_<CostWrapper, boost::noncopyable>("Cost", init<boost::shared_ptr<SessionWrapper>>())
+    class_<CostWrapper, boost::noncopyable>("Cost", init<Configuration &>())
             .add_property("cost", &CostWrapper::getCost, &CostWrapper::setCost)
             .def("__copy__", &CostWrapper::clone, return_value_policy<manage_new_object>())
             .def("error", &CostWrapper::error)
@@ -56,7 +54,7 @@ BOOST_PYTHON_MODULE(core) {
             .def("__eq__", &CostWrapper::operator==, &CostWrapper::default_eq)
             .def("__neq__", &CostWrapper::operator!=, &CostWrapper::default_neq);
 
-    class_<IndividualWrapper, boost::noncopyable>("Individual", init<boost::shared_ptr<SessionWrapper>>())
+    class_<IndividualWrapper, boost::noncopyable>("Individual", init<Configuration &, Cost *, FeatureMap *, Fitness *>())
             .add_property("evaluated", &IndividualWrapper::isEvaluated, &IndividualWrapper::setEvaluated)
             .def("__copy__", &IndividualWrapper::clone, return_value_policy<manage_new_object>())
             .def("relevance", &IndividualWrapper::relevance)
@@ -65,12 +63,12 @@ BOOST_PYTHON_MODULE(core) {
             .def("getFeaturemap", &IndividualWrapper::getFeaturemap, return_internal_reference<>())
             .def("getFitness", &IndividualWrapper::getFitness, return_internal_reference<>());
 
-    class_<Population>("Population", init<Session &>())
+    class_<Population>("Population", init<Configuration &>())
             .def("bestIndividual", &Population::bestIndividual, return_internal_reference<>())
             .def("averageIndividual", &Population::averageIndividual, return_internal_reference<>())
             .def("worstIndividual", &Population::worstIndividual, return_internal_reference<>());
 
-    class_<Thread>("Thread", init<unsigned int, unsigned int, unsigned int&>())
+    class_<Thread>("Thread", init<unsigned int, unsigned int, unsigned int &>())
             .def_readonly("random", &Thread::random)
             .add_property("chunk_onset", &Thread::getChunkOnset)
             .add_property("chunk_offset", &Thread::getChunkOffset)
@@ -81,48 +79,63 @@ BOOST_PYTHON_MODULE(core) {
             .def("sampleIntFromUniformDistribution", &Thread::Random::sampleIntFromUniformDistribution)
             .def("sampleIntFromDiscreteDistribution", &Thread::Random::sampleIntFromDiscreteDistribution);
 
-    class_<VariationSourceWrapper, boost::noncopyable>("VariationSource", init<boost::shared_ptr<SessionWrapper>>())
+    class_<VariationSourceWrapper, boost::noncopyable>("VariationSource", init<Configuration &>())
             .def("setup", &VariationSourceWrapper::setup)
             .def("expectedSources", pure_virtual(&VariationSourceWrapper::expectedSources))
             .def("perform", pure_virtual(&VariationSourceWrapper::perform));
 
-    class_<SelectionOperatorWrapper, bases<VariationSourceWrapper>, boost::noncopyable>("SelectionOperator", init<boost::shared_ptr<SessionWrapper>>())
+    class_<SelectionOperatorWrapper, bases<VariationSourceWrapper>, boost::noncopyable>("SelectionOperator", init<Configuration &>())
             .def("select", pure_virtual(&SelectionOperatorWrapper::select), return_internal_reference<>());
 
-    class_<BreedingOperatorWrapper, bases<VariationSourceWrapper>, boost::noncopyable>("BreedingOperator", init<boost::shared_ptr<SessionWrapper>>())
+    class_<BreedingOperatorWrapper, bases<VariationSourceWrapper>, boost::noncopyable>("BreedingOperator", init<Configuration &>())
             .def("expectedSources", pure_virtual(&BreedingOperatorWrapper::expectedSources))
             .def("breed", pure_virtual(&BreedingOperatorWrapper::breed), return_internal_reference<>());
 
-    class_<ProblemWrapper, boost::noncopyable>("Problem", init<unsigned int>())
-            .add_property("popsize", &ProblemWrapper::getPopsize, &ProblemWrapper::setPopsize)
-            .def("eval", pure_virtual(&ProblemWrapper::eval));
-
-    class_<SessionWrapper, boost::noncopyable>("Session", init<boost::shared_ptr<ProblemWrapper>>())
-            .add_property("epochs", &SessionWrapper::getEpochs, &SessionWrapper::setEpochs)
-            .add_property("episodes", &SessionWrapper::getEpisodes, &SessionWrapper::setEpisodes)
-            .add_property("generations", &SessionWrapper::getGenerations, &SessionWrapper::setGenerations)
-            .add_property("complete", &SessionWrapper::isComplete, &SessionWrapper::setComplete)
-            .add_property("evalthreads", &SessionWrapper::getEvalthreads, &SessionWrapper::setEvalthreads)
-            .add_property("varythreads", &SessionWrapper::getVarythreads, &SessionWrapper::setVarythreads)
-            .add_property("learning_rate", &SessionWrapper::getLearningRate, &SessionWrapper::setLearningRate)
-            .add_property("discount_factor", &SessionWrapper::getDiscountFactor, &SessionWrapper::setDiscountFactor)
-            .add_property("builder", make_function(&SessionWrapper::getBuilder, return_internal_reference<>()), &SessionWrapper::pyBuilder)
-            .add_property("cost", make_function(&SessionWrapper::getCost, return_internal_reference<>()), &SessionWrapper::pyCost)
-            .add_property("featuremap", make_function(&SessionWrapper::getFeaturemap, return_internal_reference<>()), &SessionWrapper::pyFeaturemap)
-            .add_property("fitness", make_function(&SessionWrapper::getFitness, return_internal_reference<>()), &SessionWrapper::pyFitness)
-            .add_property("individual", make_function(&SessionWrapper::getIndividual, return_internal_reference<>()), &SessionWrapper::pyIndividual)
-            .def("builder", pure_virtual(&SessionWrapper::setBuilder))
-            .def("cost", pure_virtual(&SessionWrapper::setCost))
-            .def("featuremap", pure_virtual(&SessionWrapper::setFeaturemap))
-            .def("fitness", pure_virtual(&SessionWrapper::setFitness))
-            .def("individual", pure_virtual(&SessionWrapper::setIndividual));
-
-    class_<Statistics>("Statistics", init<Session &>())
+    class_<Statistics>("Statistics", init<Configuration &>())
             .def("bestFitnesses", &Statistics::bestFitnesses)
             .def("averageFitnesses", &Statistics::averageFitnesses)
             .def("worstFitnesses", &Statistics::worstFitnesses);
 
-    class_<EvolutionarySystem>("EvolutionarySystem", init<Session &>())
+    class_<EvolutionarySystem>("EvolutionarySystem", init<Configuration &, Builder*, std::function<void(Individual &, Thread &)>&, EvolutionaryNetwork*, BreedingOperator*>())
             .add_property("statistics", make_function(&EvolutionarySystem::getStatistics, return_internal_reference<>()))
             .def("run", &EvolutionarySystem::run);
+
+    class_<Problem>("Problem", init<std::function<void(Individual &, Thread &)>, unsigned int>())
+            .add_property("eval", make_function(&Problem::getEval, return_internal_reference<>()), &Problem::setEval)
+            .add_property("configuration", make_function(&Problem::getConfiguration, return_internal_reference<>()));
+
+    class_<Configuration::ProblemConfiguration>("ProblemConfiguration", init<>())
+            .def_readwrite("popsize", &Configuration::ProblemConfiguration::popsize);
+
+    class_<Configuration::EvolutionarySystemConfiguration>("EvolutionarySystemConfiguration", init<>())
+            .def_readwrite("complete", &Configuration::EvolutionarySystemConfiguration::complete)
+            .def_readwrite("epochs", &Configuration::EvolutionarySystemConfiguration::epochs)
+            .def_readwrite("episodes", &Configuration::EvolutionarySystemConfiguration::episodes)
+            .def_readwrite("generations", &Configuration::EvolutionarySystemConfiguration::generations);
+
+    class_<Configuration::InitializerConfiguration>("InitializerConfiguration", init<>())
+            .def_readwrite("threads", &Configuration::InitializerConfiguration::threads);
+
+    class_<Configuration::EvaluatorConfiguration>("EvaluatorConfiguration", init<>())
+            .def_readwrite("threads", &Configuration::EvaluatorConfiguration::threads);
+
+    class_<Configuration::BreederConfiguration>("BreederConfiguration", init<>())
+            .def_readwrite("threads", &Configuration::BreederConfiguration::threads);
+
+    class_<Configuration::EvolutionaryNetworkConfiguration>("EvolutionaryNetworkConfiguration", init<>())
+            .def_readwrite("discount_factor", &Configuration::EvolutionaryNetworkConfiguration::discount_factor)
+            .def_readwrite("learning_rate", &Configuration::EvolutionaryNetworkConfiguration::learning_rate);
+
+    class_<Configuration>("Configuration", init<Configuration::ProblemConfiguration &>())
+            .add_property("problem", make_function(&Configuration::getProblemConfiguration, return_internal_reference<>()))
+            .add_property("system", make_function(&Configuration::getEvolutionarySystemConfiguration, return_internal_reference<>()))
+            .add_property("initializer", make_function(&Configuration::getInitializerConfiguration, return_internal_reference<>()))
+            .add_property("evaluator", make_function(&Configuration::getEvaluatorConfiguration, return_internal_reference<>()))
+            .add_property("breeder", make_function(&Configuration::getBreederConfiguration, return_internal_reference<>()))
+            .add_property("network", make_function(&Configuration::getEvolutionaryNetworkConfiguration, return_internal_reference<>()));
+
+    class_<Session>("Session", init<Problem &>())
+            .def(init<Problem &, Configuration *>())
+            .add_property("configuration", make_function(&Session::getConfiguration, return_internal_reference<>()))
+            .def("build", &Session::build, return_value_policy<manage_new_object>());
 }

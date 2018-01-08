@@ -14,7 +14,7 @@
 class Replayer : public Singleton {
 
 public:
-    explicit Replayer(const Session &session);
+    explicit Replayer(Configuration &configuration, EvolutionaryNetwork *network);
 
     void replay(Population &pop, std::vector<Individual *> &offsprings) const;
 

@@ -1,6 +1,6 @@
 #include "FitnessProportionateSelection.h"
 
-FitnessProportionateSelection::FitnessProportionateSelection(const Session &session) : SelectionOperator(session) {}
+FitnessProportionateSelection::FitnessProportionateSelection(const Configuration &session) : SelectionOperator(session) {}
 
 vector<Individual *> FitnessProportionateSelection::select(const vector<Individual *> &parents, unsigned int epoch, Randomizer &random) const {
     vector<float> fitnesses(parents.size());
