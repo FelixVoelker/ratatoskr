@@ -20,8 +20,9 @@ namespace core {
     class Problem {
 
     public:
-        explicit Problem(std::function<void(Individual &, Thread &)> eval, unsigned int popsize);
+        Problem(std::function<void(Individual &, Thread &)> eval, unsigned int popsize);
         Problem(const Problem &obj);
+        ~Problem();
 
         std::function<void(Individual &, Thread &)> &getEval();
 
@@ -30,7 +31,7 @@ namespace core {
         void setEval(std::function<void(Individual &, Thread &)> eval);
 
     protected:
-        Configuration::ProblemConfiguration configuration;
+        Configuration::ProblemConfiguration *configuration;
 
         /**
          * Assigns a fitness value to an individual according to the specification of the problem.
@@ -38,6 +39,14 @@ namespace core {
          * @param thread     The evaluating thread.
          */
         std::function<void(Individual &, Thread &)> eval;
+
+        /**
+         * Constructor for derived problems that allows to use their own ProblemConfiguration.
+         */
+        Problem(std::function<void(Individual &, Thread &)> eval,
+                Configuration::ProblemConfiguration *configuration,
+                unsigned int popsize);
+
     };
 }
 

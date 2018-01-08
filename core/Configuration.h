@@ -23,8 +23,9 @@ namespace core {
         struct ProblemConfiguration {
             ProblemConfiguration() = default;
             ProblemConfiguration(const ProblemConfiguration &obj);
+            virtual ~ProblemConfiguration() = default;
 
-            unsigned int popsize;
+            unsigned int popsize = 0;
         };
 
         /**

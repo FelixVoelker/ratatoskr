@@ -95,19 +95,7 @@ TEST_CASE("NDGA", "[ndga]") {
 
     SECTION("FeatureVector") {
         FeatureVector &featuremap = dynamic_cast<FeatureVector &>(ind->getFeaturemap());
-        SECTION("Checking features...") {
-            vector<float> features = featuremap.compute(ind->getChromosome());
-            REQUIRE(equal(features.begin(),
-                          features.end(),
-                          ind->getChromosome().begin()));
-            REQUIRE(equal(ind->getChromosome().begin(),
-                          ind->getChromosome().end(),
-                          features.begin()));
-        }
-        SECTION("Checking cloning...") {
-            FeatureVector *copy = featuremap.clone();
-            REQUIRE(&featuremap != copy);
-        }
+
     }
 
     SECTION("RandomBitVectorBuilder") {

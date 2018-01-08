@@ -20,7 +20,7 @@ namespace common {
          * The configuration of common problems.
          * @param genes Number of genes in a chromosome.
          */
-        struct ProblemConfiguration : public core::Configuration::ProblemConfiguration {
+        struct ProblemConfiguration : core::Configuration::ProblemConfiguration {
             ProblemConfiguration();
             ProblemConfiguration(const ProblemConfiguration &obj);
 

@@ -7,7 +7,7 @@
 #include "Configuration.h"
 
 /**
- * A simple feature map that performs an identity function from a numerical vector to a vector of floats.
+ * A simple feature map that performs an identity function on a numerical vector, e.g. a chromosome.
  *
  * @author  Felix Voelker
  * @version 0.0.2
@@ -19,8 +19,7 @@ public:
     explicit FeatureVector(common::Configuration &configuration);
 
     /**
-     * Returns the bit vector as a vector of floats.
-     * @returns {0,1}^n
+     * Performs the identity function on a chromosome, i.e. some numerical vector.
      */
     std::vector<float> & compute(std::vector<float> &chromosome) const;
 

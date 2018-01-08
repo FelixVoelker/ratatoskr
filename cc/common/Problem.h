@@ -21,9 +21,6 @@ namespace common {
         Problem(std::function<void(Individual &, Thread &)> eval, unsigned int popsize, unsigned int genes);
         Problem(const Problem &obj);
 
-    protected:
-        common::Configuration::ProblemConfiguration configuration;
-
     };
 }
 

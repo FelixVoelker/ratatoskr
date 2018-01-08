@@ -35,8 +35,8 @@ set(CORE_SOURCES
 
 set(CC_API
         cc/common/Configuration.cpp cc/common/Configuration.h
+        cc/common/FeatureVector.cpp cc/common/FeatureVector.h
         cc/common/Problem.cpp cc/common/Problem.h
-#        cc/common/FeatureVector.cpp cc/common/FeatureVector.h
 #        cc/common/VectorIndividual.cpp cc/common/VectorIndividual.h
 #        cc/ec/common/FitnessProportionateSelection.cpp cc/ec/common/FitnessProportionateSelection.h
 #        cc/ec/ndga/BitVectorCrossover.cpp cc/ec/ndga/BitVectorCrossover.h
