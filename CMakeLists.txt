@@ -11,7 +11,7 @@ include_directories(${BOOST_INCLUDEDIR} )
 
 set(CORE_SOURCES
         core/evaluation/Evaluator.cpp core/evaluation/Evaluator.h
-        core/evaluation/Problem.cpp core/evaluation/Problem.h
+        core/Problem.cpp core/Problem.h
         core/experience/EvolutionaryNetwork.cpp core/experience/EvolutionaryNetwork.h
         core/experience/Replayer.cpp core/experience/Replayer.h
         core/initialization/Builder.cpp core/initialization/Builder.h
@@ -34,12 +34,13 @@ set(CORE_SOURCES
         core/Session.cpp core/Session.h)
 
 set(CC_API
+        cc/common/Configuration.cpp cc/common/Configuration.h
+        cc/common/Problem.cpp cc/common/Problem.h
+#        cc/common/FeatureVector.cpp cc/common/FeatureVector.h
+#        cc/common/VectorIndividual.cpp cc/common/VectorIndividual.h
 #        cc/ec/common/FitnessProportionateSelection.cpp cc/ec/common/FitnessProportionateSelection.h
 #        cc/ec/ndga/BitVectorCrossover.cpp cc/ec/ndga/BitVectorCrossover.h
-#        cc/ec/ndga/BitVectorIndividual.cpp cc/ec/ndga/BitVectorIndividual.h
 #        cc/ec/ndga/BitVectorMutation.cpp cc/ec/ndga/BitVectorMutation.h
-#        cc/ec/ndga/FeatureVector.cpp cc/ec/ndga/FeatureVector.h
-#        cc/ec/ndga/NDGAProblem.cpp cc/ec/ndga/NDGAProblem.h
 #        cc/ec/ndga/NDGASession.cpp cc/ec/ndga/NDGASession.h
 #        cc/ec/ndga/RandomBitVectorBuilder.cpp cc/ec/ndga/RandomBitVectorBuilder.h
 #        cc/ec/ndga/TransitionTable.cpp cc/ec/ndga/TransitionTable.h)
@@ -53,18 +54,20 @@ add_executable(ratatoskr_cc_debug cc/main.cpp)
 target_link_libraries(ratatoskr_cc_debug ratatoskr_cc)
 
 set(PYTHON_API_CORE
-        python/ext/wrapper/core/BreedingOperatorWrapper.cpp python/ext/wrapper/core/BreedingOperatorWrapper.h
-        python/ext/wrapper/core/BuilderWrapper.cpp python/ext/wrapper/core/BuilderWrapper.h
-        python/ext/wrapper/core/CostWrapper.cpp python/ext/wrapper/core/CostWrapper.h
-        python/ext/wrapper/core/FeatureMapWrapper.cpp python/ext/wrapper/core/FeatureMapWrapper.h
-        python/ext/wrapper/core/FitnessWrapper.cpp python/ext/wrapper/core/FitnessWrapper.h
-        python/ext/wrapper/core/IndividualWrapper.cpp python/ext/wrapper/core/IndividualWrapper.h
-        python/ext/wrapper/core/SelectionOperatorWrapper.cpp python/ext/wrapper/core/SelectionOperatorWrapper.h
-        python/ext/wrapper/core/VariationSourceWrapper.cpp python/ext/wrapper/core/VariationSourceWrapper.h
-        python/ext/core_ext.cpp)
+        python/ext/wrapper/BreedingOperatorWrapper.cpp python/ext/wrapper/BreedingOperatorWrapper.h
+        python/ext/wrapper/BuilderWrapper.cpp python/ext/wrapper/BuilderWrapper.h
+        python/ext/wrapper/CostWrapper.cpp python/ext/wrapper/CostWrapper.h
+        python/ext/wrapper/FeatureMapWrapper.cpp python/ext/wrapper/FeatureMapWrapper.h
+        python/ext/wrapper/FitnessWrapper.cpp python/ext/wrapper/FitnessWrapper.h
+        python/ext/wrapper/IndividualWrapper.cpp python/ext/wrapper/IndividualWrapper.h
+        python/ext/wrapper/SelectionOperatorWrapper.cpp python/ext/wrapper/SelectionOperatorWrapper.h
+        python/ext/wrapper/VariationSourceWrapper.cpp python/ext/wrapper/VariationSourceWrapper.h
+        python/ext/core.cpp)
+
+set(PYTHON_API_COMMON
+        python/ext/common.cpp)
 
 set(PYTHON_API_NDGA
-        python/ext/wrapper/ndga/ProblemWrapper.cpp python/ext/wrapper/ndga/ProblemWrapper.h
         python/ext/ndga_ext.cpp)
 
 add_library(core SHARED ${PYTHON_API_CORE})
@@ -72,8 +75,13 @@ target_link_libraries(core ratatoskr_cc)
 set_target_properties(core PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/python/ratatoskr PREFIX "")
 #set_target_properties(core PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/python/ratatoskr SUFFIX ".pyd")
 
+add_library(common SHARED ${PYTHON_API_COMMON})
+target_link_libraries(common core)
+set_target_properties(common PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/python/ratatoskr PREFIX "")
+#set_target_properties(core PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/python/ratatoskr SUFFIX ".pyd")
+
 add_library(ndga SHARED ${PYTHON_API_NDGA})
-target_link_libraries(ndga core)
+target_link_libraries(ndga core common)
 set_target_properties(ndga PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/python/ratatoskr PREFIX "")
 #set_target_properties(ndga PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/python/ratatoskr SUFFIX ".pyd")
 
@@ -81,15 +89,15 @@ add_custom_target(ratatoskr_py)
 add_dependencies(ratatoskr_py core ndga)
 
 set(UNIT_SOURCES
-        unit/core/util/SimpleBreedingOperator.cpp unit/core/util/SimpleBreedingOperator.h
-        unit/core/util/SimpleBuilder.cpp unit/core/util/SimpleBuilder.h
-        unit/core/util/SimpleEvolutionaryNetwork.cpp unit/core/util/SimpleEvolutionaryNetwork.h
-        unit/core/util/SimpleFeatureMap.cpp unit/core/util/SimpleFeatureMap.h
-        unit/core/util/SimpleIndividual.cpp unit/core/util/SimpleIndividual.h
-        unit/core/util/SimpleSelectionOperator.cpp unit/core/util/SimpleSelectionOperator.h
-        unit/core/util/SimpleVariationSource.cpp unit/core/util/SimpleVariationSource.h
-        unit/core/unit.cpp
-#        unit/common.cpp
+        unit/util/SimpleBreedingOperator.cpp unit/util/SimpleBreedingOperator.h
+        unit/util/SimpleBuilder.cpp unit/util/SimpleBuilder.h
+        unit/util/SimpleEvolutionaryNetwork.cpp unit/util/SimpleEvolutionaryNetwork.h
+        unit/util/SimpleFeatureMap.cpp unit/util/SimpleFeatureMap.h
+        unit/util/SimpleIndividual.cpp unit/util/SimpleIndividual.h
+        unit/util/SimpleSelectionOperator.cpp unit/util/SimpleSelectionOperator.h
+        unit/util/SimpleVariationSource.cpp unit/util/SimpleVariationSource.h
+        unit/common.cpp
+        unit/core.cpp
 #        unit/ndga.cpp
         catch.hpp)
 

@@ -1,7 +1,7 @@
 #ifndef NDEC_ONEMAXPROBLEM_H
 #define NDEC_ONEMAXPROBLEM_H
 
-#include "../../ec/ndga/NDGAProblem.h"
+#include "../../common/Problem.h"
 
 
 class OneMaxProblem : public NDGAProblem {

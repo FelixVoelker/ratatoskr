@@ -1,36 +1,36 @@
 #include "Configuration.h"
 
-Configuration::ProblemConfiguration::ProblemConfiguration(const ProblemConfiguration &obj) {
+core::Configuration::ProblemConfiguration::ProblemConfiguration(const ProblemConfiguration &obj) {
     this->popsize = obj.popsize;
 }
 
-Configuration::EvolutionarySystemConfiguration::EvolutionarySystemConfiguration(const EvolutionarySystemConfiguration &obj) {
+core::Configuration::EvolutionarySystemConfiguration::EvolutionarySystemConfiguration(const EvolutionarySystemConfiguration &obj) {
     this->complete = obj.complete;
     this->generations = obj.generations;
     this->episodes = obj.episodes;
     this->epochs = obj.epochs;
 }
 
-Configuration::InitializerConfiguration::InitializerConfiguration(const InitializerConfiguration &obj) {
+core::Configuration::InitializerConfiguration::InitializerConfiguration(const InitializerConfiguration &obj) {
     this->threads = obj.threads;
 }
 
-Configuration::EvaluatorConfiguration::EvaluatorConfiguration(const EvaluatorConfiguration &obj) {
+core::Configuration::EvaluatorConfiguration::EvaluatorConfiguration(const EvaluatorConfiguration &obj) {
     this->threads = obj.threads;
 }
 
-Configuration::BreederConfiguration::BreederConfiguration(const BreederConfiguration &obj) {
+core::Configuration::BreederConfiguration::BreederConfiguration(const BreederConfiguration &obj) {
     this->threads = obj.threads;
 }
 
-Configuration::EvolutionaryNetworkConfiguration::EvolutionaryNetworkConfiguration(const EvolutionaryNetworkConfiguration &obj) {
+core::Configuration::EvolutionaryNetworkConfiguration::EvolutionaryNetworkConfiguration(const EvolutionaryNetworkConfiguration &obj) {
     this->learning_rate = obj.learning_rate;
     this->discount_factor = obj.discount_factor;
 }
 
-Configuration::Configuration(ProblemConfiguration &problem) : problem(problem) {}
+core::Configuration::Configuration(ProblemConfiguration &problem) : problem(problem) {}
 
-Configuration::Configuration(const Configuration &obj) : problem(obj.problem) {
+core::Configuration::Configuration(const Configuration &obj) : problem(obj.problem) {
     evolutionary_system = EvolutionarySystemConfiguration(obj.evolutionary_system);
     initializer = InitializerConfiguration(obj.initializer);
     evaluator = EvaluatorConfiguration(obj.evaluator);
@@ -38,26 +38,26 @@ Configuration::Configuration(const Configuration &obj) : problem(obj.problem) {
     evolutionary_network = EvolutionaryNetworkConfiguration(obj.evolutionary_network);
 }
 
-Configuration::ProblemConfiguration& Configuration::getProblemConfiguration() const {
+core::Configuration::ProblemConfiguration& core::Configuration::getProblemConfiguration() const {
    return problem;
 }
 
-Configuration::EvolutionarySystemConfiguration & Configuration::getEvolutionarySystemConfiguration() {
+core::Configuration::EvolutionarySystemConfiguration & core::Configuration::getEvolutionarySystemConfiguration() {
     return evolutionary_system;
 }
 
-Configuration::InitializerConfiguration & Configuration::getInitializerConfiguration() {
+core::Configuration::InitializerConfiguration & core::Configuration::getInitializerConfiguration() {
     return initializer;
 }
 
-Configuration::EvaluatorConfiguration & Configuration::getEvaluatorConfiguration() {
+core::Configuration::EvaluatorConfiguration & core::Configuration::getEvaluatorConfiguration() {
     return evaluator;
 }
 
-Configuration::BreederConfiguration & Configuration::getBreederConfiguration() {
+core::Configuration::BreederConfiguration & core::Configuration::getBreederConfiguration() {
     return breeder;
 }
 
-Configuration::EvolutionaryNetworkConfiguration & Configuration::getEvolutionaryNetworkConfiguration() {
+core::Configuration::EvolutionaryNetworkConfiguration & core::Configuration::getEvolutionaryNetworkConfiguration() {
     return evolutionary_network;
 }

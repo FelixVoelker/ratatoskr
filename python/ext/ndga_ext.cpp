@@ -1,8 +1,8 @@
 #include <boost/python.hpp>
 #include <boost/python/suite/indexing/vector_indexing_suite.hpp>
 #include "../../cc/problem/ndga/OneMaxProblem.h"
-#include "../../cc/ec/ndga/BitVectorIndividual.h"
-#include "../../cc/ec/ndga/FeatureVector.h"
+#include "../../cc/common/VectorIndividual.h"
+#include "../../cc/common/FeatureVector.h"
 #include "wrapper/ndga/ProblemWrapper.h"
 
 using namespace boost::python;
@@ -14,8 +14,8 @@ BOOST_PYTHON_MODULE(ndga) {
     /** Tools **/
     class_<FeatureVector, bases<FeatureMap>>("FeatureVector", init<NDGASession &>());
 
-    class_<BitVectorIndividual, bases<Individual>, boost::noncopyable>("BitVectorIndividual", init<NDGASession &>())
-            .def("chromosome", &BitVectorIndividual::getChromosome, return_value_policy<reference_existing_object>());
+    class_<VectorIndividual, bases<Individual>, boost::noncopyable>("VectorIndividual", init<NDGASession &>())
+            .def("chromosome", &VectorIndividual::getChromosome, return_value_policy<reference_existing_object>());
 
     class_<ProblemWrapper, bases<Problem>, boost::noncopyable>("NDGAProblem", init<unsigned int, unsigned int>())
             .add_property("popsize",

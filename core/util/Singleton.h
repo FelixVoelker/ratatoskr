@@ -4,6 +4,8 @@
 
 #include "../Configuration.h"
 
+using namespace core;
+
 /**
  * Represents the basic interface for all components of the evolutionary system.
  *

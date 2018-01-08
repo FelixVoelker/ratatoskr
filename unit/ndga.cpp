@@ -77,7 +77,7 @@ TEST_CASE("NDGA", "[ndga]") {
     chromosome.at(5) = 0;
     chromosome.at(6) = 1;
     chromosome.at(7) = 1;
-    SECTION("BitVectorIndividual") {
+    SECTION("VectorIndividual") {
         SECTION("Checking human-readable representation...") {
             REQUIRE(ind->toString().compare("01010011") == 0);
         }
