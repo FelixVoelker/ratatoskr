@@ -4,6 +4,8 @@
 #include "../cc/common/Problem.h"
 #include "../cc/common/FeatureVector.h"
 #include "../cc/common/VectorIndividual.h"
+#include "../core/representation/Population.h"
+#include "../cc/common/FitnessProportionateSelection.h"
 
 /**
  * Unit tests for common components of many Neuro-Dynamic Evolutionary Algorithms.
@@ -17,7 +19,7 @@ TEST_CASE("Common", "[common]") {
         individual.getFitness().setFitness(1);
     };
 
-    auto *problem = new common::Problem(eval, 1, 8);
+    auto *problem = new common::Problem(eval, 3, 8);
     auto *configuration = new common::Configuration(dynamic_cast<common::Configuration::ProblemConfiguration &>(problem->getConfiguration()));
 
     auto *featurevector = new FeatureVector(*configuration);
@@ -76,6 +78,83 @@ TEST_CASE("Common", "[common]") {
         }
     }
 
+    auto *pop = new Population(*configuration);
+    pop->getIndividuals().at(0) = individual->clone();
+    pop->getIndividuals().at(0)->getCost().setCost(10);
+    pop->getIndividuals().at(0)->getFitness().setFitness(0);
+    pop->getIndividuals().at(1) = individual->clone();
+    pop->getIndividuals().at(1)->getCost().setCost(5);
+    pop->getIndividuals().at(1)->getFitness().setFitness(5);
+    pop->getIndividuals().at(2) = individual->clone();
+    pop->getIndividuals().at(2)->getCost().setCost(0);
+    pop->getIndividuals().at(2)->getFitness().setFitness(10);
+    configuration->getEvolutionarySystemConfiguration().epochs = 2;
+    auto *so = new FitnessProportionateSelection(*configuration);
+    SECTION("FitnessProportionateSelection") {
+        unsigned int epoch = 0;
+        auto *thread = new Thread(0, 3, epoch);
+
+        std::vector<unsigned int> counts = {0, 0, 0};
+
+        Individual *selected;
+        SECTION("Checking fitness based selection...") {
+            for (unsigned int k = 1; k <= 1000; k++) {
+                selected = so->select(pop->getIndividuals(), *thread);
+                for (unsigned int k = 0; k < counts.size(); k++) {
+                    if (selected == pop->getIndividuals().at(k)) {
+                        counts.at(k) += 1;
+                    }
+                }
+            }
+
+            REQUIRE(counts.at(0) > counts.at(1));
+            REQUIRE(counts.at(1) > counts.at(2));
+        }
+
+        epoch = 1;
+        counts.at(0) = 0;
+        counts.at(1) = 0;
+        counts.at(2) = 0;
+        SECTION("Checking average based selection...") {
+            for (unsigned int k = 1; k <= 1000; k++) {
+                selected = so->select(pop->getIndividuals(), *thread);
+                for (unsigned int k = 0; k < counts.size(); k++) {
+                    if (selected == pop->getIndividuals().at(k)) {
+                        counts.at(k) += 1;
+                    }
+                }
+            }
+
+            unsigned int tolerance = 100;
+            REQUIRE(counts.at(0) - tolerance <= counts.at(1));
+            REQUIRE(counts.at(1) <= counts.at(0) + tolerance);
+            REQUIRE(counts.at(2) - tolerance <= counts.at(1));
+            REQUIRE(counts.at(1) <= counts.at(2) + tolerance);
+        }
+
+        epoch = 2;
+        counts.at(0) = 0;
+        counts.at(1) = 0;
+        counts.at(2) = 0;
+        SECTION("Checking cost based selection...") {
+            for (unsigned int k = 1; k <= 1000; k++) {
+                selected = so->select(pop->getIndividuals(), *thread);
+                for (unsigned int k = 0; k < counts.size(); k++) {
+                    if (selected == pop->getIndividuals().at(k)) {
+                        counts.at(k) += 1;
+                    }
+                }
+            }
+
+            REQUIRE(counts.at(0) < counts.at(1));
+            REQUIRE(counts.at(1) < counts.at(2));
+        }
+
+        delete thread;
+    }
+
+    delete so;
+    delete pop;
     delete individual;
     delete configuration;
     delete problem;

@@ -1,15 +1,17 @@
 #include "FitnessProportionateSelection.h"
 
-FitnessProportionateSelection::FitnessProportionateSelection(const Configuration &session) : SelectionOperator(session) {}
+FitnessProportionateSelection::FitnessProportionateSelection(common::Configuration &configuration)
+        : SelectionOperator(configuration)
+{
+    this->epochs = configuration.getEvolutionarySystemConfiguration().epochs;
+}
 
-vector<Individual *> FitnessProportionateSelection::select(const vector<Individual *> &parents, unsigned int epoch, Randomizer &random) const {
-    vector<float> fitnesses(parents.size());
+Individual * FitnessProportionateSelection::select(std::vector<Individual *> &parents, Thread &thread) const {
+    std::vector<float> fitnesses(parents.size());
     for (int k = 0; k < parents.size(); k++) {
-        fitnesses.at(k) = parents.at(k)->getRelevance().relevance(epoch);
+        fitnesses.at(k) = parents.at(k)->relevance(((float) thread.getEpoch()) / epochs);
     }
 
-    unsigned long index = random.randomFromDiscreteDistribution(fitnesses);
-    auto selected = vector<Individual *>(1);
-    selected.at(0) = parents.at(index);
-    return selected;
+    unsigned long index = thread.random.sampleIntFromDiscreteDistribution(fitnesses);
+    return parents.at(index);
 }

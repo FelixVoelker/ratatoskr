@@ -1,6 +1,7 @@
 #include <boost/python.hpp>
 #include "../../cc/common/Configuration.h"
 #include "../../cc/common/FeatureVector.h"
+#include "../../cc/common/FitnessProportionateSelection.h"
 #include "../../cc/common/Problem.h"
 #include "../../cc/common/VectorIndividual.h"
 
@@ -22,4 +23,6 @@ BOOST_PYTHON_MODULE(common) {
             .add_property("chromosome", make_function(&VectorIndividual::getChromosome, return_internal_reference<>()))
             .def("__copy__", &VectorIndividual::clone, return_value_policy<manage_new_object>())
             .def("tostring", &VectorIndividual::toString);
+
+    class_<FitnessProportionateSelection, bases<SelectionOperator>>("FitnessProportionateSelection", init<common::Configuration &>());
 }

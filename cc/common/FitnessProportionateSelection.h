@@ -1,30 +1,32 @@
-#ifndef NDEC_FITNESSPROPORTIONATESELECTION_H
-#define NDEC_FITNESSPROPORTIONATESELECTION_H
+#ifndef RATATOSKR_FITNESSPROPORTIONATESELECTION_H
+#define RATATOSKR_FITNESSPROPORTIONATESELECTION_H
 
 
 #include "../../core/variation/SelectionOperator.h"
 #include "Configuration.h"
 
 /**
- * TODO: Comments
- * Represents the roulette wheel selection as commonly used in evolutionary algorithms.
+ * A roulette wheel selection operator as commonly used in Neuro-Dynamic Evolutionary Algorithms (NDEAs).
  *
  * @author  Felix Voelker
- * @version 0.1
- * @since   5.8.2017
+ * @version 0.0.2
+ * @since   9.1.2018
  */
 class FitnessProportionateSelection : public SelectionOperator {
 
 public:
-    explicit FitnessProportionateSelection(common::Configuration &session);
+    explicit FitnessProportionateSelection(common::Configuration &configuration);
 
     /**
-     * Selects an individual according to its index that is sampled from a fitness dependent probability distribution.
-     * @param pop Current state of the evolutionary system's population.
+     * Samples an individual based on a relevance dependent probability distribution whose fraction is determined by
+     * an alignment strategy over the number of epochs, i.e. fraction = current epoch / total epochs.
      */
     Individual * select(std::vector<Individual *> &parents, Thread &thread) const override;
+
+protected:
+    unsigned int epochs;
 
 };
 
 
-#endif //NDEC_FITNESSPROPORTIONATESELECTION_H
+#endif //RATATOSKR_FITNESSPROPORTIONATESELECTION_H

@@ -20,52 +20,12 @@ using namespace std;
  * @since   1.8.2017
  */
 
-class TestNDGAProblem : public NDGAProblem {
-
-public:
-    TestNDGAProblem(unsigned int pop_size, unsigned int genes) : NDGAProblem(pop_size, genes) {}
-
-    void evaluate(Individual &individual) override {}
-};
-
-class IdentitySelectionOne : public SelectionOperator {
-
-protected:
-    vector<Individual *> select(Population &pop, Randomizer &random) override {
-        vector<Individual *> selected(1);
-        selected.at(0) = pop.getIndividuals().at(0);
-        return selected;
-    }
-
-public:
-    explicit IdentitySelectionOne(Configuration &session) : SelectionOperator(session) {}
-
-};
-
-class IdentitySelectionTwo : public SelectionOperator {
-
-protected:
-    vector<Individual *> select(Population &pop, Randomizer &random) override {
-        vector<Individual *> selected(1);
-        selected.at(0) = pop.getIndividuals().at(1);
-        return selected;
-    }
-
-public:
-    explicit IdentitySelectionTwo(Configuration &session) : SelectionOperator(session) {}
-
-};
-
 TEST_CASE("NDGA", "[ndga]") {
     auto problem = TestNDGAProblem(2, 8);
     auto session = NDGASession(problem);
     session.xover_rate = 1;
     session.mutation_rate = 1;
 
-    SECTION("VectorIndividual") {
-
-
-    }
 
     SECTION("RandomBitVectorBuilder") {
         SECTION("Checking initialization...") {
