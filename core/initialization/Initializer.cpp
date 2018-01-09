@@ -33,6 +33,6 @@ void Initializer::initializePopulation(Population &pop) {
 
 void Initializer::initializeChunk(std::vector<Individual *> &individuals, Thread &thread) {
     for (unsigned int k = 0; k < thread.getChunkOffset(); k++) {
-        individuals.at(k + thread.getChunkOnset()) = builder->build();
+        individuals.at(k + thread.getChunkOnset()) = builder->build(thread);
     }
 }

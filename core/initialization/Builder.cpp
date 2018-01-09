@@ -8,8 +8,8 @@ Builder::~Builder() {
     delete prototype;
 }
 
-Individual * Builder::build() const {
+Individual * Builder::build(Thread &thread) const {
     auto ind = prototype->clone();
-    initialize(*ind);
+    initialize(*ind, thread);
     return ind;
 }

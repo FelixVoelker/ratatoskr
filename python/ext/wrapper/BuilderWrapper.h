@@ -19,7 +19,7 @@ class BuilderWrapper : public Builder, public wrapper<Builder> {
 public:
     explicit BuilderWrapper(Configuration &configuration, Individual *prototype);
 
-    void initialize(Individual &ind) const override;
+    void initialize(Individual &individual, Thread &thread) const override;
 };
 
 

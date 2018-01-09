@@ -2,11 +2,10 @@
 #include "Problem.h"
 #include "VectorIndividual.h"
 
-TransitionTable::TransitionTable(const Configuration &session) : EvolutionaryNetwork(session) {
-    auto problem = dynamic_cast<NDGAProblem &>(session.getProblem());
-    lookup_table = new std::vector<std::vector<float>>(
-            session.getProblem().getPopsize(),
-            std::vector<float>(static_cast<unsigned long>(pow(2, problem.getGenes())), 0)
+TransitionTable::TransitionTable(Configuration &configuration) : EvolutionaryNetwork(configuration) {
+    auto problem = dynamic_cast<common::Configuration::ProblemConfiguration &>(configuration.getProblemConfiguration());
+    lookup_table = new std::vector<std::vector<float>>(problem.popsize,
+            std::vector<float>(static_cast<unsigned long>(pow(2, problem.genes)), 0)
     );
 }
 
@@ -38,7 +37,7 @@ void TransitionTable::update(std::vector<Individual *> &parents, std::vector<Ind
 std::vector<unsigned int> TransitionTable::preprocess(std::vector<Individual *> &individuals) const {
     auto indices = std::vector<unsigned int>(individuals.size());
     for (unsigned int k = 0; k < individuals.size(); k++) {
-        std::vector<unsigned int> &chromosome = dynamic_cast<VectorIndividual *>(individuals.at(k))->getChromosome();
+        std::vector<float> &chromosome = dynamic_cast<VectorIndividual *>(individuals.at(k))->getChromosome();
         unsigned int index = 0;
         for (unsigned int l = 0; l < chromosome.size(); l++) {
             index += chromosome.at(l) * pow(2, chromosome.size() - l -1);

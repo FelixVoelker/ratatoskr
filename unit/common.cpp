@@ -100,9 +100,9 @@ TEST_CASE("Common", "[common]") {
         SECTION("Checking fitness based selection...") {
             for (unsigned int k = 1; k <= 1000; k++) {
                 selected = so->select(pop->getIndividuals(), *thread);
-                for (unsigned int k = 0; k < counts.size(); k++) {
-                    if (selected == pop->getIndividuals().at(k)) {
-                        counts.at(k) += 1;
+                for (unsigned int l = 0; l < counts.size(); l++) {
+                    if (selected == pop->getIndividuals().at(l)) {
+                        counts.at(l) += 1;
                     }
                 }
             }
@@ -118,9 +118,9 @@ TEST_CASE("Common", "[common]") {
         SECTION("Checking average based selection...") {
             for (unsigned int k = 1; k <= 1000; k++) {
                 selected = so->select(pop->getIndividuals(), *thread);
-                for (unsigned int k = 0; k < counts.size(); k++) {
-                    if (selected == pop->getIndividuals().at(k)) {
-                        counts.at(k) += 1;
+                for (unsigned int l = 0; l < counts.size(); l++) {
+                    if (selected == pop->getIndividuals().at(l)) {
+                        counts.at(l) += 1;
                     }
                 }
             }
@@ -139,9 +139,9 @@ TEST_CASE("Common", "[common]") {
         SECTION("Checking cost based selection...") {
             for (unsigned int k = 1; k <= 1000; k++) {
                 selected = so->select(pop->getIndividuals(), *thread);
-                for (unsigned int k = 0; k < counts.size(); k++) {
-                    if (selected == pop->getIndividuals().at(k)) {
-                        counts.at(k) += 1;
+                for (unsigned int l = 0; l < counts.size(); l++) {
+                    if (selected == pop->getIndividuals().at(l)) {
+                        counts.at(l) += 1;
                     }
                 }
             }

@@ -38,12 +38,12 @@ set(CC_API
         cc/common/FeatureVector.cpp cc/common/FeatureVector.h
         cc/common/FitnessProportionateSelection.cpp cc/common/FitnessProportionateSelection.h
         cc/common/Problem.cpp cc/common/Problem.h
+        cc/common/TransitionTable.cpp cc/common/TransitionTable.h
         cc/common/VectorIndividual.cpp cc/common/VectorIndividual.h
 #        cc/ec/ndga/BitVectorCrossover.cpp cc/ec/ndga/BitVectorCrossover.h
 #        cc/ec/ndga/BitVectorMutation.cpp cc/ec/ndga/BitVectorMutation.h
 #        cc/ec/ndga/NDGASession.cpp cc/ec/ndga/NDGASession.h
-#        cc/ec/ndga/RandomBitVectorBuilder.cpp cc/ec/ndga/RandomBitVectorBuilder.h
-#        cc/ec/ndga/TransitionTable.cpp cc/ec/ndga/TransitionTable.h)
+        cc/ndga/RandomBitVectorBuilder.cpp cc/ndga/RandomBitVectorBuilder.h
 #        cc/problem/ndga/OneMaxProblem.cpp cc/getProblem/ndga/OneMaxProblem.h
         )
 
@@ -68,7 +68,7 @@ set(PYTHON_API_COMMON
         python/ext/common.cpp)
 
 set(PYTHON_API_NDGA
-        python/ext/ndga_ext.cpp)
+        python/ext/ndga.cpp)
 
 add_library(core SHARED ${PYTHON_API_CORE})
 target_link_libraries(core ratatoskr_cc)
@@ -98,7 +98,7 @@ set(UNIT_SOURCES
         unit/util/SimpleVariationSource.cpp unit/util/SimpleVariationSource.h
         unit/common.cpp
         unit/core.cpp
-#        unit/ndga.cpp
+        unit/ndga.cpp
         catch.hpp)
 
 add_executable(unit ${UNIT_SOURCES})

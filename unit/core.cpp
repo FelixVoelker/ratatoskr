@@ -120,57 +120,6 @@ TEST_CASE("Core", "[core]") {
         }
     }
 
-    auto *builder = new SimpleBuilder(configuration, individual);
-    SECTION("Builder") {
-        auto *ind = builder->build();
-
-        SECTION("Checking initialization...") {
-            REQUIRE(ind->toString() == "passed");
-        }
-
-        delete ind;
-    }
-
-    problem->getConfiguration().popsize = 3;
-    auto *pop = new Population(configuration);
-    SECTION("Population") {
-        pop->getIndividuals().at(0) = builder->build();
-        pop->getIndividuals().at(1) = builder->build();
-        pop->getIndividuals().at(2) = builder->build();
-
-        SECTION("Checking extermination...") {
-            pop->exterminate();
-            for (auto ind : pop->getIndividuals()) {
-                REQUIRE(ind == nullptr);
-            }
-        }
-
-        pop->getIndividuals().at(0) = builder->build();
-        pop->getIndividuals().at(0)->getCost().setCost(0);
-        pop->getIndividuals().at(0)->getFitness().setFitness(0);
-        pop->getIndividuals().at(1) = builder->build();
-        pop->getIndividuals().at(1)->getCost().setCost(3);
-        pop->getIndividuals().at(1)->getFitness().setFitness(5);
-        pop->getIndividuals().at(2) = builder->build();
-        pop->getIndividuals().at(2)->getCost().setCost(7.5);
-        pop->getIndividuals().at(2)->getFitness().setFitness(2.5);
-
-        SECTION("Finding the best individual...") {
-            REQUIRE(pop->bestIndividual() == pop->getIndividuals().at(0));
-        }
-
-        SECTION("Finding the worst individual...") {
-            REQUIRE(pop->worstIndividual() == pop->getIndividuals().at(1));
-        }
-
-        SECTION("Computing the average individual...") {
-            auto *average = pop->averageIndividual();
-            REQUIRE(average->getCost().getCost() == 3.5);
-            REQUIRE(average->getFitness().getFitness() == 2.5);
-            delete average;
-        }
-    }
-
     unsigned int epoch = 0;
     auto *thread = new Thread(0, 3, epoch);
     SECTION("Thread") {
@@ -211,6 +160,57 @@ TEST_CASE("Core", "[core]") {
         }
     }
 
+    auto *builder = new SimpleBuilder(configuration, individual);
+    SECTION("Builder") {
+        auto *ind = builder->build(*thread);
+
+        SECTION("Checking initialization...") {
+            REQUIRE(ind->toString() == "passed");
+        }
+
+        delete ind;
+    }
+
+    problem->getConfiguration().popsize = 3;
+    auto *pop = new Population(configuration);
+    SECTION("Population") {
+        pop->getIndividuals().at(0) = builder->build(*thread);
+        pop->getIndividuals().at(1) = builder->build(*thread);
+        pop->getIndividuals().at(2) = builder->build(*thread);
+
+        SECTION("Checking extermination...") {
+            pop->exterminate();
+            for (auto ind : pop->getIndividuals()) {
+                REQUIRE(ind == nullptr);
+            }
+        }
+
+        pop->getIndividuals().at(0) = builder->build(*thread);
+        pop->getIndividuals().at(0)->getCost().setCost(0);
+        pop->getIndividuals().at(0)->getFitness().setFitness(0);
+        pop->getIndividuals().at(1) = builder->build(*thread);
+        pop->getIndividuals().at(1)->getCost().setCost(3);
+        pop->getIndividuals().at(1)->getFitness().setFitness(5);
+        pop->getIndividuals().at(2) = builder->build(*thread);
+        pop->getIndividuals().at(2)->getCost().setCost(7.5);
+        pop->getIndividuals().at(2)->getFitness().setFitness(2.5);
+
+        SECTION("Finding the best individual...") {
+            REQUIRE(pop->bestIndividual() == pop->getIndividuals().at(0));
+        }
+
+        SECTION("Finding the worst individual...") {
+            REQUIRE(pop->worstIndividual() == pop->getIndividuals().at(1));
+        }
+
+        SECTION("Computing the average individual...") {
+            auto *average = pop->averageIndividual();
+            REQUIRE(average->getCost().getCost() == 3.5);
+            REQUIRE(average->getFitness().getFitness() == 2.5);
+            delete average;
+        }
+    }
+
     configuration.getInitializerConfiguration().threads = 2;
     auto *initializer = new Initializer(configuration, builder, epoch);
     initializer->initializePopulation(*pop);
@@ -227,6 +227,7 @@ TEST_CASE("Core", "[core]") {
     auto *evaluator = new Evaluator(configuration, eval, network, epoch);
     SECTION("Evaluator") {
         SECTION("Evaluating a population...") {
+            evaluator->evaluatePopulation(*pop);
             evaluator->evaluatePopulation(*pop);
             REQUIRE(pop->getIndividuals().at(0)->getFitness().getFitness() == 1);
             REQUIRE(pop->getIndividuals().at(1)->getFitness().getFitness() == 1);

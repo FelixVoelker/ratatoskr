@@ -17,7 +17,7 @@ public:
     explicit SimpleBuilder(Configuration &configuration, Individual *individual);
 
 protected:
-    void initialize(Individual &ind) const override;
+    void initialize(Individual &ind, Thread &thread) const override;
 
 };
 

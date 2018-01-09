@@ -1,8 +1,9 @@
 #ifndef RATATOSKR_BUILDER_H
 #define RATATOSKR_BUILDER_H
 
-#include "../representation/Individual.h"
 
+#include "../representation/Individual.h"
+#include "../util/Thread.h"
 
 /**
  * The abstract base class of a population's builder that initializes each individual of an evolutionary system. Rather
@@ -21,17 +22,19 @@ public:
 
     /**
      * Builds a new individual by cloning the prototype then initializing it.
+     * @param thread The initializing thread.
      */
-    Individual * build() const;
+    Individual * build(Thread &thread) const;
 
 protected:
     Individual *prototype;
 
     /**
     * Initializes an individual according to the builder's strategy.
-    * @param ind The individual to be initialized.
+    * @param individual The individual to be initialized.
+    * @param thread     The initializing thread.
     */
-    virtual void initialize(Individual &individual) const = 0;
+    virtual void initialize(Individual &individual, Thread &thread) const = 0;
 };
 
 

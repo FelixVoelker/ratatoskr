@@ -1,37 +1,32 @@
-#ifndef NDEC_RANDOMBITVECTORBUILDER_H
-#define NDEC_RANDOMBITVECTORBUILDER_H
+#ifndef RATATOSKR_RANDOMBITVECTORBUILDER_H
+#define RATATOSKR_RANDOMBITVECTORBUILDER_H
 
 
-#include <random>
 #include "../../core/initialization/Builder.h"
-#include "NDGASession.h"
-#include "../../core/util/Thread.h"
+#include "../common/VectorIndividual.h"
 
 /**
- * TODO: Comments
- * A bit vector builder that uses a uniform random distribution to sample the genes of a BitVectorIndividual's
- * chromosome.
+ * A bit vector builder for Neuro-Dynamic Genetic Algorithms (NDGAs) that samples the genes of a vector individual's
+ * chromosome randomly.
  *
  * @author  Felix Voelker
- * @version 0.1
- * @since   5.7.2017
+ * @version 0.0.2
+ * @since   9.1.2018
  */
 class RandomBitVectorBuilder : public Builder {
 
-private:
-    Thread *random;
-
-    /**
-     * Samples each gene of the chromosome from a uniform distribution over {0,1}.
-     * @param ind The individual to be initialized.
-     */
-    void initialize(Individual &ind) const override;
-
 public:
-    explicit RandomBitVectorBuilder(const NDGASession &session);
-    ~RandomBitVectorBuilder();
+    explicit RandomBitVectorBuilder(common::Configuration &configuration, VectorIndividual *prototype);
+
+protected:
+    /**
+     * Samples each gene of the chromosome from a uniform discrete distribution U~(0,1).
+     * @param individual The individual to be initialized.
+     * @param thread     The initializing thread.
+     */
+    void initialize(Individual &individual, Thread &thread) const override;
 
 };
 
 
-#endif //NDEC_RANDOMBUILDER_H
+#endif //RATATOSKR_RANDOMBITVECTORBUILDER_H
