@@ -27,8 +27,29 @@ namespace common {
             unsigned int genes;
         };
 
+        struct CrossoverConfiguration {
+            CrossoverConfiguration() = default;
+            CrossoverConfiguration(const CrossoverConfiguration &obj);
+
+            float xover_rate = 0.7;
+        };
+
+        struct MutationConfiguration {
+            MutationConfiguration() = default;
+            MutationConfiguration(const MutationConfiguration &obj);
+
+            float mutation_rate = 0.001;
+        };
+
         explicit Configuration(ProblemConfiguration &problem);
         Configuration(const Configuration &obj) = default;
+
+        CrossoverConfiguration & getCrossoverConfiguration();
+        MutationConfiguration & getMutationConfiguration();
+
+    protected:
+        CrossoverConfiguration crossover;
+        MutationConfiguration mutation;
 
     };
 }

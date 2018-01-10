@@ -16,8 +16,8 @@
 class NDGASession : public Configuration {
 
 public:
-    double xover_rate = 0.7;
-    double mutation_rate = 0.001;
+
+
 
     explicit NDGASession(const NDGAProblem &problem);
 

@@ -1,29 +1,28 @@
 #include "BitVectorCrossover.h"
 #include "../common/VectorIndividual.h"
 
-unsigned long BitVectorCrossover::expectedSources() const { return 2; }
-
-BitVectorCrossover::BitVectorCrossover(const NDGASession &session)
-        : BreedingOperator(session) {
-    prob = session.xover_rate;
-    genes = dynamic_cast<const NDGAProblem &>(session.getProblem()).genes;
+BitVectorCrossover::BitVectorCrossover(common::Configuration &configuration) : BreedingOperator(configuration) {
+    this->pc = configuration.getCrossoverConfiguration().xover_rate;
 }
 
-vector<Individual *> & BitVectorCrossover::breed(vector<Individual *> &parents, Randomizer &random) const {
-    auto parent1 = dynamic_cast<VectorIndividual *>(parents.at(0));
-    auto parent2 = dynamic_cast<VectorIndividual *>(parents.at(1));
+unsigned long BitVectorCrossover::expectedSources() const { return 2; }
 
-    if (random.random() < prob) {
-        int crossover_point = random.randomInt(genes);
+std::vector<Individual *> & BitVectorCrossover::breed(std::vector<Individual *> &parents, Thread &thread) const {
+    auto *parent1 = dynamic_cast<VectorIndividual *>(parents.at(0));
+    auto *parent2 = dynamic_cast<VectorIndividual *>(parents.at(1));
 
-        for (int k = crossover_point + 1; k < genes; k++) {
-            unsigned int gene = parent1->getChromosome().at(k);
+    if (thread.random.sample() < pc) {
+        auto genes = static_cast<unsigned int>(parent1->getChromosome().size());
+        unsigned int xover_point = thread.random.sampleIntFromUniformDistribution(genes);
+
+        for (unsigned int k = xover_point + 1; k < genes; k++) {
+            float gene = parent1->getChromosome().at(k);
             parent1->getChromosome().at(k) = parent2->getChromosome().at(k);
             parent2->getChromosome().at(k) = gene;
         }
 
-        parent1->evaluated(false);
-        parent2->evaluated(false);
+        parent1->setEvaluated(false);
+        parent2->setEvaluated(false);
     }
 
     return parents;

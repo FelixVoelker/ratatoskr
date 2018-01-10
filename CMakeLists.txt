@@ -40,7 +40,7 @@ set(CC_API
         cc/common/Problem.cpp cc/common/Problem.h
         cc/common/TransitionTable.cpp cc/common/TransitionTable.h
         cc/common/VectorIndividual.cpp cc/common/VectorIndividual.h
-#        cc/ec/ndga/BitVectorCrossover.cpp cc/ec/ndga/BitVectorCrossover.h
+        cc/ndga/BitVectorCrossover.cpp cc/ndga/BitVectorCrossover.h
 #        cc/ec/ndga/BitVectorMutation.cpp cc/ec/ndga/BitVectorMutation.h
 #        cc/ec/ndga/NDGASession.cpp cc/ec/ndga/NDGASession.h
         cc/ndga/RandomBitVectorBuilder.cpp cc/ndga/RandomBitVectorBuilder.h

@@ -3,6 +3,8 @@
 #include "../cc/common/Problem.h"
 #include "../cc/ndga/RandomBitVectorBuilder.h"
 #include "../core/initialization/Initializer.h"
+#include "../cc/common/FitnessProportionateSelection.h"
+#include "../cc/ndga/BitVectorCrossover.h"
 
 /**
  * Unit tests for Neuro-Dynamic Genetic Algorithms.
@@ -16,9 +18,9 @@ TEST_CASE("NDGA", "[ndga]") {
         individual.getFitness().setFitness(1);
     };
 
-    auto *problem = new common::Problem(eval, 2, 3);
+    unsigned int genes = 3;
+    auto *problem = new common::Problem(eval, 2, genes);
     auto *configuration = new common::Configuration(dynamic_cast<common::Configuration::ProblemConfiguration &>(problem->getConfiguration()));
-//    session.xover_rate = 1;
 //    session.mutation_rate = 1;
 
 
@@ -54,67 +56,73 @@ TEST_CASE("NDGA", "[ndga]") {
         }
     }
 
+    auto *thread = new Thread(0, 2, epoch);
     initializer->initializePopulation(*pop);
+    configuration->getCrossoverConfiguration().xover_rate = 1;
 
-//    SECTION("BitVectorCrossover") {
-//        SECTION("Check breed...") {
-//            auto parent1 = dynamic_cast<BitVectorIndividual *>(pop.getIndividuals().at(0));
-//            vector<unsigned int> &chromosome1 = parent1->getChromosome();
-//            chromosome1.at(0) = 1;
-//            chromosome1.at(1) = 1;
-//            chromosome1.at(2) = 1;
-//            chromosome1.at(3) = 1;
-//            chromosome1.at(4) = 1;
-//            chromosome1.at(5) = 1;
-//            chromosome1.at(6) = 1;
-//            chromosome1.at(7) = 1;
-//            auto parent2 = dynamic_cast<BitVectorIndividual *>(pop.getIndividuals().at(1));
-//            vector<unsigned int> &chromosome2 = parent2->getChromosome();
-//            chromosome2.at(0) = 0;
-//            chromosome2.at(1) = 0;
-//            chromosome2.at(2) = 0;
-//            chromosome2.at(3) = 0;
-//            chromosome2.at(4) = 0;
-//            chromosome2.at(5) = 0;
-//            chromosome2.at(6) = 0;
-//            chromosome2.at(7) = 0;
-//
-//            vector<unsigned int> crossover_points = {0, 1, 2, 3, 4, 5, 6, 7};
-//
-//            vector<VariationSource *> selectors(2);
-//            selectors.at(0) = new IdentitySelectionOne(session);
-//            selectors.at(1) = new IdentitySelectionTwo(session);
-//            BitVectorCrossover crossover = BitVectorCrossover(session);
-//            crossover.connect(selectors);
-//
-//            for (int k = 1; k < 1000; k++) {
-//                vector<Individual *> offsprings = crossover.vary(pop, random);
-//
-//                vector<unsigned int> &offspring1 = dynamic_cast<BitVectorIndividual *>(offsprings.at(0))->getChromosome();
-//                vector<unsigned int> &offspring2 = dynamic_cast<BitVectorIndividual *>(offsprings.at(1))->getChromosome();
-//
-//                int cp;
-//                for (cp = 0; cp < offspring1.size(); cp++)  {
-//                    if (offspring1.at(cp) != chromosome.at(cp) && offspring2.at(cp) != chromosome2.at(cp))
-//                        break;
-//                }
-//                cp -= 1;
-//
-//                bool crossed = true;
-//                for (int l = cp + 1; l < offspring1.size(); l++) {
-//                    crossed &= (offspring1.at(l) == chromosome2.at(l) && offspring2.at(l) == chromosome.at(l));
-//                }
-//
-//                if (crossed) {
-//                    crossover_points.erase(remove(crossover_points.begin(), crossover_points.end(), cp), crossover_points.end());
-//                }
-//
-//                offsprings.clear();
-//            }
-//
-//            REQUIRE(crossover_points.size() == 0);
-//        }
-//    }
+    auto *crossover = new BitVectorCrossover(*configuration);
+    std::vector<VariationSource *> sources = {
+            new FitnessProportionateSelection(*configuration),
+            new FitnessProportionateSelection(*configuration)
+    };
+    sources.at(0)->setup(*new std::vector<VariationSource *>(0));
+    sources.at(1)->setup(*new std::vector<VariationSource *>(0));
+    crossover->setup(sources);
+    SECTION("BitVectorCrossover") {
+        SECTION("Checking breeding...") {
+            std::vector<Individual *> parents = pop->getIndividuals();
+            std::vector<float> &parent1 = dynamic_cast<VectorIndividual *>(parents.at(0))->getChromosome();
+            parent1.at(0) = 1;
+            parent1.at(1) = 1;
+            parent1.at(2) = 1;
+            std::vector<float> &parent2 = dynamic_cast<VectorIndividual *>(parents.at(1))->getChromosome();
+            parent2.at(0) = 0;
+            parent2.at(1) = 0;
+            parent2.at(2) = 0;
+
+            std::vector<bool> used = {false, false, false};
+            for (int k = 1; k <= 10000; k++) {
+                std::vector<Individual *> offsprings = crossover->vary(parents, *thread);
+
+                std::vector<float> &offspring1 = dynamic_cast<VectorIndividual *>(offsprings.at(0))->getChromosome();
+                std::vector<float> &offspring2 = dynamic_cast<VectorIndividual *>(offsprings.at(1))->getChromosome();
+
+                if (offspring1.at(0) == 0 && offspring2.at(1) == 1) {
+                    auto o = std::vector<float>(offspring1);
+                    offspring1 = offspring2;
+                    offspring2 = o;
+                }
+
+                unsigned int crossover_point = 0;
+                for (unsigned int cp = 0; cp < genes; cp++)  {
+                    if ((parent1.at(cp) != offspring1.at(cp) && parent2.at(cp) != offspring2.at(cp))) {
+                        break;
+                    }
+                    crossover_point += 1;
+                }
+                crossover_point -= 1;
+
+                bool crossed = true;
+                for (unsigned int cp = crossover_point + 1; cp < genes; cp++) {
+                    crossed &= (parent1.at(cp) == offspring2.at(cp) && parent2.at(cp) == offspring1.at(cp));
+                }
+
+                if (crossed) {
+                    if (crossover_point == -1) {
+                        break;
+                    }
+                    used.at(crossover_point) = true;
+                }
+
+                delete offsprings.at(0);
+                delete offsprings.at(1);
+            }
+
+            REQUIRE(used.at(0));
+            REQUIRE(used.at(1));
+            REQUIRE(used.at(2));
+        }
+    }
 //
 //    SECTION("BitVectorMutation") {
 //        SECTION("Check breed...") {
@@ -139,6 +147,7 @@ TEST_CASE("NDGA", "[ndga]") {
 //        }
 //    }
 
+    delete crossover;
     delete initializer;
     delete pop;
     delete builder;
