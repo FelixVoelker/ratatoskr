@@ -5,6 +5,7 @@
 #include "../core/initialization/Initializer.h"
 #include "../cc/common/FitnessProportionateSelection.h"
 #include "../cc/ndga/BitVectorCrossover.h"
+#include "../cc/ndga/BitVectorMutation.h"
 
 /**
  * Unit tests for Neuro-Dynamic Genetic Algorithms.
@@ -58,8 +59,8 @@ TEST_CASE("NDGA", "[ndga]") {
 
     auto *thread = new Thread(0, 2, epoch);
     initializer->initializePopulation(*pop);
-    configuration->getCrossoverConfiguration().xover_rate = 1;
 
+    configuration->getCrossoverConfiguration().xover_rate = 1;
     auto *crossover = new BitVectorCrossover(*configuration);
     std::vector<VariationSource *> sources = {
             new FitnessProportionateSelection(*configuration),
@@ -123,30 +124,33 @@ TEST_CASE("NDGA", "[ndga]") {
             REQUIRE(used.at(2));
         }
     }
-//
-//    SECTION("BitVectorMutation") {
-//        SECTION("Check breed...") {
-//            vector<VariationSource *> selector(1);
-//            selector.at(0) = new IdentitySelectionOne(session);
-//            BitVectorMutation mutation = BitVectorMutation(session);
-//            mutation.connect(selector);
-//
-//            vector<Individual *> offsprings = mutation.vary(pop, random);
-//            vector<unsigned int> &mutant = dynamic_cast<BitVectorIndividual *>(offsprings.at(0))->getChromosome();
-//
-//            for (int k = 0; k < chromosome.size(); k++) {
-//                chromosome.at(k) = 1 - chromosome.at(k);
-//            }
-//
-//            REQUIRE(equal(chromosome.begin(),
-//                          chromosome.end(),
-//                          mutant.begin()));
-//            REQUIRE(equal(mutant.begin(),
-//                          mutant.end(),
-//                          chromosome.begin()));
-//        }
-//    }
 
+    configuration->getMutationConfiguration().mutation_rate = 1;
+    auto *mutation = new BitVectorMutation(*configuration);
+    sources = {
+            new FitnessProportionateSelection(*configuration)
+    };
+    sources.at(0)->setup(*new std::vector<VariationSource *>(0));
+    mutation->setup(sources);
+    SECTION("BitVectorMutation") {
+        SECTION("Checking breeding...") {
+            std::vector<float> &parent = dynamic_cast<VectorIndividual *>(pop->getIndividuals().at(0))->getChromosome();
+            parent.at(0) = 1;
+            parent.at(1) = 0;
+            parent.at(2) = 1;
+
+            std::vector<Individual *> offsprings = mutation->vary(pop->getIndividuals(), *thread);
+            std::vector<float> &offspring = dynamic_cast<VectorIndividual *>(offsprings.at(0))->getChromosome();
+
+            for (int k = 0; k < genes; k++) {
+                offspring.at(k) = 1 - offspring.at(k);
+            }
+
+            REQUIRE(parent == offspring);
+        }
+    }
+
+    delete mutation;
     delete crossover;
     delete initializer;
     delete pop;

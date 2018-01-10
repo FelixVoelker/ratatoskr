@@ -1,23 +1,23 @@
 #include "BitVectorMutation.h"
 #include "../common/VectorIndividual.h"
 
-unsigned long BitVectorMutation::expectedSources() const { return 1; }
-
-BitVectorMutation::BitVectorMutation(const NDGASession &session)
-        : BreedingOperator(session) {
-    prob = session.mutation_rate;
-    genes = dynamic_cast<const NDGAProblem &>(session.getProblem()).genes;
+BitVectorMutation::BitVectorMutation(common::Configuration &configuration) : BreedingOperator(configuration) {
+    this->pm = configuration.getMutationConfiguration().mutation_rate;
 }
 
-vector<Individual *> & BitVectorMutation::breed(vector<Individual *> &parents, Randomizer &random) const {
-    for (auto parent : parents) {
+unsigned long BitVectorMutation::expectedSources() const { return 1; }
+
+std::vector<Individual *> & BitVectorMutation::breed(std::vector<Individual *> &parents, Thread &thread) const {
+    for (auto *parent : parents) {
+        auto *p = dynamic_cast<VectorIndividual *>(parent);
+        auto genes = p->getChromosome().size();
         for (unsigned int k = 0; k < genes; k++) {
-            if (random.random() < prob) {
-                auto p = dynamic_cast<VectorIndividual *>(parent);
+            if (thread.random.sample() < pm) {
                 p->getChromosome().at(k) = 1 - p->getChromosome().at(k);
-                p->evaluated(false);
+                p->setEvaluated(false);
             }
         }
     }
+
     return parents;
 }

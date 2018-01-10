@@ -1,6 +1,7 @@
 #include <boost/python.hpp>
 #include "../../cc/ndga/RandomBitVectorBuilder.h"
 #include "../../cc/ndga/BitVectorCrossover.h"
+#include "../../cc/ndga/BitVectorMutation.h"
 
 
 using namespace boost::python;
@@ -10,6 +11,7 @@ BOOST_PYTHON_MODULE(ndga) {
 
     class_<BitVectorCrossover, bases<BreedingOperator>>("BitVectorCrossover", init<common::Configuration &>());
 
+    class_<BitVectorMutation, bases<BreedingOperator>>("BitVectorMutation", init<common::Configuration &>());
 //    class_<NDGASession, bases<Configuration>>("NDGASession", init<NDGAProblem &>())
 //            .def_readwrite("mutationrate", &NDGASession::mutation_rate)
 //            .def_readwrite("xoverrate", &NDGASession::xover_rate);

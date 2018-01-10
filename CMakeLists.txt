@@ -41,7 +41,7 @@ set(CC_API
         cc/common/TransitionTable.cpp cc/common/TransitionTable.h
         cc/common/VectorIndividual.cpp cc/common/VectorIndividual.h
         cc/ndga/BitVectorCrossover.cpp cc/ndga/BitVectorCrossover.h
-#        cc/ec/ndga/BitVectorMutation.cpp cc/ec/ndga/BitVectorMutation.h
+        cc/ndga/BitVectorMutation.cpp cc/ndga/BitVectorMutation.h
 #        cc/ec/ndga/NDGASession.cpp cc/ec/ndga/NDGASession.h
         cc/ndga/RandomBitVectorBuilder.cpp cc/ndga/RandomBitVectorBuilder.h
 #        cc/problem/ndga/OneMaxProblem.cpp cc/getProblem/ndga/OneMaxProblem.h
