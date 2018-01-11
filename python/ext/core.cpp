@@ -13,9 +13,7 @@
 #include "../../core/EvolutionarySystem.h"
 #include "../../core/Session.h"
 
-
 using namespace boost::python;
-using namespace core;
 
 BOOST_PYTHON_MODULE(core) {
     class_<std::vector<float>>("std::vector<float>")

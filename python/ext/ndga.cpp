@@ -2,7 +2,8 @@
 #include "../../cc/ndga/RandomBitVectorBuilder.h"
 #include "../../cc/ndga/BitVectorCrossover.h"
 #include "../../cc/ndga/BitVectorMutation.h"
-
+#include "../../cc/ndga/Session.h"
+#include "../../cc/ndga/EvaluationFunctions.h"
 
 using namespace boost::python;
 
@@ -12,10 +13,27 @@ BOOST_PYTHON_MODULE(ndga) {
     class_<BitVectorCrossover, bases<BreedingOperator>>("BitVectorCrossover", init<common::Configuration &>());
 
     class_<BitVectorMutation, bases<BreedingOperator>>("BitVectorMutation", init<common::Configuration &>());
-//    class_<NDGASession, bases<Configuration>>("NDGASession", init<NDGAProblem &>())
-//            .def_readwrite("mutationrate", &NDGASession::mutation_rate)
-//            .def_readwrite("xoverrate", &NDGASession::xover_rate);
-//
-//    /** Problems **/
-//    class_<OneMaxProblem, bases<NDGAProblem>>("OneMaxProblem", init<unsigned int, unsigned int>());
+
+    EvolutionarySystem* (ndga::Session::*build0)() = &ndga::Session::build;
+    EvolutionarySystem* (ndga::Session::*build1)(RandomBitVectorBuilder*) = &ndga::Session::build;
+    EvolutionarySystem* (ndga::Session::*build2)(TransitionTable*) = &ndga::Session::build;
+    EvolutionarySystem* (ndga::Session::*build3)(BreedingOperator*) = &ndga::Session::build;
+    EvolutionarySystem* (ndga::Session::*build4)(RandomBitVectorBuilder*, TransitionTable*) = &ndga::Session::build;
+    EvolutionarySystem* (ndga::Session::*build5)(RandomBitVectorBuilder*, BreedingOperator*) = &ndga::Session::build;
+    EvolutionarySystem* (ndga::Session::*build6)(TransitionTable*, BreedingOperator*) = &ndga::Session::build;
+
+    class_<ndga::Session, bases<core::Session>>("Session", init<common::Problem &>())
+            .def(init<common::Problem &, Configuration *>())
+            .def("build", build0, return_value_policy<manage_new_object>())
+            .def("build", build1, return_value_policy<manage_new_object>())
+            .def("build", build2, return_value_policy<manage_new_object>())
+            .def("build", build3, return_value_policy<manage_new_object>())
+            .def("build", build4, return_value_policy<manage_new_object>())
+            .def("build", build5, return_value_policy<manage_new_object>())
+            .def("build", build6, return_value_policy<manage_new_object>());
+
+    class_<ndga::EvaluationFunctions>("EvaluationFunctions", init<>());
+
+    class_<ndga::EvaluationFunctions::OneMaxProblem>("OneMaxProblem", init<>())
+            .def("__call__", &ndga::EvaluationFunctions::OneMaxProblem::operator());
 }

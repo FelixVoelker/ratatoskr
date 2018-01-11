@@ -30,11 +30,11 @@ namespace core {
          * @param network The cost approximating evolutionary network.
          * @param variation_tree The offspring breeding variation tree.
          */
-        EvolutionarySystem *build(Builder *builder,
+        EvolutionarySystem * build(Builder *builder,
                                   EvolutionaryNetwork *network,
                                   BreedingOperator *variation_tree);
 
-        Configuration &getConfiguration();
+        Configuration & getConfiguration();
 
     protected:
         Problem &problem;

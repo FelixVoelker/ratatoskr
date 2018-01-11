@@ -8,7 +8,7 @@ core::Session::~Session() {
     delete configuration;
 }
 
-EvolutionarySystem* core::Session::build(Builder *builder,
+EvolutionarySystem * core::Session::build(Builder *builder,
                                    EvolutionaryNetwork *network,
                                    BreedingOperator *variation_tree) {
     return new EvolutionarySystem(*configuration, builder, problem.getEval(), network, variation_tree);

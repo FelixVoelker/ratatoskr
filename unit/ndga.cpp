@@ -6,13 +6,15 @@
 #include "../cc/common/FitnessProportionateSelection.h"
 #include "../cc/ndga/BitVectorCrossover.h"
 #include "../cc/ndga/BitVectorMutation.h"
+#include "../cc/ndga/Session.h"
+#include "../cc/ndga/EvaluationFunctions.h"
 
 /**
  * Unit tests for Neuro-Dynamic Genetic Algorithms.
  *
  * @author  Felix Voelker
  * @version 0.0.2
- * @since   9.1.2018
+ * @since   11.1.2018
  */
 TEST_CASE("NDGA", "[ndga]") {
     std::function<void(Individual &, Thread &)> eval = [](Individual &individual, Thread &thread) {
@@ -22,8 +24,6 @@ TEST_CASE("NDGA", "[ndga]") {
     unsigned int genes = 3;
     auto *problem = new common::Problem(eval, 2, genes);
     auto *configuration = new common::Configuration(dynamic_cast<common::Configuration::ProblemConfiguration &>(problem->getConfiguration()));
-//    session.mutation_rate = 1;
-
 
     auto *cost = new Cost(*configuration);
     auto *featurevector = new FeatureVector(*configuration);
@@ -60,7 +60,7 @@ TEST_CASE("NDGA", "[ndga]") {
     auto *thread = new Thread(0, 2, epoch);
     initializer->initializePopulation(*pop);
 
-    configuration->getCrossoverConfiguration().xover_rate = 1;
+    configuration->getCrossoverConfiguration().xover_rate = 1.1;
     auto *crossover = new BitVectorCrossover(*configuration);
     std::vector<VariationSource *> sources = {
             new FitnessProportionateSelection(*configuration),
@@ -125,7 +125,7 @@ TEST_CASE("NDGA", "[ndga]") {
         }
     }
 
-    configuration->getMutationConfiguration().mutation_rate = 1;
+    configuration->getMutationConfiguration().mutation_rate = 1.1;
     auto *mutation = new BitVectorMutation(*configuration);
     sources = {
             new FitnessProportionateSelection(*configuration)
@@ -147,6 +147,25 @@ TEST_CASE("NDGA", "[ndga]") {
             }
 
             REQUIRE(parent == offspring);
+        }
+    }
+
+    SECTION("EvaluationFunctions") {
+        SECTION("Checking OneMaxProblem...") {
+            auto *p =  new common::Problem(ndga::EvaluationFunctions::OneMaxProblem()(), 200, 20);
+            auto *session = new ndga::Session(*p);
+            session->getConfiguration().getEvolutionarySystemConfiguration().epochs = 1;
+            session->getConfiguration().getEvolutionarySystemConfiguration().episodes = 1;
+            session->getConfiguration().getEvolutionarySystemConfiguration().generations = 200;
+            auto *system = session->build();
+
+            system->run();
+            auto & statistics = system->getStatistics();
+            REQUIRE(statistics.bestFitnesses(0).at(200) == 0);
+
+            delete system;
+            delete session;
+            delete p;
         }
     }
 

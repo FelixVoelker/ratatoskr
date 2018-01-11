@@ -93,6 +93,7 @@ namespace core {
 
         explicit Configuration(ProblemConfiguration &problem);
         Configuration(const Configuration &obj);
+        virtual ~Configuration() = default;
 
         ProblemConfiguration & getProblemConfiguration() const;
         EvolutionarySystemConfiguration & getEvolutionarySystemConfiguration();

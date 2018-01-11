@@ -42,10 +42,9 @@ set(CC_API
         cc/common/VectorIndividual.cpp cc/common/VectorIndividual.h
         cc/ndga/BitVectorCrossover.cpp cc/ndga/BitVectorCrossover.h
         cc/ndga/BitVectorMutation.cpp cc/ndga/BitVectorMutation.h
-#        cc/ec/ndga/NDGASession.cpp cc/ec/ndga/NDGASession.h
+        cc/ndga/EvaluationFunctions.cpp cc/ndga/EvaluationFunctions.h
         cc/ndga/RandomBitVectorBuilder.cpp cc/ndga/RandomBitVectorBuilder.h
-#        cc/problem/ndga/OneMaxProblem.cpp cc/getProblem/ndga/OneMaxProblem.h
-        )
+        cc/ndga/Session.cpp cc/ndga/Session.h)
 
 add_library(ratatoskr_cc SHARED ${CORE_SOURCES} ${CC_API})
 target_link_libraries(ratatoskr_cc ${Boost_LIBRARIES} ${PYTHON_LIBRARIES})
