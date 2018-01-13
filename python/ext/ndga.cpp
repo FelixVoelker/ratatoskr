@@ -29,8 +29,8 @@ BOOST_PYTHON_MODULE(ndga) {
     EvolutionarySystem* (ndga::Session::*build5)(RandomBitVectorBuilder*, BreedingOperator*) = &ndga::Session::build;
     EvolutionarySystem* (ndga::Session::*build6)(TransitionTable*, BreedingOperator*) = &ndga::Session::build;
 
-    class_<ndga::Session, bases<core::Session>>("Session", init<common::Problem &>())
-            .def(init<common::Problem &, common::Configuration *>())
+    class_<ndga::Session, bases<core::Session>>("Session", init<const common::Problem &>())
+            .def(init<const common::Problem &, common::Configuration *>())
             .def("build", build0, return_value_policy<manage_new_object>())
             .def("build", build1, return_value_policy<manage_new_object>())
             .def("build", build2, return_value_policy<manage_new_object>())

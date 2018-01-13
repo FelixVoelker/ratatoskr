@@ -107,9 +107,11 @@ BOOST_PYTHON_MODULE(core) {
             .add_property("statistics", make_function(&EvolutionarySystem::getStatistics, return_internal_reference<>()))
             .def("run", &EvolutionarySystem::run);
 
+    Configuration::ProblemConfiguration& (Problem::*problem)() = &Problem::getConfiguration;
+
     class_<Problem>("Problem", init<std::function<void(Individual &, Thread &)>, unsigned int>())
             .add_property("eval", make_function(&Problem::getEval, return_internal_reference<>()), &Problem::setEval)
-            .add_property("configuration", make_function(&Problem::getConfiguration, return_internal_reference<>()));
+            .add_property("configuration", make_function(problem, return_internal_reference<>()));
 
     class_<Configuration::ProblemConfiguration>("ProblemConfiguration", init<>())
             .def_readwrite("popsize", &Configuration::ProblemConfiguration::popsize);
@@ -147,8 +149,8 @@ BOOST_PYTHON_MODULE(core) {
             .add_property("breeder", make_function(breeder, return_internal_reference<>()))
             .add_property("network", make_function(network, return_internal_reference<>()));
 
-    class_<Session>("Session", init<Problem &>())
-            .def(init<Problem &, Configuration *>())
+    class_<Session>("Session", init<const Problem &>())
+            .def(init<const Problem &, Configuration *>())
             .add_property("configuration", make_function(&Session::getConfiguration, return_internal_reference<>()))
             .def("build", &Session::build, return_value_policy<manage_new_object>());
 }

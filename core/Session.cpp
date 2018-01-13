@@ -1,8 +1,8 @@
 #include "Session.h"
 
-core::Session::Session(Problem &problem) : problem(problem), configuration(new Configuration(problem.getConfiguration())) {}
+core::Session::Session(const Problem &problem) : problem(problem), configuration(new Configuration(problem.getConfiguration())) {}
 
-core::Session::Session(Problem &problem, core::Configuration *config) : problem(problem), configuration(new Configuration(*config)) {}
+core::Session::Session(const Problem &problem, core::Configuration *config) : problem(problem), configuration(new Configuration(*config)) {}
 
 core::Session::~Session() {
     delete configuration;

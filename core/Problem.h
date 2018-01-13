@@ -24,10 +24,9 @@ namespace core {
         Problem(const Problem &obj);
         ~Problem();
 
-        std::function<void(Individual &, Thread &)> &getEval();
-
-        Configuration::ProblemConfiguration &getConfiguration();
-
+        const std::function<void(Individual &, Thread &)> & getEval() const;
+        Configuration::ProblemConfiguration & getConfiguration();
+        const Configuration::ProblemConfiguration & getConfiguration() const;
         void setEval(std::function<void(Individual &, Thread &)> eval);
 
     protected:

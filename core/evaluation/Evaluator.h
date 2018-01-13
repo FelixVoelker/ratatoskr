@@ -20,7 +20,7 @@ class Evaluator : public Singleton {
 
 public:
     explicit Evaluator(const core::Configuration &configuration,
-                       std::function<void(Individual &, Thread &)> &eval,
+                       const std::function<void(Individual &, Thread &)> &eval,
                        EvolutionaryNetwork *network,
                        unsigned int &epoch);
     ~Evaluator();
@@ -35,7 +35,7 @@ protected:
     std::vector<Thread *> evalthreads;
 
     /** Components */
-    std::function<void(Individual &, Thread &)> &eval;
+    const std::function<void(Individual &, Thread &)> &eval;
     EvolutionaryNetwork *network;
 
     /**

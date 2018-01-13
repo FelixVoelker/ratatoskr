@@ -2,11 +2,11 @@
 #include "BitVectorCrossover.h"
 #include "../common/FitnessProportionateSelection.h"
 
-ndga::Session::Session(common::Problem &problem) : core::Session(problem) {
-    configuration = new common::Configuration(dynamic_cast<common::Configuration::ProblemConfiguration &>(problem.getConfiguration()));
+ndga::Session::Session(const common::Problem &problem) : core::Session(problem) {
+    configuration = new common::Configuration(dynamic_cast<const common::Configuration::ProblemConfiguration &>(problem.getConfiguration()));
 }
 
-ndga::Session::Session(common::Problem &problem, common::Configuration *config) : core::Session(problem, config) {}
+ndga::Session::Session(const common::Problem &problem, common::Configuration *config) : core::Session(problem, config) {}
 
 EvolutionarySystem* ndga::Session::build() {
     return core::Session::build(constructDefaultBuilder(), constructDefaultNetwork(), constructDefaultVariation());

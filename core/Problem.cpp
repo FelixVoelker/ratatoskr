@@ -15,11 +15,15 @@ core::Problem::~Problem() {
     delete configuration;
 }
 
-std::function<void(Individual &, Thread &)> & core::Problem::getEval() {
+const std::function<void(Individual &, Thread &)> & core::Problem::getEval() const {
     return eval;
 }
 
 core::Configuration::ProblemConfiguration & core::Problem::getConfiguration() {
+    return *configuration;
+}
+
+const core::Configuration::ProblemConfiguration & core::Problem::getConfiguration() const {
     return *configuration;
 }
 

@@ -20,8 +20,8 @@ namespace core {
     class Session {
 
     public:
-        explicit Session(Problem &problem);
-        explicit Session(Problem &problem, core::Configuration *config);
+        explicit Session(const Problem &problem);
+        explicit Session(const Problem &problem, core::Configuration *config);
         ~Session();
 
         /**
@@ -37,7 +37,7 @@ namespace core {
         Configuration & getConfiguration();
 
     protected:
-        Problem &problem;
+        const Problem &problem;
         Configuration *configuration;
 
     };

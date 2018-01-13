@@ -1,7 +1,7 @@
 #include "Evaluator.h"
 
 Evaluator::Evaluator(const core::Configuration &configuration,
-                     std::function<void(Individual &, Thread &)> &eval,
+                     const std::function<void(Individual &, Thread &)> &eval,
                      EvolutionaryNetwork *network,
                      unsigned int &epoch)
         : Singleton(configuration),

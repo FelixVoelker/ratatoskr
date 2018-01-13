@@ -20,8 +20,8 @@ namespace ndga {
     class Session : public core::Session {
 
     public:
-        explicit Session(common::Problem &problem);
-        explicit Session(common::Problem &problem, common::Configuration *config);
+        explicit Session(const common::Problem &problem);
+        explicit Session(const common::Problem &problem, common::Configuration *config);
 
         /**
          * Sets up the evolutionary system for a conventional NDGA.

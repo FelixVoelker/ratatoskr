@@ -26,7 +26,7 @@ class EvolutionarySystem {
 public:
     explicit EvolutionarySystem(const core::Configuration &configuration,
                                 Builder *builder,
-                                std::function<void(Individual &, Thread &)> &eval,
+                                const std::function<void(Individual &, Thread &)> &eval,
                                 EvolutionaryNetwork *network,
                                 BreedingOperator *variation_tree);
 
