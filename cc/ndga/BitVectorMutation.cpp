@@ -1,7 +1,8 @@
 #include "BitVectorMutation.h"
 #include "../common/VectorIndividual.h"
+#include <iostream>
 
-BitVectorMutation::BitVectorMutation(common::Configuration &configuration) : BreedingOperator(configuration) {
+BitVectorMutation::BitVectorMutation(const common::Configuration &configuration) : BreedingOperator(configuration) {
     this->pm = configuration.getMutationConfiguration().mutation_rate;
 }
 

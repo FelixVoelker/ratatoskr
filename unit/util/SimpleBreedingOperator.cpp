@@ -1,4 +1,5 @@
 #include "SimpleBreedingOperator.h"
+SimpleBreedingOperator::SimpleBreedingOperator(const core::Configuration &configuration) : BreedingOperator(configuration) {}
 
 std::vector<Individual *>& SimpleBreedingOperator::breed(std::vector<Individual *> &parents, Thread &thread) const {
     auto *offsprings = new std::vector<Individual *>(1);
@@ -6,7 +7,6 @@ std::vector<Individual *>& SimpleBreedingOperator::breed(std::vector<Individual 
     return *offsprings;
 }
 
-SimpleBreedingOperator::SimpleBreedingOperator(Configuration &configuration) : BreedingOperator(configuration) {}
 
 unsigned long SimpleBreedingOperator::expectedSources() const {
     return 1;

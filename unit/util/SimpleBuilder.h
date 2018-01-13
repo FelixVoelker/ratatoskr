@@ -14,7 +14,7 @@
 class SimpleBuilder : public Builder {
 
 public:
-    explicit SimpleBuilder(Configuration &configuration, Individual *individual);
+    explicit SimpleBuilder(const core::Configuration &configuration, Individual *individual);
 
 protected:
     void initialize(Individual &ind, Thread &thread) const override;

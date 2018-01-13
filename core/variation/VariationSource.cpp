@@ -1,7 +1,7 @@
 #include <iostream>
 #include "VariationSource.h"
 
-VariationSource::VariationSource(Configuration &configuration) : Singleton(configuration) {}
+VariationSource::VariationSource(const core::Configuration &configuration) : Singleton(configuration) {}
 
 VariationSource::~VariationSource() {
     if (initialized) {

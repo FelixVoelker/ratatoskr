@@ -2,8 +2,8 @@
 #include "Problem.h"
 #include "VectorIndividual.h"
 
-TransitionTable::TransitionTable(Configuration &configuration) : EvolutionaryNetwork(configuration) {
-    auto problem = dynamic_cast<common::Configuration::ProblemConfiguration &>(configuration.getProblemConfiguration());
+TransitionTable::TransitionTable(const common::Configuration &configuration) : EvolutionaryNetwork(configuration) {
+    auto problem = dynamic_cast<const common::Configuration::ProblemConfiguration &>(configuration.getProblemConfiguration());
     lookup_table = new std::vector<std::vector<float>>(problem.popsize,
             std::vector<float>(static_cast<unsigned long>(pow(2, problem.genes)), 0)
     );

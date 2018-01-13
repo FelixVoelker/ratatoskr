@@ -13,7 +13,7 @@
 class EvolutionaryNetwork : public Singleton {
 
 public:
-    explicit EvolutionaryNetwork(Configuration &configuration);
+    explicit EvolutionaryNetwork(const core::Configuration &configuration);
 
     /**
      *

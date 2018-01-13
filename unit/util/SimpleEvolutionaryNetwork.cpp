@@ -1,6 +1,6 @@
 #include "SimpleEvolutionaryNetwork.h"
 
-SimpleEvolutionaryNetwork::SimpleEvolutionaryNetwork(Configuration &configuration) : EvolutionaryNetwork(configuration) {}
+SimpleEvolutionaryNetwork::SimpleEvolutionaryNetwork(const core::Configuration &configuration) : EvolutionaryNetwork(configuration) {}
 
 std::vector<float> SimpleEvolutionaryNetwork::output(std::vector<Individual *> &individuals) const {
     return std::vector<float>(individuals.size());

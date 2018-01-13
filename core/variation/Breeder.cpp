@@ -1,6 +1,6 @@
 #include "Breeder.h"
 
-Breeder::Breeder(Configuration &configuration, BreedingOperator *variation_tree, unsigned int &epoch)
+Breeder::Breeder(const core::Configuration &configuration, BreedingOperator *variation_tree, unsigned int &epoch)
         : Singleton(configuration),
           varythreads(std::vector<Thread *>(configuration.getBreederConfiguration().threads))
 {

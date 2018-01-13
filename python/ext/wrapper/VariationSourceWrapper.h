@@ -17,7 +17,7 @@ using namespace boost::python;
 class VariationSourceWrapper : public VariationSource, public wrapper<VariationSource> {
 
 public:
-    explicit VariationSourceWrapper(Configuration &configuration);
+    explicit VariationSourceWrapper(const core::Configuration &configuration);
 
     unsigned long expectedSources() const override;
 

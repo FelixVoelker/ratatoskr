@@ -16,7 +16,7 @@
 class Population : public Singleton {
 
 public:
-    explicit Population(Configuration &configuration);
+    explicit Population(const core::Configuration &configuration);
     ~Population();
 
     /**

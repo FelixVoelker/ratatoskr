@@ -28,7 +28,7 @@ core::Configuration::EvolutionaryNetworkConfiguration::EvolutionaryNetworkConfig
     this->discount_factor = obj.discount_factor;
 }
 
-core::Configuration::Configuration(ProblemConfiguration &problem) : problem(problem) {}
+core::Configuration::Configuration(const ProblemConfiguration &problem) : problem(problem) {}
 
 core::Configuration::Configuration(const Configuration &obj) : problem(obj.problem) {
     evolutionary_system = EvolutionarySystemConfiguration(obj.evolutionary_system);
@@ -38,7 +38,7 @@ core::Configuration::Configuration(const Configuration &obj) : problem(obj.probl
     evolutionary_network = EvolutionaryNetworkConfiguration(obj.evolutionary_network);
 }
 
-core::Configuration::ProblemConfiguration& core::Configuration::getProblemConfiguration() const {
+const core::Configuration::ProblemConfiguration& core::Configuration::getProblemConfiguration() const {
    return problem;
 }
 
@@ -46,7 +46,15 @@ core::Configuration::EvolutionarySystemConfiguration & core::Configuration::getE
     return evolutionary_system;
 }
 
+const core::Configuration::EvolutionarySystemConfiguration & core::Configuration::getEvolutionarySystemConfiguration() const {
+    return evolutionary_system;
+}
+
 core::Configuration::InitializerConfiguration & core::Configuration::getInitializerConfiguration() {
+    return initializer;
+}
+
+const core::Configuration::InitializerConfiguration & core::Configuration::getInitializerConfiguration() const {
     return initializer;
 }
 
@@ -54,10 +62,22 @@ core::Configuration::EvaluatorConfiguration & core::Configuration::getEvaluatorC
     return evaluator;
 }
 
+const core::Configuration::EvaluatorConfiguration & core::Configuration::getEvaluatorConfiguration() const {
+    return evaluator;
+}
+
 core::Configuration::BreederConfiguration & core::Configuration::getBreederConfiguration() {
     return breeder;
 }
 
+const core::Configuration::BreederConfiguration & core::Configuration::getBreederConfiguration() const {
+    return breeder;
+}
+
 core::Configuration::EvolutionaryNetworkConfiguration & core::Configuration::getEvolutionaryNetworkConfiguration() {
+    return evolutionary_network;
+}
+
+const core::Configuration::EvolutionaryNetworkConfiguration & core::Configuration::getEvolutionaryNetworkConfiguration() const {
     return evolutionary_network;
 }

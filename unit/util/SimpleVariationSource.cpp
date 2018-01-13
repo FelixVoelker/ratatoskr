@@ -1,7 +1,7 @@
 #include "SimpleVariationSource.h"
 #include "SimpleIndividual.h"
 
-SimpleVariationSource::SimpleVariationSource(Configuration &configuration)
+SimpleVariationSource::SimpleVariationSource(const core::Configuration &configuration)
         : VariationSource(configuration) {}
 
 unsigned long SimpleVariationSource::expectedSources() const { return 0; }

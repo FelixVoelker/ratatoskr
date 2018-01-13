@@ -1,6 +1,6 @@
 #include "FitnessProportionateSelection.h"
 
-FitnessProportionateSelection::FitnessProportionateSelection(common::Configuration &configuration)
+FitnessProportionateSelection::FitnessProportionateSelection(const common::Configuration &configuration)
         : SelectionOperator(configuration)
 {
     this->epochs = configuration.getEvolutionarySystemConfiguration().epochs;

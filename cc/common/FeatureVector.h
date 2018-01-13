@@ -16,7 +16,7 @@
 class FeatureVector : public FeatureMap {
 
 public:
-    explicit FeatureVector(common::Configuration &configuration);
+    explicit FeatureVector(const common::Configuration &configuration);
 
     /**
      * Performs the identity function on a chromosome, i.e. some numerical vector.

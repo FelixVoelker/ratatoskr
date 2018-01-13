@@ -126,10 +126,12 @@ TEST_CASE("Common", "[common]") {
             }
 
             unsigned int tolerance = 100;
-            REQUIRE(counts.at(0) - tolerance <= counts.at(1));
-            REQUIRE(counts.at(1) <= counts.at(0) + tolerance);
-            REQUIRE(counts.at(2) - tolerance <= counts.at(1));
-            REQUIRE(counts.at(1) <= counts.at(2) + tolerance);
+            for (unsigned int k = 0; k < counts.size() - 1; k++) {
+                if (counts.at(k) >= tolerance) {
+                    REQUIRE(counts.at(k) - tolerance <= counts.at(k + 1));
+                }
+                REQUIRE(counts.at(k + 1) <= counts.at(k) + tolerance);
+            }
         }
 
         epoch = 2;

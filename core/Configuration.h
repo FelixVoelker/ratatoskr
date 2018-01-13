@@ -91,19 +91,24 @@ namespace core {
             float learning_rate = 0.1;
         };
 
-        explicit Configuration(ProblemConfiguration &problem);
+        explicit Configuration(const ProblemConfiguration &problem);
         Configuration(const Configuration &obj);
         virtual ~Configuration() = default;
 
-        ProblemConfiguration & getProblemConfiguration() const;
+        const ProblemConfiguration & getProblemConfiguration() const;
         EvolutionarySystemConfiguration & getEvolutionarySystemConfiguration();
+        const EvolutionarySystemConfiguration & getEvolutionarySystemConfiguration() const;
         InitializerConfiguration & getInitializerConfiguration();
+        const InitializerConfiguration & getInitializerConfiguration() const;
         EvaluatorConfiguration & getEvaluatorConfiguration();
+        const EvaluatorConfiguration & getEvaluatorConfiguration() const;
         BreederConfiguration & getBreederConfiguration();
+        const BreederConfiguration & getBreederConfiguration() const;
         EvolutionaryNetworkConfiguration & getEvolutionaryNetworkConfiguration();
+        const EvolutionaryNetworkConfiguration & getEvolutionaryNetworkConfiguration() const;
 
     protected:
-        ProblemConfiguration &problem;
+        const ProblemConfiguration &problem;
         EvolutionarySystemConfiguration evolutionary_system;
         InitializerConfiguration initializer;
         EvaluatorConfiguration evaluator;

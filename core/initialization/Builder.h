@@ -17,7 +17,7 @@
 class Builder : public Singleton {
 
 public:
-    explicit Builder(Configuration &configuration, Individual *prototype);
+    explicit Builder(const core::Configuration &configuration, Individual *prototype);
     ~Builder();
 
     /**

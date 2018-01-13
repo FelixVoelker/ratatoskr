@@ -50,17 +50,19 @@ TEST_CASE("NDGA", "[ndga]") {
             }
 
             unsigned int tolerance = 100;
-            REQUIRE(counts.at(0) - tolerance <= counts.at(1));
-            REQUIRE(counts.at(1) <= counts.at(0) + tolerance);
-            REQUIRE(counts.at(2) - tolerance <= counts.at(1));
-            REQUIRE(counts.at(1) <= counts.at(2) + tolerance);
+            for (unsigned int k = 0; k < counts.size() - 1; k++) {
+                if (counts.at(k) >= tolerance) {
+                    REQUIRE(counts.at(k) - tolerance <= counts.at(k + 1));
+                }
+                REQUIRE(counts.at(k + 1) <= counts.at(k) + tolerance);
+            }
         }
     }
 
     auto *thread = new Thread(0, 2, epoch);
     initializer->initializePopulation(*pop);
 
-    configuration->getCrossoverConfiguration().xover_rate = 1.1;
+    configuration->getCrossoverConfiguration().xover_rate = 1.0;
     auto *crossover = new BitVectorCrossover(*configuration);
     std::vector<VariationSource *> sources = {
             new FitnessProportionateSelection(*configuration),
@@ -125,7 +127,7 @@ TEST_CASE("NDGA", "[ndga]") {
         }
     }
 
-    configuration->getMutationConfiguration().mutation_rate = 1.1;
+    configuration->getMutationConfiguration().mutation_rate = 1.0;
     auto *mutation = new BitVectorMutation(*configuration);
     sources = {
             new FitnessProportionateSelection(*configuration)
@@ -134,19 +136,20 @@ TEST_CASE("NDGA", "[ndga]") {
     mutation->setup(sources);
     SECTION("BitVectorMutation") {
         SECTION("Checking breeding...") {
-            std::vector<float> &parent = dynamic_cast<VectorIndividual *>(pop->getIndividuals().at(0))->getChromosome();
-            parent.at(0) = 1;
-            parent.at(1) = 0;
-            parent.at(2) = 1;
+            auto &parent1 = dynamic_cast<VectorIndividual *>(pop->getIndividuals().at(0))->getChromosome();
+            auto &parent2 = dynamic_cast<VectorIndividual *>(pop->getIndividuals().at(1))->getChromosome();
 
             std::vector<Individual *> offsprings = mutation->vary(pop->getIndividuals(), *thread);
-            std::vector<float> &offspring = dynamic_cast<VectorIndividual *>(offsprings.at(0))->getChromosome();
-
-            for (int k = 0; k < genes; k++) {
+            auto &offspring = dynamic_cast<VectorIndividual *>(offsprings.at(0))->getChromosome();
+            for (unsigned int k = 0; k < genes; k++) {
                 offspring.at(k) = 1 - offspring.at(k);
             }
 
-            REQUIRE(parent == offspring);
+            if (parent1 != offspring) {
+                REQUIRE(parent2 == offspring);
+            } else {
+                REQUIRE(parent1 == offspring);
+            }
         }
     }
 

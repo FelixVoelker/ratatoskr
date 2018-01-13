@@ -18,7 +18,7 @@
 class FeatureMap : public Prototype {
 
 public:
-    explicit FeatureMap(Configuration &configuration);
+    explicit FeatureMap(const core::Configuration &configuration);
 
     virtual FeatureMap * clone() const = 0;
 };

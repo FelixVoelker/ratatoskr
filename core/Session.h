@@ -21,7 +21,7 @@ namespace core {
 
     public:
         explicit Session(Problem &problem);
-        explicit Session(Problem &problem, Configuration *config);
+        explicit Session(Problem &problem, core::Configuration *config);
         ~Session();
 
         /**

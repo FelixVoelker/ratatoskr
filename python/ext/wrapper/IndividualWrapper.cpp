@@ -1,6 +1,6 @@
 #include "IndividualWrapper.h"
 
-IndividualWrapper::IndividualWrapper(Configuration &configuration,
+IndividualWrapper::IndividualWrapper(const core::Configuration &configuration,
                                      Cost *cost,
                                      FeatureMap *featuremap,
                                      Fitness *fitness)

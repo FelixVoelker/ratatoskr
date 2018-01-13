@@ -1,7 +1,7 @@
 #include "BitVectorCrossover.h"
 #include "../common/VectorIndividual.h"
 
-BitVectorCrossover::BitVectorCrossover(common::Configuration &configuration) : BreedingOperator(configuration) {
+BitVectorCrossover::BitVectorCrossover(const common::Configuration &configuration) : BreedingOperator(configuration) {
     this->pc = configuration.getCrossoverConfiguration().xover_rate;
 }
 

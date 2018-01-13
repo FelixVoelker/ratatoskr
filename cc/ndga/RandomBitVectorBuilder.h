@@ -16,7 +16,7 @@
 class RandomBitVectorBuilder : public Builder {
 
 public:
-    explicit RandomBitVectorBuilder(common::Configuration &configuration, VectorIndividual *prototype);
+    explicit RandomBitVectorBuilder(const common::Configuration &configuration, VectorIndividual *prototype);
 
 protected:
     /**

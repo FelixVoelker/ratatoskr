@@ -1,6 +1,6 @@
 #include "Population.h"
 
-Population::Population(Configuration &configuration) : Singleton(configuration) {
+Population::Population(const core::Configuration &configuration) : Singleton(configuration) {
     individuals = std::vector<Individual *>(configuration.getProblemConfiguration().popsize);
 }
 

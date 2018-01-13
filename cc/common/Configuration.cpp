@@ -16,13 +16,21 @@ common::Configuration::MutationConfiguration::MutationConfiguration(const Mutati
     this->mutation_rate = mutation_rate;
 }
 
-common::Configuration::Configuration(ProblemConfiguration &problem)
+common::Configuration::Configuration(const ProblemConfiguration &problem)
         : core::Configuration::Configuration(problem) {}
 
 common::Configuration::CrossoverConfiguration & common::Configuration::getCrossoverConfiguration() {
     return crossover;
 }
 
+const common::Configuration::CrossoverConfiguration & common::Configuration::getCrossoverConfiguration() const {
+    return crossover;
+}
+
 common::Configuration::MutationConfiguration & common::Configuration::getMutationConfiguration() {
+    return mutation;
+}
+
+const common::Configuration::MutationConfiguration & common::Configuration::getMutationConfiguration() const {
     return mutation;
 }

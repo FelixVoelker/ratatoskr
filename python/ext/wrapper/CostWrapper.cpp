@@ -1,6 +1,6 @@
 #include "CostWrapper.h"
 
-CostWrapper::CostWrapper(Configuration &configuration) : Cost(configuration) {}
+CostWrapper::CostWrapper(const core::Configuration &configuration) : Cost(configuration) {}
 
 bool CostWrapper::operator<(const Cost &other) const {
     if (override o = this->get_override("operator<"))

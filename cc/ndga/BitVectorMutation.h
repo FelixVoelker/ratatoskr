@@ -16,7 +16,7 @@
 class BitVectorMutation : public BreedingOperator {
 
 public:
-    explicit BitVectorMutation(common::Configuration &configuration);
+    explicit BitVectorMutation(const common::Configuration &configuration);
 
 protected:
     float pm;

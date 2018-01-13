@@ -1,6 +1,6 @@
 #include "Statistics.h"
 
-Statistics::Statistics(Configuration &configuration) {
+Statistics::Statistics(const core::Configuration &configuration) {
     episodes = configuration.getEvolutionarySystemConfiguration().episodes;
 
     auto f = std::vector<float>(configuration.getEvolutionarySystemConfiguration().generations + 1, 0);

@@ -19,7 +19,7 @@
 class Evaluator : public Singleton {
 
 public:
-    explicit Evaluator(Configuration &configuration,
+    explicit Evaluator(const core::Configuration &configuration,
                        std::function<void(Individual &, Thread &)> &eval,
                        EvolutionaryNetwork *network,
                        unsigned int &epoch);

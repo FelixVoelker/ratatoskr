@@ -1,6 +1,6 @@
 #include "RandomBitVectorBuilder.h"
 
-RandomBitVectorBuilder::RandomBitVectorBuilder(common::Configuration &configuration, VectorIndividual *prototype)
+RandomBitVectorBuilder::RandomBitVectorBuilder(const common::Configuration &configuration, VectorIndividual *prototype)
         : Builder(configuration, prototype) {}
 
 void RandomBitVectorBuilder::initialize(Individual &individual, Thread &thread) const {

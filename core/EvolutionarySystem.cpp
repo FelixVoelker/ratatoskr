@@ -1,7 +1,7 @@
 #include <iostream>
 #include "EvolutionarySystem.h"
 
-EvolutionarySystem::EvolutionarySystem(Configuration &configuration,
+EvolutionarySystem::EvolutionarySystem(const core::Configuration &configuration,
                                        Builder *builder,
                                        std::function<void(Individual &, Thread &)> &eval,
                                        EvolutionaryNetwork *network,

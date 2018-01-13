@@ -1,6 +1,6 @@
 #include "Replayer.h"
 
-Replayer::Replayer(Configuration &configuration, EvolutionaryNetwork *network) : Singleton(configuration) {
+Replayer::Replayer(const core::Configuration &configuration, EvolutionaryNetwork *network) : Singleton(configuration) {
     this->network = network;
 }
 

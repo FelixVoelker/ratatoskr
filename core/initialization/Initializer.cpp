@@ -1,6 +1,6 @@
 #include "Initializer.h"
 
-Initializer::Initializer(Configuration &configuration, Builder *builder, unsigned int &epoch)
+Initializer::Initializer(const core::Configuration &configuration, Builder *builder, unsigned int &epoch)
         : Singleton(configuration),
           initthreads(std::vector<Thread *>(configuration.getInitializerConfiguration().threads))
 {

@@ -17,7 +17,7 @@ using namespace boost::python;
 class BreedingOperatorWrapper : public BreedingOperator, public wrapper<BreedingOperator> {
 
 public:
-    explicit BreedingOperatorWrapper(Configuration &configuration);
+    explicit BreedingOperatorWrapper(const core::Configuration &configuration);
 
     unsigned long expectedSources() const override;
 

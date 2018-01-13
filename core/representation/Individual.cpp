@@ -1,6 +1,6 @@
 #include "Individual.h"
 
-Individual::Individual(Configuration &configuration, Cost *cost, FeatureMap *featuremap, Fitness *fitness)
+Individual::Individual(const core::Configuration &configuration, Cost *cost, FeatureMap *featuremap, Fitness *fitness)
         : Prototype(configuration)
 {
     this->cost = cost;

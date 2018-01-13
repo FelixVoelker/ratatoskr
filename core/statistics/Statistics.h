@@ -16,7 +16,7 @@
 class Statistics {
 
 public:
-    explicit Statistics(Configuration &configuration);
+    explicit Statistics(const core::Configuration &configuration);
     ~Statistics();
 
     /**

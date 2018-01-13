@@ -14,7 +14,7 @@
 class SimpleVariationSource : public VariationSource {
 
 public:
-    explicit SimpleVariationSource(Configuration &configuration);
+    explicit SimpleVariationSource(const core::Configuration &configuration);
 
 protected:
     unsigned long expectedSources() const override;

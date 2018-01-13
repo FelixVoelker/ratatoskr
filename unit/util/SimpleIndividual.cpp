@@ -2,7 +2,7 @@
 
 #include <utility>
 
-SimpleIndividual::SimpleIndividual(Configuration &configuration, Cost *cost, FeatureMap *featuremap, Fitness *fitness)
+SimpleIndividual::SimpleIndividual(const core::Configuration &configuration, Cost *cost, FeatureMap *featuremap, Fitness *fitness)
         : Individual(configuration, cost, featuremap, fitness)
 {
 }

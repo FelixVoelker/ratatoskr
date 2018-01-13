@@ -1,6 +1,6 @@
 #include "FitnessWrapper.h"
 
-FitnessWrapper::FitnessWrapper(Configuration &configuration) : Fitness(configuration) {}
+FitnessWrapper::FitnessWrapper(const core::Configuration &configuration) : Fitness(configuration) {}
 
 bool FitnessWrapper::isIdeal() const {
     if (override isIdeal = this->get_override("isIdeal"))

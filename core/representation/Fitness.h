@@ -16,7 +16,7 @@
 class Fitness : public Prototype {
 
 public:
-    explicit Fitness(Configuration &configuration);
+    explicit Fitness(const core::Configuration &configuration);
 
     /**
      * Estimates if the current fitness fulfills the termination criteria of a conventional NDEA, i.e.

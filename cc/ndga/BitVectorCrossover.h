@@ -16,7 +16,7 @@
 class BitVectorCrossover : public BreedingOperator {
 
 public:
-    explicit BitVectorCrossover(common::Configuration &configuration);
+    explicit BitVectorCrossover(const common::Configuration &configuration);
 
 protected:
     float pc;

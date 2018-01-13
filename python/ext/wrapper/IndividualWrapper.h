@@ -17,7 +17,7 @@ using namespace boost::python;
 class IndividualWrapper : public Individual, public wrapper<Individual> {
 
 public:
-    explicit IndividualWrapper(Configuration &configuration,
+    explicit IndividualWrapper(const core::Configuration &configuration,
                                Cost *cost,
                                FeatureMap *featuremap,
                                Fitness *fitness);

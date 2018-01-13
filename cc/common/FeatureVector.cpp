@@ -1,7 +1,6 @@
 #include "FeatureVector.h"
-#include "Configuration.h"
 
-FeatureVector::FeatureVector(common::Configuration &configuration) : FeatureMap(configuration) {}
+FeatureVector::FeatureVector(const common::Configuration &configuration) : FeatureMap(configuration) {}
 
 std::vector<float> & FeatureVector::compute(std::vector<float> &chromosome) const {
     return chromosome;

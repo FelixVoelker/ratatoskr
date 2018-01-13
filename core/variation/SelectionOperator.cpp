@@ -1,6 +1,6 @@
 #include "SelectionOperator.h"
 
-SelectionOperator::SelectionOperator(Configuration &configuration) : VariationSource(configuration) {}
+SelectionOperator::SelectionOperator(const core::Configuration &configuration) : VariationSource(configuration) {}
 
 unsigned long SelectionOperator::expectedSources() const {
     return 0;

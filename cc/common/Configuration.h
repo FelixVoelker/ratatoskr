@@ -41,11 +41,13 @@ namespace common {
             float mutation_rate = 0.001;
         };
 
-        explicit Configuration(ProblemConfiguration &problem);
+        explicit Configuration(const ProblemConfiguration &problem);
         Configuration(const Configuration &obj) = default;
 
         CrossoverConfiguration & getCrossoverConfiguration();
+        const CrossoverConfiguration & getCrossoverConfiguration() const;
         MutationConfiguration & getMutationConfiguration();
+        const MutationConfiguration & getMutationConfiguration() const;
 
     protected:
         CrossoverConfiguration crossover;

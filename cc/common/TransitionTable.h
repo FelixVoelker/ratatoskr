@@ -3,6 +3,7 @@
 
 
 #include "../../core/experience/EvolutionaryNetwork.h"
+#include "Configuration.h"
 
 /**
  * @author  FelixVoelker
@@ -12,7 +13,7 @@
 class TransitionTable : public EvolutionaryNetwork {
 
 public:
-    explicit TransitionTable(Configuration &configuration);
+    explicit TransitionTable(const common::Configuration &configuration);
     ~TransitionTable();
 
     std::vector<float> output(std::vector<Individual *> &individuals) const override;

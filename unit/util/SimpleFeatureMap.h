@@ -14,7 +14,7 @@
 class SimpleFeatureMap : public FeatureMap {
 
 public:
-    explicit SimpleFeatureMap(Configuration &configuration);
+    explicit SimpleFeatureMap(const core::Configuration &configuration);
 
     SimpleFeatureMap * clone() const override;
 

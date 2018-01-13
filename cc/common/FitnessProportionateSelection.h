@@ -15,7 +15,7 @@
 class FitnessProportionateSelection : public SelectionOperator {
 
 public:
-    explicit FitnessProportionateSelection(common::Configuration &configuration);
+    explicit FitnessProportionateSelection(const common::Configuration &configuration);
 
     /**
      * Samples an individual based on a relevance dependent probability distribution whose fraction is determined by

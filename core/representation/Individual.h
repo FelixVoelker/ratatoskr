@@ -19,7 +19,7 @@
 class Individual : public Prototype {
 
 public:
-    explicit Individual(Configuration &configuration, Cost *cost, FeatureMap *featuremap, Fitness *fitness);
+    explicit Individual(const core::Configuration &configuration, Cost *cost, FeatureMap *featuremap, Fitness *fitness);
     ~Individual();
 
     /**

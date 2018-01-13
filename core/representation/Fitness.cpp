@@ -1,6 +1,6 @@
 #include "Fitness.h"
 
-Fitness::Fitness(Configuration &configuration) : Prototype(configuration) {}
+Fitness::Fitness(const core::Configuration &configuration) : Prototype(configuration) {}
 
 bool Fitness::isIdeal() const {
     return fitness == 0;

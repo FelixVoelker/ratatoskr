@@ -24,7 +24,7 @@
 class EvolutionarySystem {
 
 public:
-    explicit EvolutionarySystem(Configuration &configuration,
+    explicit EvolutionarySystem(const core::Configuration &configuration,
                                 Builder *builder,
                                 std::function<void(Individual &, Thread &)> &eval,
                                 EvolutionaryNetwork *network,

@@ -14,7 +14,7 @@
 class SimpleSelectionOperator : public SelectionOperator {
 
 public:
-    explicit SimpleSelectionOperator(Configuration &configuration);
+    explicit SimpleSelectionOperator(const core::Configuration &configuration);
 
     Individual * select(std::vector<Individual *> &parents, Thread &thread) const override;
 

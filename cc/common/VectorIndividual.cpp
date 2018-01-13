@@ -1,13 +1,13 @@
 #include <iostream>
 #include "VectorIndividual.h"
 
-VectorIndividual::VectorIndividual(common::Configuration &configuration,
+VectorIndividual::VectorIndividual(const common::Configuration &configuration,
                                    Cost *cost,
                                    FeatureVector *featurevector,
                                    Fitness *fitness)
         : Individual(configuration, cost, featurevector, fitness)
 {
-    auto problem = dynamic_cast<common::Configuration::ProblemConfiguration &>(configuration.getProblemConfiguration());
+    auto problem = dynamic_cast<const common::Configuration::ProblemConfiguration &>(configuration.getProblemConfiguration());
     unsigned int genes = problem.genes;
     this->chromosome = std::vector<float>(genes);
 }

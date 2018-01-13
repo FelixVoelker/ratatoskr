@@ -1,6 +1,6 @@
 #include "Evaluator.h"
 
-Evaluator::Evaluator(Configuration &configuration,
+Evaluator::Evaluator(const core::Configuration &configuration,
                      std::function<void(Individual &, Thread &)> &eval,
                      EvolutionaryNetwork *network,
                      unsigned int &epoch)

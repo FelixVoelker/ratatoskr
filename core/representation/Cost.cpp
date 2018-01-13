@@ -1,6 +1,6 @@
 #include "Cost.h"
 
-Cost::Cost(Configuration &configuration) : Prototype(configuration) {}
+Cost::Cost(const core::Configuration &configuration) : Prototype(configuration) {}
 
 float Cost::error(float discount_factor, float fitness, float next) const {
     return fitness + discount_factor*next - cost;

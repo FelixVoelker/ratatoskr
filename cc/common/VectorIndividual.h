@@ -19,7 +19,7 @@
 class VectorIndividual : public Individual {
 
 public:
-    explicit VectorIndividual(common::Configuration &configuration,
+    explicit VectorIndividual(const common::Configuration &configuration,
                               Cost *cost,
                               FeatureVector *featurevector,
                               Fitness *fitness);

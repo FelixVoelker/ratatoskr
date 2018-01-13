@@ -14,7 +14,15 @@
 #include "../../core/Session.h"
 
 using namespace boost::python;
+using namespace core;
 
+/**
+ * Builds the core package of the Python-API.
+ *
+ * @author  Felix Voelker
+ * @version 0.0.2
+ * @since   13.1.18
+ */
 BOOST_PYTHON_MODULE(core) {
     class_<std::vector<float>>("std::vector<float>")
             .def(vector_indexing_suite<std::vector<float>>());
@@ -25,13 +33,13 @@ BOOST_PYTHON_MODULE(core) {
     class_<std::vector<VariationSource *>>("std::vector<VariationSource>")
             .def(vector_indexing_suite<std::vector<VariationSource *>>());
 
-    class_<BuilderWrapper, boost::noncopyable>("Builder", init<Configuration &, Individual *>())
+    class_<BuilderWrapper, boost::noncopyable>("Builder", init<const Configuration &, Individual *>())
             .def("initialize", pure_virtual(&BuilderWrapper::initialize));
 
-    class_<FeatureMapWrapper, boost::noncopyable>("FeatureMap", init<Configuration &>())
+    class_<FeatureMapWrapper, boost::noncopyable>("FeatureMap", init<const Configuration &>())
             .def("__copy__", pure_virtual(&FeatureMapWrapper::clone), return_value_policy<manage_new_object>());
 
-    class_<FitnessWrapper, boost::noncopyable>("Fitness", init<Configuration &>())
+    class_<FitnessWrapper, boost::noncopyable>("Fitness", init<const Configuration &>())
             .add_property("fitness", &FitnessWrapper::getFitness, &FitnessWrapper::setFitness)
             .def("__copy__", &FitnessWrapper::clone, return_value_policy<manage_new_object>())
             .def("isideal", &FitnessWrapper::isIdeal, &FitnessWrapper::default_isIdeal)
@@ -42,7 +50,7 @@ BOOST_PYTHON_MODULE(core) {
             .def("__eq__", &FitnessWrapper::operator==, &FitnessWrapper::default_eq)
             .def("__neq__", &FitnessWrapper::operator!=, &FitnessWrapper::default_neq);
 
-    class_<CostWrapper, boost::noncopyable>("Cost", init<Configuration &>())
+    class_<CostWrapper, boost::noncopyable>("Cost", init<const Configuration &>())
             .add_property("cost", &CostWrapper::getCost, &CostWrapper::setCost)
             .def("__copy__", &CostWrapper::clone, return_value_policy<manage_new_object>())
             .def("error", &CostWrapper::error)
@@ -53,7 +61,7 @@ BOOST_PYTHON_MODULE(core) {
             .def("__eq__", &CostWrapper::operator==, &CostWrapper::default_eq)
             .def("__neq__", &CostWrapper::operator!=, &CostWrapper::default_neq);
 
-    class_<IndividualWrapper, boost::noncopyable>("Individual", init<Configuration &, Cost *, FeatureMap *, Fitness *>())
+    class_<IndividualWrapper, boost::noncopyable>("Individual", init<const Configuration &, Cost *, FeatureMap *, Fitness *>())
             .add_property("evaluated", &IndividualWrapper::isEvaluated, &IndividualWrapper::setEvaluated)
             .def("__copy__", &IndividualWrapper::clone, return_value_policy<manage_new_object>())
             .def("relevance", &IndividualWrapper::relevance)
@@ -62,7 +70,7 @@ BOOST_PYTHON_MODULE(core) {
             .def("getFeaturemap", &IndividualWrapper::getFeaturemap, return_internal_reference<>())
             .def("getFitness", &IndividualWrapper::getFitness, return_internal_reference<>());
 
-    class_<Population>("Population", init<Configuration &>())
+    class_<Population>("Population", init<const Configuration &>())
             .def("bestIndividual", &Population::bestIndividual, return_internal_reference<>())
             .def("averageIndividual", &Population::averageIndividual, return_internal_reference<>())
             .def("worstIndividual", &Population::worstIndividual, return_internal_reference<>());
@@ -78,24 +86,24 @@ BOOST_PYTHON_MODULE(core) {
             .def("sampleIntFromUniformDistribution", &Thread::Random::sampleIntFromUniformDistribution)
             .def("sampleIntFromDiscreteDistribution", &Thread::Random::sampleIntFromDiscreteDistribution);
 
-    class_<VariationSourceWrapper, boost::noncopyable>("VariationSource", init<Configuration &>())
+    class_<VariationSourceWrapper, boost::noncopyable>("VariationSource", init<const Configuration &>())
             .def("setup", &VariationSourceWrapper::setup)
             .def("expectedSources", pure_virtual(&VariationSourceWrapper::expectedSources))
             .def("perform", pure_virtual(&VariationSourceWrapper::perform));
 
-    class_<SelectionOperatorWrapper, bases<VariationSourceWrapper>, boost::noncopyable>("SelectionOperator", init<Configuration &>())
+    class_<SelectionOperatorWrapper, bases<VariationSourceWrapper>, boost::noncopyable>("SelectionOperator", init<const Configuration &>())
             .def("select", pure_virtual(&SelectionOperatorWrapper::select), return_internal_reference<>());
 
-    class_<BreedingOperatorWrapper, bases<VariationSourceWrapper>, boost::noncopyable>("BreedingOperator", init<Configuration &>())
+    class_<BreedingOperatorWrapper, bases<VariationSourceWrapper>, boost::noncopyable>("BreedingOperator", init<const Configuration &>())
             .def("expectedSources", pure_virtual(&BreedingOperatorWrapper::expectedSources))
             .def("breed", pure_virtual(&BreedingOperatorWrapper::breed), return_internal_reference<>());
 
-    class_<Statistics>("Statistics", init<Configuration &>())
+    class_<Statistics>("Statistics", init<const Configuration &>())
             .def("bestFitnesses", &Statistics::bestFitnesses)
             .def("averageFitnesses", &Statistics::averageFitnesses)
             .def("worstFitnesses", &Statistics::worstFitnesses);
 
-    class_<EvolutionarySystem>("EvolutionarySystem", init<Configuration &, Builder*, std::function<void(Individual &, Thread &)>&, EvolutionaryNetwork*, BreedingOperator*>())
+    class_<EvolutionarySystem>("EvolutionarySystem", init<const Configuration &, Builder*, std::function<void(Individual &, Thread &)>&, EvolutionaryNetwork*, BreedingOperator*>())
             .add_property("statistics", make_function(&EvolutionarySystem::getStatistics, return_internal_reference<>()))
             .def("run", &EvolutionarySystem::run);
 
@@ -125,13 +133,19 @@ BOOST_PYTHON_MODULE(core) {
             .def_readwrite("discount_factor", &Configuration::EvolutionaryNetworkConfiguration::discount_factor)
             .def_readwrite("learning_rate", &Configuration::EvolutionaryNetworkConfiguration::learning_rate);
 
-    class_<Configuration>("Configuration", init<Configuration::ProblemConfiguration &>())
+    Configuration::EvolutionarySystemConfiguration& (Configuration::*system)() = &Configuration::getEvolutionarySystemConfiguration;
+    Configuration::InitializerConfiguration& (Configuration::*initializer)() = &Configuration::getInitializerConfiguration;
+    Configuration::EvaluatorConfiguration& (Configuration::*evaluator)() = &Configuration::getEvaluatorConfiguration;
+    Configuration::BreederConfiguration& (Configuration::*breeder)() = &Configuration::getBreederConfiguration;
+    Configuration::EvolutionaryNetworkConfiguration& (Configuration::*network)() = &Configuration::getEvolutionaryNetworkConfiguration;
+
+    class_<Configuration>("Configuration", init<const Configuration::ProblemConfiguration &>())
             .add_property("problem", make_function(&Configuration::getProblemConfiguration, return_internal_reference<>()))
-            .add_property("system", make_function(&Configuration::getEvolutionarySystemConfiguration, return_internal_reference<>()))
-            .add_property("initializer", make_function(&Configuration::getInitializerConfiguration, return_internal_reference<>()))
-            .add_property("evaluator", make_function(&Configuration::getEvaluatorConfiguration, return_internal_reference<>()))
-            .add_property("breeder", make_function(&Configuration::getBreederConfiguration, return_internal_reference<>()))
-            .add_property("network", make_function(&Configuration::getEvolutionaryNetworkConfiguration, return_internal_reference<>()));
+            .add_property("system", make_function(system, return_internal_reference<>()))
+            .add_property("initializer", make_function(initializer, return_internal_reference<>()))
+            .add_property("evaluator", make_function(evaluator, return_internal_reference<>()))
+            .add_property("breeder", make_function(breeder, return_internal_reference<>()))
+            .add_property("network", make_function(network, return_internal_reference<>()));
 
     class_<Session>("Session", init<Problem &>())
             .def(init<Problem &, Configuration *>())

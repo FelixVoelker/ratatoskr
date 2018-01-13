@@ -1,6 +1,6 @@
 #include "Builder.h"
 
-Builder::Builder(Configuration &configuration, Individual * prototype) : Singleton(configuration) {
+Builder::Builder(const core::Configuration &configuration, Individual * prototype) : Singleton(configuration) {
     this->prototype = prototype;
 }
 

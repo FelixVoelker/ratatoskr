@@ -4,8 +4,6 @@
 
 #include "../Configuration.h"
 
-using namespace core;
-
 /**
  * Represents the basic interface for all components of the evolutionary system.
  *
@@ -20,7 +18,7 @@ public:
      * Initializes a component according to a given session.
      * @param configuration The session to be run by the evolutionary system.
      */
-    explicit Singleton(Configuration &configuration) {}
+    explicit Singleton(const core::Configuration &configuration) {}
 
 };
 

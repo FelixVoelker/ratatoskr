@@ -7,12 +7,19 @@
 
 using namespace boost::python;
 
+/**
+ * Builds the ndga package of the Python-API.
+ *
+ * @author  Felix Voelker
+ * @version 0.0.2
+ * @since   13.1.18
+ */
 BOOST_PYTHON_MODULE(ndga) {
-    class_<RandomBitVectorBuilder, bases<Builder>>("RandomBitVectorIndividual", init<common::Configuration &, VectorIndividual *>());
+    class_<RandomBitVectorBuilder, bases<Builder>>("RandomBitVectorIndividual", init<const common::Configuration &, VectorIndividual *>());
 
-    class_<BitVectorCrossover, bases<BreedingOperator>>("BitVectorCrossover", init<common::Configuration &>());
+    class_<BitVectorCrossover, bases<BreedingOperator>>("BitVectorCrossover", init<const common::Configuration &>());
 
-    class_<BitVectorMutation, bases<BreedingOperator>>("BitVectorMutation", init<common::Configuration &>());
+    class_<BitVectorMutation, bases<BreedingOperator>>("BitVectorMutation", init<const common::Configuration &>());
 
     EvolutionarySystem* (ndga::Session::*build0)() = &ndga::Session::build;
     EvolutionarySystem* (ndga::Session::*build1)(RandomBitVectorBuilder*) = &ndga::Session::build;
@@ -23,7 +30,7 @@ BOOST_PYTHON_MODULE(ndga) {
     EvolutionarySystem* (ndga::Session::*build6)(TransitionTable*, BreedingOperator*) = &ndga::Session::build;
 
     class_<ndga::Session, bases<core::Session>>("Session", init<common::Problem &>())
-            .def(init<common::Problem &, Configuration *>())
+            .def(init<common::Problem &, common::Configuration *>())
             .def("build", build0, return_value_policy<manage_new_object>())
             .def("build", build1, return_value_policy<manage_new_object>())
             .def("build", build2, return_value_policy<manage_new_object>())

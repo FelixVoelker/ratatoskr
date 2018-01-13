@@ -1,6 +1,6 @@
 #include "BreedingOperatorWrapper.h"
 
-BreedingOperatorWrapper::BreedingOperatorWrapper(Configuration &configuration) : BreedingOperator(configuration) {}
+BreedingOperatorWrapper::BreedingOperatorWrapper(const core::Configuration &configuration) : BreedingOperator(configuration) {}
 
 unsigned long BreedingOperatorWrapper::expectedSources() const {
     return this->get_override("expectedSources")();

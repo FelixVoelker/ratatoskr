@@ -21,7 +21,7 @@ namespace ndga {
 
     public:
         explicit Session(common::Problem &problem);
-        explicit Session(common::Problem &problem, Configuration *config);
+        explicit Session(common::Problem &problem, common::Configuration *config);
 
         /**
          * Sets up the evolutionary system for a conventional NDGA.

@@ -1,3 +1,3 @@
 #include "FeatureMap.h"
 
-FeatureMap::FeatureMap(Configuration &configuration) : Prototype(configuration) {}
+FeatureMap::FeatureMap(const core::Configuration &configuration) : Prototype(configuration) {}

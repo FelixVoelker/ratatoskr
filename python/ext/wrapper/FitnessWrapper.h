@@ -17,7 +17,7 @@ using namespace boost::python;
 class FitnessWrapper : public Fitness, public wrapper<Fitness> {
 
 public:
-    explicit FitnessWrapper(Configuration &configuration);
+    explicit FitnessWrapper(const core::Configuration &configuration);
 
     bool isIdeal() const override;
     bool default_isIdeal() const;
