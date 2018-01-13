@@ -1,10 +1,15 @@
-cmake_minimum_required(VERSION 3.7)
+cmake_minimum_required(VERSION 3.5)
 project(Ratatoskr)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
 
+if (UNIX)
+    set(BOOST_ROOT "/usr")
+endif (UNIX)
+
+
 find_package(PythonLibs 3 REQUIRED)
-find_package(Boost COMPONENTS python3 REQUIRED)
+find_package(Boost COMPONENTS python REQUIRED)
 
 include_directories(${PYTHON_INCLUDE_DIRS})
 include_directories(${BOOST_INCLUDEDIR} )
