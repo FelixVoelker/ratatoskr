@@ -14,8 +14,8 @@ namespace core {
      * specific parameters to make the building process more convenient.
      *
      * @author  FelixVoelker
-     * @version 0.0.2
-     * @since   8.1.2018
+     * @version 0.1.0
+     * @since   19.1.2018
      */
     class Session {
 

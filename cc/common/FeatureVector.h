@@ -10,8 +10,8 @@
  * A simple feature map that performs an identity function on a numerical vector, e.g. a chromosome.
  *
  * @author  Felix Voelker
- * @version 0.0.2
- * @since   8.1.2018
+ * @version 0.1.0
+ * @since   19.1.2018
  */
 class FeatureVector : public FeatureMap {
 

@@ -10,8 +10,8 @@
  * chromosome randomly.
  *
  * @author  Felix Voelker
- * @version 0.0.2
- * @since   9.1.2018
+ * @version 0.1.0
+ * @since   19.1.2018
  */
 class RandomBitVectorBuilder : public Builder {
 

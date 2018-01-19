@@ -10,8 +10,8 @@
  * processed by the variation threads whose number equals the amount of chunks.
  *
  * @author  Felix Voelker
- * @version 0.0.2
- * @since   2.1.2018
+ * @version 0.1.0
+ * @since   19.1.2018
  */
 class Breeder : public Singleton {
 

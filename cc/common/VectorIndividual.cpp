@@ -2,10 +2,9 @@
 #include "VectorIndividual.h"
 
 VectorIndividual::VectorIndividual(const common::Configuration &configuration,
-                                   Cost *cost,
                                    FeatureVector *featurevector,
-                                   Fitness *fitness)
-        : Individual(configuration, cost, featurevector, fitness)
+                                   Relevance *relevance)
+        : Individual(configuration, featurevector, relevance)
 {
     auto problem = dynamic_cast<const common::Configuration::ProblemConfiguration &>(configuration.getProblemConfiguration());
     unsigned int genes = problem.genes;

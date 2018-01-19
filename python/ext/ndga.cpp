@@ -11,8 +11,8 @@ using namespace boost::python;
  * Builds the ndga package of the Python-API.
  *
  * @author  Felix Voelker
- * @version 0.0.2
- * @since   13.1.18
+ * @version 0.1.0
+ * @since   19.1.2018
  */
 BOOST_PYTHON_MODULE(ndga) {
     class_<RandomBitVectorBuilder, bases<Builder>>("RandomBitVectorIndividual", init<const common::Configuration &, VectorIndividual *>());
@@ -39,8 +39,6 @@ BOOST_PYTHON_MODULE(ndga) {
             .def("build", build5, return_value_policy<manage_new_object>())
             .def("build", build6, return_value_policy<manage_new_object>());
 
-    class_<ndga::EvaluationFunctions>("EvaluationFunctions", init<>());
-
-    class_<ndga::EvaluationFunctions::OneMaxProblem>("OneMaxProblem", init<>())
-            .def("__call__", &ndga::EvaluationFunctions::OneMaxProblem::operator());
+    class_<ndga::EvaluationFunctions>("EvaluationFunctions", init<>())
+            .def("one_max", +[]() { return make_function(ndga::EvaluationFunctions::oneMax(), default_call_policies(), boost::mpl::vector<void, Individual &, Thread &>()); });
 }

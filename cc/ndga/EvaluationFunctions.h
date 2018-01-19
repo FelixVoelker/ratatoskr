@@ -11,8 +11,8 @@ namespace ndga {
      * A collection of common evaluation functions for Neuro-Dynamic Genetic Algorithms (NDGAs).
      *
      * @author  Felix Voelker
-     * @version 0.0.2
-     * @since   11.1.2018
+     * @version 0.1.0
+     * @since   19.1.2018
      */
     class EvaluationFunctions {
 
@@ -20,13 +20,7 @@ namespace ndga {
         /**
          * Problem of finding the bit vector with the highest number of ones possible.
          */
-        struct OneMaxProblem {
-
-            /**
-             * Sets the fitness to the number of zeros in the bit vector.
-             */
-            std::function<void(Individual &, Thread &)> operator()();
-        };
+        static std::function<void(Individual &, Thread &)> oneMax();
 
     };
 }

@@ -17,30 +17,30 @@ void Population::exterminate() {
 
 Individual * Population::bestIndividual() const {
     Individual *best_individual = individuals.at(0);
-    for (int k = 1; k < individuals.size(); k++) {
-        if (individuals.at(k)->getFitness() > best_individual->getFitness())
+    for (unsigned int k = 1; k < individuals.size(); k++) {
+        if (individuals.at(k)->getRelevance() > best_individual->getRelevance())
             best_individual = individuals.at(k);
     }
     return best_individual;
 }
 
 Individual * Population::averageIndividual() const {
-    float average_cost = individuals.at(0)->getCost().getCost();
-    float average_fitness = individuals.at(0)->getFitness().getFitness();
-    for (int k = 1; k < individuals.size(); k++) {
-        average_cost += individuals.at(k)->getCost().getCost();
-        average_fitness += individuals.at(k)->getFitness().getFitness();
+    float average_cost = individuals.at(0)->getRelevance().getCost();
+    float average_fitness = individuals.at(0)->getRelevance().getFitness();
+    for (unsigned int k = 1; k < individuals.size(); k++) {
+        average_cost += individuals.at(k)->getRelevance().getCost();
+        average_fitness += individuals.at(k)->getRelevance().getFitness();
     }
     Individual *average_individual = individuals.at(0)->clone();
-    average_individual->getCost().setCost(average_cost / individuals.size());
-    average_individual->getFitness().setFitness(average_fitness / individuals.size());
+    average_individual->getRelevance().setCost(average_cost / individuals.size());
+    average_individual->getRelevance().setFitness(average_fitness / individuals.size());
     return average_individual;
 }
 
 Individual * Population::worstIndividual() const {
     Individual *worst_individual = individuals.at(0);
-    for (int k = 1; k < individuals.size(); k++) {
-        if (individuals.at(k)->getFitness() < worst_individual->getFitness())
+    for (unsigned int k = 1; k < individuals.size(); k++) {
+        if (individuals.at(k)->getRelevance() < worst_individual->getRelevance())
             worst_individual = individuals.at(k);
     }
     return worst_individual;

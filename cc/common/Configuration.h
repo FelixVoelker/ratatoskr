@@ -10,8 +10,8 @@ namespace common {
      * A configuration for several types of Neuro-Dynamic Evolutionary Algorithms (NDEAs).
      *
      * @author  Felix Voelker
-     * @version 0.0.2
-     * @since   8.1.2018
+     * @version 0.1.0
+     * @since   19.1.2018
      */
     class Configuration : public core::Configuration {
 

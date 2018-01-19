@@ -1,35 +1,23 @@
 #include "Individual.h"
 
-Individual::Individual(const core::Configuration &configuration, Cost *cost, FeatureMap *featuremap, Fitness *fitness)
+Individual::Individual(const core::Configuration &configuration, FeatureMap *featuremap, Relevance *relevance)
         : Prototype(configuration)
 {
-    this->cost = cost;
     this->featuremap = featuremap;
-    this->fitness = fitness;
+    this->relevance = relevance;
 }
 
 Individual::~Individual() {
-    delete cost;
     delete featuremap;
-    delete fitness;
-}
-
-float Individual::relevance(float fraction) {
-    fraction = fraction < 0? 0 : fraction;
-    fraction = fraction > 1? 1: fraction;
-    return 1 / (1 + (1 - fraction) * fitness->getFitness() + fraction * cost->getCost());
-}
-
-Cost & Individual::getCost() const {
-    return *cost;
+    delete relevance;
 }
 
 FeatureMap & Individual::getFeaturemap() const {
     return *featuremap;
 }
 
-Fitness & Individual::getFitness() const {
-    return *fitness;
+Relevance & Individual::getRelevance() const {
+    return *relevance;
 }
 
 bool Individual::isEvaluated() const {
@@ -41,7 +29,6 @@ void Individual::setEvaluated(const bool evaluated) {
 }
 
 Individual::Individual(const Individual &obj) : Prototype(obj) {
-    cost = obj.cost->clone();
     featuremap = obj.featuremap->clone();
-    fitness = obj.fitness->clone();
+    relevance = obj.relevance->clone();
 }

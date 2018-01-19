@@ -11,8 +11,8 @@ using namespace boost::python;
  * Boost.Python wrapper to expose all virtual core functionality of SelectionOperator.
  *
  * @author  Felix Voelker
- * @version 0.0.2
- * @since   31.12.2017
+ * @version 0.1.0
+ * @since   19.1.2018
  */
 class SelectionOperatorWrapper : public SelectionOperator, public wrapper<SelectionOperator> {
 

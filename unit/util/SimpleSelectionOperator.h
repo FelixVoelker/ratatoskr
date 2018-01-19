@@ -8,8 +8,8 @@
  * A simple instance of SelectionOperator to test core functionality.
  *
  * @author  Felix Voelker
- * @version 0.0.2
- * @since   31.12.2017
+ * @version 0.1.0
+ * @since   19.1.2018
  */
 class SimpleSelectionOperator : public SelectionOperator {
 

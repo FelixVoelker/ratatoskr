@@ -44,7 +44,7 @@ void EvolutionarySystem::evolve() {
         statistics.record(population, epoch, generation);
 
         if (!complete) {
-            if (population.bestIndividual()->getFitness().isIdeal()) {
+            if (population.bestIndividual()->getRelevance().isIdeal()) {
                 break;
             }
         }

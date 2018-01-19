@@ -8,8 +8,8 @@
  * A simple instance of Builder to test core functionality.
  *
  * @author  Felix Voelker
- * @version 0.0.2
- * @since   27.12.2017
+ * @version 0.1.0
+ * @since   19.1.2018
  */
 class SimpleBuilder : public Builder {
 

@@ -24,100 +24,98 @@ using namespace core;
  * Unit tests for the core functionality of an evolutionary system.
  *
  * @author  Felix Voelker
- * @version 0.0.2
- * @since   8.1.2018
+ * @version 0.1.0
+ * @since   19.1.2018
  */
 TEST_CASE("Core", "[core]") {
     std::function<void(Individual &, Thread &)> eval = [](Individual &individual, Thread &thread) {
-        individual.getFitness().setFitness(1);
+        individual.getRelevance().setFitness(1);
     };
     auto *problem = new Problem(eval, 1);
     auto *session = new Session(*problem);
     auto &configuration = session->getConfiguration();
 
-    SECTION("Cost") {
-        auto *c1 = new Cost(configuration);
-        c1->setCost(2);
-        auto *c2 = new Cost(configuration);
-        c2->setCost(5);
-        auto *c3 = new Cost(configuration);
-        c3->setCost(0);
+    SECTION("Relevance") {
+        auto *r1 = new Relevance(configuration);
+        r1->setFraction(-1);
+        r1->setCost(0);
+        r1->setFitness(9);
+        auto *r2 = new Relevance(configuration);
+        r2->setFraction(0.5);
+        r2->setCost(2.5);
+        r2->setFitness(7.5);
+        auto *r3 = new Relevance(configuration);
+        r3->setFraction(2);
+        r3->setCost(5);
+        r3->setFitness(0);
 
         SECTION("Checking computation of error...") {
-            REQUIRE(c1->error(1, 0.5, 0) == -1.5);
-            REQUIRE(c2->error(1, 0.5, 2) == -2.5);
-            REQUIRE(c3->error(1, 0.5, 0) == 0.5);
+            REQUIRE(r1->error(1, 0.5, 0) == 0.5);
+            REQUIRE(r2->error(1, 0.5, 2) == 0);
+            REQUIRE(r3->error(1, 0.5, 0) == -4.5);
         }
-
-        SECTION("Checking comparison of costs...") {
-            REQUIRE(*c1 > *c2);
-            REQUIRE(*c2 < *c3);
-            REQUIRE(*c1 < *c3);
-        }
-
-        SECTION("Checking cloning...") {
-            auto *cc = c1->clone();
-            REQUIRE(cc != c1);
-            REQUIRE(cc->getCost() == c1->getCost());
-            delete cc;
-        }
-
-        delete c1;
-        delete c2;
-        delete c3;
-    }
-
-    SECTION("Fitness") {
-        auto *f1 = new Fitness(configuration);
-        f1->setFitness(2);
-        auto *f2 = new Fitness(configuration);
-        f2->setFitness(5);
-        auto *f3 = new Fitness(configuration);
-        f3->setFitness(0);
 
         SECTION("Checking optimality of fitnesses...") {
-            REQUIRE(!f1->isIdeal());
-            REQUIRE(!f2->isIdeal());
-            REQUIRE(f3->isIdeal());
+            REQUIRE(!r1->isIdeal());
+            REQUIRE(!r2->isIdeal());
+            REQUIRE(r3->isIdeal());
         }
 
-        SECTION("Checking comparison of fitnesses...") {
-            REQUIRE(*f1 > *f2);
-            REQUIRE(*f2 < *f3);
-            REQUIRE(*f1 < *f3);
+        SECTION("Checking computation of relevance...") {
+            REQUIRE(r1->relevance() == 9.0f);
+            REQUIRE(r2->relevance() == 5.0f);
+            REQUIRE(r3->relevance() == 5.0f);
+        }
+
+        SECTION("Checking computation of adjusted relevance...") {
+            REQUIRE(r1->adjustedRelevance() == 0.1f);
+            REQUIRE(r2->adjustedRelevance() == 1.0f / 6.0f);
+            REQUIRE(r3->adjustedRelevance() == 1.0f / 6.0f);
+        }
+
+        SECTION("Checking comparison of relevances...") {
+            r1->setFraction(-1);
+            r2->setFraction(-1);
+            r3->setFraction(-1);
+            REQUIRE(*r1 < *r2);
+            REQUIRE(*r2 < *r3);
+            r1->setFraction(0.5);
+            r2->setFraction(0.5);
+            r3->setFraction(0.5);
+            REQUIRE(*r1 > *r2);
+            REQUIRE(*r2 < *r3);
+            r1->setFraction(2);
+            r2->setFraction(2);
+            r3->setFraction(2);
+            REQUIRE(*r1 > *r2);
+            REQUIRE(*r2 > *r3);
         }
 
         SECTION("Checking cloning...") {
-            auto *fc = f1->clone();
-            REQUIRE(fc != f1);
-            REQUIRE(f1->getFitness() == fc->getFitness());
-            delete fc;
+            auto *rc = r1->clone();
+            REQUIRE(rc != r1);
+            REQUIRE(rc->getCost() == r1->getCost());
+            REQUIRE(rc->getFitness() == r1->getFitness());
+            delete rc;
         }
 
-        delete f1;
-        delete f2;
-        delete f3;
+        delete r1;
+        delete r2;
+        delete r3;
     }
 
-    auto *cost = new Cost(configuration);
     auto *featuremap = new SimpleFeatureMap(configuration);
-    auto *fitness = new Fitness(configuration);
-    auto *individual = new SimpleIndividual(configuration, cost, featuremap, fitness);
+    auto *relevance = new Relevance(configuration);
+    auto *individual = new SimpleIndividual(configuration, featuremap, relevance);
     SECTION("Individual") {
-        individual->getFitness().setFitness(2.5);
-        individual->getCost().setCost(5);
-
-        SECTION("Checking computation of relevance...") {
-            REQUIRE(individual->relevance(-1) == static_cast<float>(1 / (1 + 2.5)));
-            REQUIRE(individual->relevance(0.5) == static_cast<float>(1 / (1 + 3.75)));
-            REQUIRE(individual->relevance(2) == static_cast<float>(1 / (1 + 5.0)));
-        }
+        individual->getRelevance().setFitness(2.5);
+        individual->getRelevance().setCost(5);
 
         SECTION("Checking cloning...") {
             auto *copy = individual->clone();
             REQUIRE(individual != copy);
-            REQUIRE(individual->getCost().getCost() == copy->getCost().getCost());
-            REQUIRE(individual->getFitness().getFitness() == copy->getFitness().getFitness());
+            REQUIRE(individual->getRelevance().getCost() == copy->getRelevance().getCost());
+            REQUIRE(individual->getRelevance().getFitness() == copy->getRelevance().getFitness());
             delete copy;
         }
     }
@@ -190,27 +188,51 @@ TEST_CASE("Core", "[core]") {
         }
 
         pop->getIndividuals().at(0) = builder->build(*thread);
-        pop->getIndividuals().at(0)->getCost().setCost(0);
-        pop->getIndividuals().at(0)->getFitness().setFitness(0);
+        pop->getIndividuals().at(0)->getRelevance().setCost(0);
+        pop->getIndividuals().at(0)->getRelevance().setFitness(0);
         pop->getIndividuals().at(1) = builder->build(*thread);
-        pop->getIndividuals().at(1)->getCost().setCost(3);
-        pop->getIndividuals().at(1)->getFitness().setFitness(5);
+        pop->getIndividuals().at(1)->getRelevance().setCost(3);
+        pop->getIndividuals().at(1)->getRelevance().setFitness(5);
         pop->getIndividuals().at(2) = builder->build(*thread);
-        pop->getIndividuals().at(2)->getCost().setCost(7.5);
-        pop->getIndividuals().at(2)->getFitness().setFitness(2.5);
+        pop->getIndividuals().at(2)->getRelevance().setCost(7.5);
+        pop->getIndividuals().at(2)->getRelevance().setFitness(2.5);
 
         SECTION("Finding the best individual...") {
+            pop->getIndividuals().at(0)->getRelevance().setFraction(0);
+            pop->getIndividuals().at(1)->getRelevance().setFraction(0);
+            pop->getIndividuals().at(2)->getRelevance().setFraction(0);
+            REQUIRE(pop->bestIndividual() == pop->getIndividuals().at(0));
+            pop->getIndividuals().at(0)->getRelevance().setFraction(0.5);
+            pop->getIndividuals().at(1)->getRelevance().setFraction(0.5);
+            pop->getIndividuals().at(2)->getRelevance().setFraction(0.5);
+            REQUIRE(pop->bestIndividual() == pop->getIndividuals().at(0));
+            pop->getIndividuals().at(0)->getRelevance().setFraction(1);
+            pop->getIndividuals().at(1)->getRelevance().setFraction(1);
+            pop->getIndividuals().at(2)->getRelevance().setFraction(1);
             REQUIRE(pop->bestIndividual() == pop->getIndividuals().at(0));
         }
 
         SECTION("Finding the worst individual...") {
+            pop->getIndividuals().at(0)->getRelevance().setFraction(0);
+            pop->getIndividuals().at(1)->getRelevance().setFraction(0);
+            pop->getIndividuals().at(2)->getRelevance().setFraction(0);
             REQUIRE(pop->worstIndividual() == pop->getIndividuals().at(1));
+            pop->getIndividuals().at(0)->getRelevance().setFraction(0.5);
+            pop->getIndividuals().at(1)->getRelevance().setFraction(0.5);
+            pop->getIndividuals().at(2)->getRelevance().setFraction(0.5);
+            REQUIRE(pop->worstIndividual() == pop->getIndividuals().at(2));
+            pop->getIndividuals().at(0)->getRelevance().setFraction(1);
+            pop->getIndividuals().at(1)->getRelevance().setFraction(1);
+            pop->getIndividuals().at(2)->getRelevance().setFraction(1);
+            REQUIRE(pop->worstIndividual() == pop->getIndividuals().at(2));
         }
 
         SECTION("Computing the average individual...") {
             auto *average = pop->averageIndividual();
-            REQUIRE(average->getCost().getCost() == 3.5);
-            REQUIRE(average->getFitness().getFitness() == 2.5);
+            average->getRelevance().setFraction(0.5);
+            REQUIRE(average->getRelevance().getCost() == 10.5 / 3);
+            REQUIRE(average->getRelevance().getFitness() == 7.5f / 3);
+            REQUIRE(average->getRelevance().relevance() == 9.0f / 3);
             delete average;
         }
     }
@@ -233,9 +255,9 @@ TEST_CASE("Core", "[core]") {
         SECTION("Evaluating a population...") {
             evaluator->evaluatePopulation(*pop);
             evaluator->evaluatePopulation(*pop);
-            REQUIRE(pop->getIndividuals().at(0)->getFitness().getFitness() == 1);
-            REQUIRE(pop->getIndividuals().at(1)->getFitness().getFitness() == 1);
-            REQUIRE(pop->getIndividuals().at(2)->getFitness().getFitness() == 1);
+            REQUIRE(pop->getIndividuals().at(0)->getRelevance().getFitness() == 1);
+            REQUIRE(pop->getIndividuals().at(1)->getRelevance().getFitness() == 1);
+            REQUIRE(pop->getIndividuals().at(2)->getRelevance().getFitness() == 1);
         }
     }
 
@@ -302,39 +324,92 @@ TEST_CASE("Core", "[core]") {
     delete evaluator;
     delete breeder;
 
-    configuration.getEvolutionarySystemConfiguration().epochs = 1;
-    configuration.getEvolutionarySystemConfiguration().episodes = 3;
-    configuration.getEvolutionarySystemConfiguration().generations = 1;
     SECTION("Statistics") {
+        problem->getConfiguration().popsize = 2;
+        configuration.getEvolutionarySystemConfiguration().epochs = 3;
+        configuration.getEvolutionarySystemConfiguration().episodes = 2;
+        configuration.getEvolutionarySystemConfiguration().generations = 1;
+        auto *p = new Population(configuration);
+        auto *init = new Initializer(configuration, builder, epoch);
+        init->initializePopulation(*p);
         auto *statistics = new Statistics(configuration);
-        pop->getIndividuals().at(0)->getFitness().setFitness(0);
-        pop->getIndividuals().at(1)->getFitness().setFitness(1.5);
-        pop->getIndividuals().at(2)->getFitness().setFitness(8.5);
-        statistics->record(*pop, 0, 0);
-        pop->getIndividuals().at(0)->getFitness().setFitness(7);
-        pop->getIndividuals().at(1)->getFitness().setFitness(5);
-        pop->getIndividuals().at(2)->getFitness().setFitness(3);
-        statistics->record(*pop, 0, 0);
-        pop->getIndividuals().at(0)->getFitness().setFitness(2.5);
-        pop->getIndividuals().at(1)->getFitness().setFitness(0);
-        pop->getIndividuals().at(2)->getFitness().setFitness(5.5);
-        statistics->record(*pop, 0, 0);
-
-        SECTION("Checking best fitness...") {
-            REQUIRE(statistics->bestFitnesses(0).at(0) == 1);
+        for (unsigned int k = 0; k < 3; k++) {
+            p->getIndividuals().at(0)->getRelevance().setFraction(k / 2.0f);
+            p->getIndividuals().at(0)->getRelevance().setCost(10);
+            p->getIndividuals().at(0)->getRelevance().setFitness(0);
+            p->getIndividuals().at(1)->getRelevance().setFraction(k / 2.0f);
+            p->getIndividuals().at(1)->getRelevance().setCost(5);
+            p->getIndividuals().at(1)->getRelevance().setFitness(2.5);
+            statistics->record(*p, k, 0);
+            p->getIndividuals().at(0)->getRelevance().setCost(0);
+            p->getIndividuals().at(0)->getRelevance().setFitness(7.5);
+            p->getIndividuals().at(1)->getRelevance().setCost(2.5);
+            p->getIndividuals().at(1)->getRelevance().setFitness(2.5);
+            statistics->record(*p, k, 0);
         }
 
-        SECTION("Checking average fitness...") {
-            REQUIRE(statistics->averageFitnesses(0).at(0) == 10.0f / 9.0f + 15.0f / 9.0f + 8.0f / 9.0f );
+        SECTION("Checking best cost recording...") {
+            REQUIRE(statistics->bestCosts(0).at(0) == 6.25f);
+            REQUIRE(statistics->bestCosts(1).at(0) == 3.75f);
+            REQUIRE(statistics->bestCosts(2).at(0) == 2.5f);
         }
 
-        SECTION("Checking worst fitness...") {
-            REQUIRE(statistics->worstFitnesses(0).at(0) == 7);
+        SECTION("Checking best fitness recording...") {
+            REQUIRE(statistics->bestFitnesses(0).at(0) == 1.25f);
+            REQUIRE(statistics->bestFitnesses(1).at(0) == 2.5f);
+            REQUIRE(statistics->bestFitnesses(2).at(0) == 5.0f);
         }
 
+        SECTION("Checking best relevance recording") {
+            REQUIRE(statistics->bestRelevances(0).at(0) == 1.25f);
+            REQUIRE(statistics->bestRelevances(1).at(0) == 3.125f);
+            REQUIRE(statistics->bestRelevances(2).at(0) == 2.5f);
+        }
+
+        SECTION("Checking average cost recording...") {
+            REQUIRE(statistics->averageCosts(0).at(0) == 4.375f);
+            REQUIRE(statistics->averageCosts(1).at(0) == 4.375f);
+            REQUIRE(statistics->averageCosts(2).at(0) == 4.375f);
+        }
+
+        SECTION("Checking average fitness recording...") {
+            REQUIRE(statistics->averageFitnesses(0).at(0) == 3.125f);
+            REQUIRE(statistics->averageFitnesses(1).at(0) == 3.125f);
+            REQUIRE(statistics->averageFitnesses(2).at(0) == 3.125f);
+        }
+
+        SECTION("Checking average relevance recording... ") {
+            REQUIRE(statistics->averageRelevances(0).at(0) == 3.125f);
+            REQUIRE(statistics->averageRelevances(1).at(0) == 3.75f);
+            REQUIRE(statistics->averageRelevances(2).at(0) == 4.375f);
+        }
+
+        SECTION("Checking worst cost recording...") {
+            REQUIRE(statistics->worstCosts(0).at(0) == 2.5f);
+            REQUIRE(statistics->worstCosts(1).at(0) == 5.0f);
+            REQUIRE(statistics->worstCosts(2).at(0) == 6.25f);
+        }
+
+        SECTION("Checking worst fitness recording...") {
+            REQUIRE(statistics->worstFitnesses(0).at(0) == 5.0f);
+            REQUIRE(statistics->worstFitnesses(1).at(0) == 3.75f);
+            REQUIRE(statistics->worstFitnesses(2).at(0) == 1.25f);
+        }
+
+        SECTION("Checking worst relevance recording...") {
+            REQUIRE(statistics->worstRelevances(0).at(0) == 5.0f);
+            REQUIRE(statistics->worstRelevances(1).at(0) == 4.375f);
+            REQUIRE(statistics->worstRelevances(2).at(0) == 6.25f);
+        }
+
+        delete p;
         delete statistics;
     }
 
+    problem->getConfiguration().popsize = 10;
+    configuration.getEvolutionarySystemConfiguration().epochs = 1;
+    configuration.getEvolutionarySystemConfiguration().episodes = 1;
+    configuration.getEvolutionarySystemConfiguration().generations = 10;
     SECTION("EvolutionarySystem") {
         auto *system = new EvolutionarySystem(configuration, builder, eval, network, bo);
 

@@ -2,10 +2,9 @@
 #include <boost/python/suite/indexing/vector_indexing_suite.hpp>
 #include "wrapper/BreedingOperatorWrapper.h"
 #include "wrapper/BuilderWrapper.h"
-#include "wrapper/CostWrapper.h"
 #include "wrapper/FeatureMapWrapper.h"
-#include "wrapper/FitnessWrapper.h"
 #include "wrapper/IndividualWrapper.h"
+#include "wrapper/RelevanceWrapper.h"
 #include "wrapper/SelectionOperatorWrapper.h"
 #include "wrapper/VariationSourceWrapper.h"
 #include "../../core/Problem.h"
@@ -20,8 +19,8 @@ using namespace core;
  * Builds the core package of the Python-API.
  *
  * @author  Felix Voelker
- * @version 0.0.2
- * @since   13.1.18
+ * @version 0.1.0
+ * @since   19.1.2018
  */
 BOOST_PYTHON_MODULE(core) {
     class_<std::vector<float>>("std::vector<float>")
@@ -39,36 +38,28 @@ BOOST_PYTHON_MODULE(core) {
     class_<FeatureMapWrapper, boost::noncopyable>("FeatureMap", init<const Configuration &>())
             .def("__copy__", pure_virtual(&FeatureMapWrapper::clone), return_value_policy<manage_new_object>());
 
-    class_<FitnessWrapper, boost::noncopyable>("Fitness", init<const Configuration &>())
-            .add_property("fitness", &FitnessWrapper::getFitness, &FitnessWrapper::setFitness)
-            .def("__copy__", &FitnessWrapper::clone, return_value_policy<manage_new_object>())
-            .def("isideal", &FitnessWrapper::isIdeal, &FitnessWrapper::default_isIdeal)
-            .def("__lt__", &FitnessWrapper::operator<, &FitnessWrapper::default_lt)
-            .def("__le__", &FitnessWrapper::operator<=, &FitnessWrapper::default_leq)
-            .def("__gt__", &FitnessWrapper::operator>, &FitnessWrapper::default_gt)
-            .def("__ge__", &FitnessWrapper::operator>=, &FitnessWrapper::default_geq)
-            .def("__eq__", &FitnessWrapper::operator==, &FitnessWrapper::default_eq)
-            .def("__neq__", &FitnessWrapper::operator!=, &FitnessWrapper::default_neq);
+    class_<RelevanceWrapper, boost::noncopyable>("Relevance", init<const Configuration &>())
+            .add_property("cost", &RelevanceWrapper::getCost, &RelevanceWrapper::setCost)
+            .add_property("fitness", &RelevanceWrapper::getFitness, &RelevanceWrapper::setFitness)
+            .add_property("fraction", &RelevanceWrapper::getFraction, &RelevanceWrapper::setFraction)
+            .def("__copy__", &RelevanceWrapper::clone, return_value_policy<manage_new_object>())
+            .def("error", &RelevanceWrapper::error)
+            .def("isideal", &RelevanceWrapper::isIdeal, &RelevanceWrapper::default_isIdeal)
+            .def("relevance", &RelevanceWrapper::relevance)
+            .def("adjusted_relevance", &RelevanceWrapper::adjustedRelevance)
+            .def("__lt__", &RelevanceWrapper::operator<, &RelevanceWrapper::default_lt)
+            .def("__le__", &RelevanceWrapper::operator<=, &RelevanceWrapper::default_leq)
+            .def("__gt__", &RelevanceWrapper::operator>, &RelevanceWrapper::default_gt)
+            .def("__ge__", &RelevanceWrapper::operator>=, &RelevanceWrapper::default_geq)
+            .def("__eq__", &RelevanceWrapper::operator==, &RelevanceWrapper::default_eq)
+            .def("__neq__", &RelevanceWrapper::operator!=, &RelevanceWrapper::default_neq);
 
-    class_<CostWrapper, boost::noncopyable>("Cost", init<const Configuration &>())
-            .add_property("cost", &CostWrapper::getCost, &CostWrapper::setCost)
-            .def("__copy__", &CostWrapper::clone, return_value_policy<manage_new_object>())
-            .def("error", &CostWrapper::error)
-            .def("__lt__", &CostWrapper::operator<, &CostWrapper::default_lt)
-            .def("__le__", &CostWrapper::operator<=, &CostWrapper::default_leq)
-            .def("__gt__", &CostWrapper::operator>, &CostWrapper::default_gt)
-            .def("__ge__", &CostWrapper::operator>=, &CostWrapper::default_geq)
-            .def("__eq__", &CostWrapper::operator==, &CostWrapper::default_eq)
-            .def("__neq__", &CostWrapper::operator!=, &CostWrapper::default_neq);
-
-    class_<IndividualWrapper, boost::noncopyable>("Individual", init<const Configuration &, Cost *, FeatureMap *, Fitness *>())
+    class_<IndividualWrapper, boost::noncopyable>("Individual", init<const Configuration &, FeatureMap *, Relevance *>())
             .add_property("evaluated", &IndividualWrapper::isEvaluated, &IndividualWrapper::setEvaluated)
             .def("__copy__", &IndividualWrapper::clone, return_value_policy<manage_new_object>())
-            .def("relevance", &IndividualWrapper::relevance)
             .def("tostring", pure_virtual(&IndividualWrapper::toString))
-            .def("getCost", &IndividualWrapper::getCost, return_internal_reference<>())
             .def("getFeaturemap", &IndividualWrapper::getFeaturemap, return_internal_reference<>())
-            .def("getFitness", &IndividualWrapper::getFitness, return_internal_reference<>());
+            .def("getRelevance", &IndividualWrapper::getRelevance, return_internal_reference<>());
 
     class_<Population>("Population", init<const Configuration &>())
             .def("bestIndividual", &Population::bestIndividual, return_internal_reference<>())
@@ -99,9 +90,15 @@ BOOST_PYTHON_MODULE(core) {
             .def("breed", pure_virtual(&BreedingOperatorWrapper::breed), return_internal_reference<>());
 
     class_<Statistics>("Statistics", init<const Configuration &>())
+            .def("bestCosts", &Statistics::bestCosts)
             .def("bestFitnesses", &Statistics::bestFitnesses)
+            .def("bestRelevances", &Statistics::bestRelevances)
+            .def("averagesCosts", &Statistics::averageCosts)
             .def("averageFitnesses", &Statistics::averageFitnesses)
-            .def("worstFitnesses", &Statistics::worstFitnesses);
+            .def("averageRelevances", &Statistics::averageRelevances)
+            .def("worstCosts", &Statistics::worstCosts)
+            .def("worstFitnesses", &Statistics::worstFitnesses)
+            .def("worstRelevances", &Statistics::worstRelevances);
 
     class_<EvolutionarySystem>("EvolutionarySystem", init<const Configuration &, Builder*, std::function<void(Individual &, Thread &)>&, EvolutionaryNetwork*, BreedingOperator*>())
             .add_property("statistics", make_function(&EvolutionarySystem::getStatistics, return_internal_reference<>()))
@@ -109,8 +106,13 @@ BOOST_PYTHON_MODULE(core) {
 
     Configuration::ProblemConfiguration& (Problem::*problem)() = &Problem::getConfiguration;
 
-    class_<Problem>("Problem", init<std::function<void(Individual &, Thread &)>, unsigned int>())
-            .add_property("eval", make_function(&Problem::getEval, return_internal_reference<>()), &Problem::setEval)
+    class_<Problem>("Problem", no_init)
+            .def("__init__", make_constructor(+[](boost::python::object eval, unsigned int popsize) {
+                return new Problem([eval](Individual &individual, Thread &thread) { eval(boost::ref(individual), boost::ref(thread)); }, popsize);
+            }))
+            .add_property("eval", make_function(&Problem::getEval, return_internal_reference<>()), +[](Problem &problem, boost::python::object eval) {
+                problem.setEval([eval](Individual &individual, Thread &thread) { eval(boost::ref(individual), boost::ref(thread)); });
+            })
             .add_property("configuration", make_function(problem, return_internal_reference<>()));
 
     class_<Configuration::ProblemConfiguration>("ProblemConfiguration", init<>())

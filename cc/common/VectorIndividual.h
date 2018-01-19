@@ -13,16 +13,15 @@
  * binary values as in the case of a Neuro-Dynamic Genetic Algorithm (NDGA).
  *
  * @author  Felix Voelker
- * @version 0.0.2
- * @since   9.1.2018
+ * @version 0.1.0
+ * @since   19.1.2018
  */
 class VectorIndividual : public Individual {
 
 public:
     explicit VectorIndividual(const common::Configuration &configuration,
-                              Cost *cost,
                               FeatureVector *featurevector,
-                              Fitness *fitness);
+                              Relevance *relevance);
 
     /**
      * Returns a human readable representation of the chromosome. This representation is a bit string for a binary

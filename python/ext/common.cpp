@@ -11,11 +11,20 @@ using namespace boost::python;
  * Builds the common package of the Python-API.
  *
  * @author  Felix Voelker
- * @version 0.0.2
- * @since   13.1.18
+ * @version 0.1.0
+ * @since   19.1.2018
  */
 BOOST_PYTHON_MODULE(common) {
-    class_<common::Problem, bases<core::Problem>>("Problem", init<std::function<void(Individual &, Thread &)>, unsigned int, unsigned int>());
+    class_<common::Problem, bases<core::Problem>>("Problem", no_init)
+            .def("__init__", make_constructor(+[](boost::python::object eval, unsigned int popsize, unsigned int genes) {
+                return new common::Problem(
+                        [eval](Individual &individual, Thread &thread) {
+                            eval(boost::ref(individual), boost::ref(thread));
+                        },
+                        popsize,
+                        genes);
+                })
+            );
 
     class_<common::Configuration::ProblemConfiguration, bases<core::Configuration::ProblemConfiguration>>("ProblemConfiguration", init<>())
             .def_readwrite("genes", &common::Configuration::ProblemConfiguration::genes);
@@ -31,7 +40,7 @@ BOOST_PYTHON_MODULE(common) {
             .def("__copy__", &FeatureVector::clone, return_value_policy<manage_new_object>())
             .def("compute", &FeatureVector::compute, return_internal_reference<>());
 
-    class_<VectorIndividual, bases<Individual>, boost::noncopyable>("VectorIndividual", init<const common::Configuration &, Cost *, FeatureVector *, Fitness *>())
+    class_<VectorIndividual, bases<Individual>, boost::noncopyable>("VectorIndividual", init<const common::Configuration &, FeatureVector *, Relevance *>())
             .add_property("chromosome", make_function(&VectorIndividual::getChromosome, return_internal_reference<>()))
             .def("__copy__", &VectorIndividual::clone, return_value_policy<manage_new_object>())
             .def("tostring", &VectorIndividual::toString);

@@ -8,8 +8,8 @@
  * Represents the basic interface for all components of the evolutionary system.
  *
  * @author  Felix Voelker
- * @version 0.0.2
- * @since   11.10.2017
+ * @version 0.1.0
+ * @since   19.1.2018
  */
 class Singleton {
 

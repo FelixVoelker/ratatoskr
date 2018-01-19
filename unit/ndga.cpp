@@ -13,22 +13,21 @@
  * Unit tests for Neuro-Dynamic Genetic Algorithms.
  *
  * @author  Felix Voelker
- * @version 0.0.2
- * @since   11.1.2018
+ * @version 0.1.0
+ * @since   19.1.2018
  */
 TEST_CASE("NDGA", "[ndga]") {
     std::function<void(Individual &, Thread &)> eval = [](Individual &individual, Thread &thread) {
-        individual.getFitness().setFitness(1);
+        individual.getRelevance().setFitness(1);
     };
 
     unsigned int genes = 3;
     auto *problem = new common::Problem(eval, 2, genes);
     auto *configuration = new common::Configuration(dynamic_cast<common::Configuration::ProblemConfiguration &>(problem->getConfiguration()));
 
-    auto *cost = new Cost(*configuration);
     auto *featurevector = new FeatureVector(*configuration);
-    auto *fitness = new Fitness(*configuration);
-    auto *prototype = new VectorIndividual(*configuration, cost, featurevector, fitness);
+    auto *relevance = new Relevance(*configuration);
+    auto *prototype = new VectorIndividual(*configuration, featurevector, relevance);
     auto *builder = new RandomBitVectorBuilder(*configuration, prototype);
     auto *pop = new Population(*configuration);
 
@@ -155,7 +154,7 @@ TEST_CASE("NDGA", "[ndga]") {
 
     SECTION("EvaluationFunctions") {
         SECTION("Checking OneMaxProblem...") {
-            auto *p =  new common::Problem(ndga::EvaluationFunctions::OneMaxProblem()(), 200, 20);
+            auto *p =  new common::Problem(ndga::EvaluationFunctions::oneMax(), 200, 20);
             auto *session = new ndga::Session(*p);
             session->getConfiguration().getEvolutionarySystemConfiguration().epochs = 1;
             session->getConfiguration().getEvolutionarySystemConfiguration().episodes = 1;

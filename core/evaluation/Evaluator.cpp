@@ -40,7 +40,7 @@ void Evaluator::evaluatePopulation(Population &pop) const {
 void Evaluator::evaluateChunk(std::vector<Individual *> &individuals, std::vector<float> costs, Thread &thread) const {
     for (unsigned int k = 0; k < thread.getChunkOffset(); k++) {
         eval(*individuals.at(k + thread.getChunkOnset()), thread);
-        individuals.at(k + thread.getChunkOnset())->getCost().setCost(costs.at(k + thread.getChunkOnset()));
+        individuals.at(k + thread.getChunkOnset())->getRelevance().setCost(costs.at(k + thread.getChunkOnset()));
     }
 }
 

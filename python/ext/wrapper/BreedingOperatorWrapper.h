@@ -11,8 +11,8 @@ using namespace boost::python;
  * Boost.Python wrapper to expose all virtual core functionality of BreedingOperator.
  *
  * @author  Felix Voelker
- * @version 0.0.2
- * @since   1.1.2018
+ * @version 0.1.0
+ * @since   19.1.2018
  */
 class BreedingOperatorWrapper : public BreedingOperator, public wrapper<BreedingOperator> {
 

@@ -14,8 +14,8 @@ namespace core {
      * domain-dependent data to the components of the evolutionary system.
      *
      * @author  Felix Voelker
-     * @version 0.0.2
-     * @since   7.1.2018
+     * @version 0.1.0
+     * @since   19.1.2018
      */
     class Problem {
 

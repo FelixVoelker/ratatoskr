@@ -10,7 +10,7 @@ setup(
     },
 
     author='Felix Voelker',
-    author_email='ratatoskr-engine@googlemail.com',
+    author_email='fel.voelker@googlemail.com',
     description=('Python-API for the Ratatoskr C++ engine.'),
     license='Apache 2.0',
     url='https://github.com/ratatoscr/ratatoskr',

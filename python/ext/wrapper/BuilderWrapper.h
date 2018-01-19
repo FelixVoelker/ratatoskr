@@ -11,8 +11,8 @@ using namespace boost::python;
  * Boost.Python wrapper to expose all virtual core functionality of Builder.
  *
  * @author  Felix Voelker
- * @version 0.0.2
- * @since   27.12.2017
+ * @version 0.1.0
+ * @since   19.1.2018
  */
 class BuilderWrapper : public Builder, public wrapper<Builder> {
 

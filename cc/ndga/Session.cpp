@@ -38,10 +38,9 @@ EvolutionarySystem* ndga::Session::build(TransitionTable *network, BreedingOpera
 
 RandomBitVectorBuilder * ndga::Session::constructDefaultBuilder() {
     auto *config = dynamic_cast<common::Configuration *>(configuration);
-    auto *cost = new Cost(*configuration);
     auto *featuremap = new FeatureVector(*config);
-    auto *fitness = new Fitness(*configuration);
-    auto *individual = new VectorIndividual(*config, cost, featuremap, fitness);
+    auto *relevance = new Relevance(*configuration);
+    auto *individual = new VectorIndividual(*config, featuremap, relevance);
     return new RandomBitVectorBuilder(*config, individual);
 }
 

@@ -18,8 +18,8 @@
  * self-contained in regard of the problem to be solved and the session to run.
  *
  * @author  Felix Voelker
- * @version 0.0.2
- * @since   3.1.2018
+ * @version 0.1.0
+ * @since   19.1.2018
  */
 class EvolutionarySystem {
 

@@ -11,12 +11,12 @@
  * Unit tests for common components of many Neuro-Dynamic Evolutionary Algorithms.
  *
  * @author  Felix Voelker
- * @version 0.0.2
- * @since   8.1.2018
+ * @version 0.1.0
+ * @since   19.1.2018
  */
 TEST_CASE("Common", "[common]") {
     std::function<void(Individual &, Thread &)> eval = [](Individual &individual, Thread &thread) {
-        individual.getFitness().setFitness(1);
+        individual.getRelevance().setFitness(1);
     };
 
     auto *problem = new common::Problem(eval, 3, 8);
@@ -36,9 +36,8 @@ TEST_CASE("Common", "[common]") {
         }
     }
 
-    auto *cost = new Cost(*configuration);
-    auto *fitness = new Fitness(*configuration);
-    auto *individual = new VectorIndividual(*configuration, cost, featurevector, fitness);
+    auto *relevance = new Relevance(*configuration);
+    auto *individual = new VectorIndividual(*configuration, featurevector, relevance);
     SECTION("VectorIndividual") {
         individual->getChromosome().at(0) = 0;
         individual->getChromosome().at(1) = 1;
@@ -80,14 +79,14 @@ TEST_CASE("Common", "[common]") {
 
     auto *pop = new Population(*configuration);
     pop->getIndividuals().at(0) = individual->clone();
-    pop->getIndividuals().at(0)->getCost().setCost(10);
-    pop->getIndividuals().at(0)->getFitness().setFitness(0);
+    pop->getIndividuals().at(0)->getRelevance().setCost(10);
+    pop->getIndividuals().at(0)->getRelevance().setFitness(0);
     pop->getIndividuals().at(1) = individual->clone();
-    pop->getIndividuals().at(1)->getCost().setCost(5);
-    pop->getIndividuals().at(1)->getFitness().setFitness(5);
+    pop->getIndividuals().at(1)->getRelevance().setCost(5);
+    pop->getIndividuals().at(1)->getRelevance().setFitness(5);
     pop->getIndividuals().at(2) = individual->clone();
-    pop->getIndividuals().at(2)->getCost().setCost(0);
-    pop->getIndividuals().at(2)->getFitness().setFitness(10);
+    pop->getIndividuals().at(2)->getRelevance().setCost(0);
+    pop->getIndividuals().at(2)->getRelevance().setFitness(10);
     configuration->getEvolutionarySystemConfiguration().epochs = 2;
     auto *so = new FitnessProportionateSelection(*configuration);
     SECTION("FitnessProportionateSelection") {
@@ -98,6 +97,10 @@ TEST_CASE("Common", "[common]") {
 
         Individual *selected;
         SECTION("Checking fitness based selection...") {
+            pop->getIndividuals().at(0)->getRelevance().setFraction(0);
+            pop->getIndividuals().at(1)->getRelevance().setFraction(0);
+            pop->getIndividuals().at(2)->getRelevance().setFraction(0);
+
             for (unsigned int k = 1; k <= 1000; k++) {
                 selected = so->select(pop->getIndividuals(), *thread);
                 for (unsigned int l = 0; l < counts.size(); l++) {
@@ -111,11 +114,14 @@ TEST_CASE("Common", "[common]") {
             REQUIRE(counts.at(1) > counts.at(2));
         }
 
-        epoch = 1;
         counts.at(0) = 0;
         counts.at(1) = 0;
         counts.at(2) = 0;
         SECTION("Checking average based selection...") {
+            pop->getIndividuals().at(0)->getRelevance().setFraction(0.5);
+            pop->getIndividuals().at(1)->getRelevance().setFraction(0.5);
+            pop->getIndividuals().at(2)->getRelevance().setFraction(0.5);
+
             for (unsigned int k = 1; k <= 1000; k++) {
                 selected = so->select(pop->getIndividuals(), *thread);
                 for (unsigned int l = 0; l < counts.size(); l++) {
@@ -134,11 +140,14 @@ TEST_CASE("Common", "[common]") {
             }
         }
 
-        epoch = 2;
         counts.at(0) = 0;
         counts.at(1) = 0;
         counts.at(2) = 0;
         SECTION("Checking cost based selection...") {
+            pop->getIndividuals().at(0)->getRelevance().setFraction(1);
+            pop->getIndividuals().at(1)->getRelevance().setFraction(1);
+            pop->getIndividuals().at(2)->getRelevance().setFraction(1);
+
             for (unsigned int k = 1; k <= 1000; k++) {
                 selected = so->select(pop->getIndividuals(), *thread);
                 for (unsigned int l = 0; l < counts.size(); l++) {

@@ -11,8 +11,8 @@ using namespace boost::python;
  * Boost.Python wrapper to expose all virtual core functionality of VariationSource.
  *
  * @author  Felix Voelker
- * @version 0.0.2
- * @since   30.12.2017
+ * @version 0.1.0
+ * @since   19.1.2018
  */
 class VariationSourceWrapper : public VariationSource, public wrapper<VariationSource> {
 

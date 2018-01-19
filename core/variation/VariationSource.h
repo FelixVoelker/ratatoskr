@@ -15,8 +15,8 @@
  * genetic operation and selects its parameters randomly. However, it needs to be set up before it can be used.
  *
  * @author  Felix Voelker
- * @version 0.0.2
- * @since   30.12.2017
+ * @version 0.1.0
+ * @since   19.1.2018
  */
 class VariationSource : public Singleton {
 

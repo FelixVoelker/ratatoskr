@@ -8,8 +8,8 @@
  * TODO: Comments
  *
  * @author  Felix Voelker
- * @version 0.0.2
- * @since   3.1.2018
+ * @version 0.1.0
+ * @since   19.1.2018
  */
 class Replayer : public Singleton {
 

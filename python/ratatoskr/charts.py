@@ -1,18 +1,10 @@
 from bokeh.layouts import column
 from bokeh.models import Range1d, CustomJS, ColumnDataSource, Slider
-from bokeh.plotting import figure
+from bokeh.plotting import figure, show
+import numpy as np
 import sys
 
-class InitializationError(Exception):
-    pass
-
-def fitnessChart(best_fitnesses, average_fitnesses, worst_fitnesses):
-    try:
-        if (len(best_fitnesses) != len(average_fitnesses) or len(average_fitnesses) != len(worst_fitnesses)):
-            raise InitializationError()
-    except InitializationError:
-        print("All fitnesses need to be recorded over the same number of getGenerations.")
-        sys.exit(1)
+def fitnessChart(statistics):
 
     generations = len(best_fitnesses)
     g = list(range(generations))
@@ -28,7 +20,7 @@ def fitnessChart(best_fitnesses, average_fitnesses, worst_fitnesses):
     p.y_range = Range1d(0, max(worst_fitnesses))
     p.xaxis.axis_label = 'Generation'
     p.yaxis.axis_label = 'Value'
-    return p
+    return show(p)
 
 def fitnessAnimation(best_fitnesses, average_fitnesses, worst_fitnesses):
     try:

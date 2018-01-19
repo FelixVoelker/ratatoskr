@@ -12,8 +12,8 @@
  * highly informative data.
  *
  * @author  Felix Voelker
- * @version 0.0.2
- * @since   12.12.2017
+ * @version 0.1.0
+ * @since   19.12.2017
  */
 class FeatureMap : public Prototype {
 

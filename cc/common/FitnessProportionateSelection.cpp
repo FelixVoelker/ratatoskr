@@ -9,7 +9,7 @@ FitnessProportionateSelection::FitnessProportionateSelection(const common::Confi
 Individual * FitnessProportionateSelection::select(std::vector<Individual *> &parents, Thread &thread) const {
     std::vector<float> relevances(parents.size());
     for (int k = 0; k < parents.size(); k++) {
-        relevances.at(k) = parents.at(k)->relevance(((float) thread.getEpoch()) / epochs);
+        relevances.at(k) = parents.at(k)->getRelevance().adjustedRelevance();
     }
 
     unsigned long index = thread.random.sampleIntFromDiscreteDistribution(relevances);

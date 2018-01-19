@@ -12,8 +12,8 @@
  * population and therefore prevents that the generator's progression is distorted by other threads.
  *
  * @author  Felix Voelker
- * @version 0.0.2
- * @since   29.12.2017
+ * @version 0.1.0
+ * @since   19.1.2018
  */
 class Thread {
 

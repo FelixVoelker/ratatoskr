@@ -11,16 +11,13 @@ using namespace boost::python;
  * Boost.Python wrapper to expose all virtual core functionality of Individual.
  *
  * @author  Felix Voelker
- * @version 0.0.2
- * @since   14.12.2017
+ * @version 0.1.0
+ * @since   19.1.2018
  */
 class IndividualWrapper : public Individual, public wrapper<Individual> {
 
 public:
-    explicit IndividualWrapper(const core::Configuration &configuration,
-                               Cost *cost,
-                               FeatureMap *featuremap,
-                               Fitness *fitness);
+    explicit IndividualWrapper(const core::Configuration &configuration, FeatureMap *featuremap, Relevance *relevance);
 
     std::string toString() override;
 

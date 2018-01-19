@@ -4,6 +4,7 @@ Initializer::Initializer(const core::Configuration &configuration, Builder *buil
         : Singleton(configuration),
           initthreads(std::vector<Thread *>(configuration.getInitializerConfiguration().threads))
 {
+    this->epochs = configuration.getEvolutionarySystemConfiguration().epochs;
     this->builder = builder;
     unsigned int onset  = 0;
     unsigned int offset = configuration.getProblemConfiguration().popsize / configuration.getInitializerConfiguration().threads;
@@ -34,5 +35,6 @@ void Initializer::initializePopulation(Population &pop) {
 void Initializer::initializeChunk(std::vector<Individual *> &individuals, Thread &thread) {
     for (unsigned int k = 0; k < thread.getChunkOffset(); k++) {
         individuals.at(k + thread.getChunkOnset()) = builder->build(thread);
+        individuals.at(k + thread.getChunkOnset())->getRelevance().setFraction(thread.getEpoch() / epochs);
     }
 }
