@@ -1,103 +1,120 @@
-from bokeh.layouts import column
+from bokeh.layouts import gridplot
 from bokeh.models import Range1d, CustomJS, ColumnDataSource, Slider
 from bokeh.plotting import figure, show
 import numpy as np
-import sys
 
-def fitnessChart(statistics):
 
-    generations = len(best_fitnesses)
-    g = list(range(generations))
+def rfc(statistics):
+    generations = np.arange(statistics.generations + 1)
+    reverse_generations = np.array([])
+    for k in range(statistics.generations + 1):
+        reverse_generations = np.append(reverse_generations, generations[statistics.generations - k])
 
-    p = figure(plot_width=500, plot_height=500)
-    p.line(g, best_fitnesses, color="blue", line_width=2, legend='best')
-    #p.circle(g, best_fitnesses, fill_color="white", size=2)
-    p.line(g, average_fitnesses, color="red", line_width=2, legend='average')
-    #p.circle(g, average_fitnesses, fill_color="white", size=2)
-    p.line(g, worst_fitnesses, color="green", line_width=2, legend='worst')
-    #p.circle(g, worst_fitnesses, fill_color="white", size=2)
-    p.x_range = Range1d(0, generations - 1)
-    p.y_range = Range1d(0, max(worst_fitnesses))
-    p.xaxis.axis_label = 'Generation'
-    p.yaxis.axis_label = 'Value'
-    return show(p)
+    max_relevance = 0
+    all_relevances = []
+    average_relevances = []
 
-def fitnessAnimation(best_fitnesses, average_fitnesses, worst_fitnesses):
-    try:
-        if (len(best_fitnesses) != len(average_fitnesses) or len(average_fitnesses) != len(worst_fitnesses)):
-            raise InitializationError()
-    except InitializationError:
-        print("All fitnesses need to be recorded over the same number of getEpochs.")
-        sys.exit(1)
+    max_fitness = 0
+    all_fitnesses = []
+    average_fitnesses = []
 
-    try:
-        if (len(best_fitnesses) == 1):
-            raise InitializationError()
-    except InitializationError:
-        print("The number of recorded getEpochs needs to be larger than 1.")
-        sys.exit(1)
+    max_cost = 0
+    all_costs = []
+    average_costs = []
 
-    try:
-        if (len(best_fitnesses[0]) != len(average_fitnesses[0]) or len(average_fitnesses[0]) != len(worst_fitnesses[0])):
-            raise InitializationError()
-    except InitializationError:
-        print("All fitnesses need to be recorded over the same number of getGenerations.")
-        sys.exit(1)
+    tmp = np.zeros(statistics.generations + 1)
+    for ep in range(statistics.epochs):
+        relevances = np.array(statistics.worstRelevances(ep))
+        if np.max(relevances) > max_relevance:
+            max_relevance = np.max(relevances)
+        for k in range(statistics.generations + 1):
+            tmp[k] = statistics.bestRelevances(ep)[statistics.generations - k]
+        relevances = np.append(relevances, tmp)
+        all_relevances.append(relevances)
+        average_relevances.append(np.array(statistics.averageRelevances(ep)))
 
-    epochs = len(best_fitnesses)
-    generations = len(best_fitnesses[0])
-    g = list(range(generations))
+        fitnesses = np.array(statistics.worstFitnesses(ep))
+        if np.max(fitnesses) > max_fitness:
+            max_fitness = np.max(fitnesses)
+        for k in range(statistics.generations + 1):
+            tmp[k] = statistics.bestFitnesses(ep)[statistics.generations - k]
+        fitnesses = np.append(fitnesses, tmp)
+        all_fitnesses.append(fitnesses)
+        average_fitnesses.append(np.array(statistics.averageFitnesses(ep)))
 
-    max_fitness = max(worst_fitnesses[0])
-    for k in range(1,len(best_fitnesses)):
-        m = max(worst_fitnesses[k])
-        if (m > max_fitness):
-            max_fitness = m
+        costs = np.array(statistics.worstCosts(ep))
+        if np.max(costs) > max_cost:
+            max_cost = np.max(costs)
+        for k in range(statistics.generations + 1):
+            tmp[k] = statistics.bestCosts(ep)[statistics.generations - k]
+        costs = np.append(costs, tmp)
+        all_costs.append(costs)
+        average_costs.append(np.array(statistics.averageCosts(ep)))
 
-    x = g
-    b = best_fitnesses[0]
-    a = average_fitnesses[0]
-    w = worst_fitnesses[0]
+    all_plot_data = {'generations': np.append(generations, reverse_generations),
+                     'all_cost': all_costs[0],
+                     'all_fitness': all_fitnesses[0],
+                     'all_relevance': all_relevances[0]}
 
-    bs = best_fitnesses
-    avs = average_fitnesses
-    ws = worst_fitnesses
+    all_statistics_data = {'all_costs': all_costs,
+                           'all_fitnesses': all_fitnesses,
+                           'all_relevances': all_relevances}
 
-    source = ColumnDataSource(data=dict(x=x,b=b,a=a,w=w))
-    fitness = ColumnDataSource(data=dict(bs=bs,avs=avs,ws=ws))
+    average_plot_data = {'generations': generations,
+                         'average_cost': average_costs[0],
+                         'average_fitness': average_fitnesses[0],
+                         'average_relevance': average_relevances[0]}
 
-    p = figure(plot_width=500, plot_height=500)
-    p.line('x', 'b', source=source, color="blue", line_width=2, legend='best')
-    #p.circle('x', 'b', source=source, fill_color="white", size=8)
-    p.line('x', 'a', source=source, color="red", line_width=2, legend='average')
-    #p.circle('x', 'a', source=source, fill_color="white", size=8)
-    p.line('x', 'w', source=source, color="green", line_width=2, legend='worst')
-    #p.circle('x', 'w', source=source, fill_color="white", size=8)
-    p.x_range = Range1d(0, generations - 1)
-    p.y_range = Range1d(0, max_fitness)
-    p.xaxis.axis_label = 'Generation'
-    p.yaxis.axis_label = 'Value'
+    average_statistics_data = {'average_costs': average_costs,
+                               'average_fitnesses': average_fitnesses,
+                               'average_relevances': average_relevances}
 
-    callback = CustomJS(args=dict(source=source,fitness=fitness), code="""
-        var data = source.data;
-        var fit = getFitness.data;
-        var k = cb_obj.value
-        x = data['x']
-        b = data['b']
-        a = data['a']
-        w = data['w']
-        bs = fit['bs']
-        avs = fit['avs']
-        ws = fit['ws']
-        for (i = 0; i < x.length; i++) {
-            b[i] = bs[k][i]
-            a[i] = avs[k][i]
-            w[i] = ws[k][i]
-        }
-        source.change.emit();
+    all_plot_source = ColumnDataSource(all_plot_data)
+    average_plot_source = ColumnDataSource(average_plot_data)
+    all_statistics_source = ColumnDataSource(all_statistics_data)
+    average_statistics_source = ColumnDataSource(average_statistics_data)
+
+    relevance_plot = figure(plot_width=300, plot_height=300, tools="save")
+    relevance_plot.patch('generations', 'all_relevance', source=all_plot_source, color="red", alpha=0.5)
+    relevance_plot.line('generations', 'average_relevance', source=average_plot_source, color="red")
+    relevance_plot.x_range = Range1d(0, len(generations) - 1)
+    relevance_plot.y_range = Range1d(0, max_relevance)
+    relevance_plot.xaxis.axis_label = 'Generation'
+    relevance_plot.yaxis.axis_label = 'Relevance'
+
+    fitness_plot = figure(plot_width=300, plot_height=300, tools="save")
+    fitness_plot.patch('generations', 'all_fitness', source=all_plot_source, color="green", alpha=0.5)
+    fitness_plot.line('generations', 'average_fitness', source=average_plot_source, color="green")
+    fitness_plot.x_range = Range1d(0, len(generations) - 1)
+    fitness_plot.y_range = Range1d(0, max_fitness)
+    fitness_plot.xaxis.axis_label = 'Generation'
+    fitness_plot.yaxis.axis_label = 'Fitness'
+
+    cost_plot = figure(plot_width=300, plot_height=300, tools="save")
+    cost_plot.patch('generations', 'all_cost', source=all_plot_source, color="blue", alpha=0.5)
+    cost_plot.line('generations', 'average_cost', source=average_plot_source, color="blue")
+    cost_plot.x_range = Range1d(0, len(generations) - 1)
+    cost_plot.y_range = Range1d(0, max_cost)
+    cost_plot.xaxis.axis_label = 'Generation'
+    cost_plot.yaxis.axis_label = 'Cost'
+
+    callback = CustomJS(args=dict(all_plot=all_plot_source,
+                                  average_plot=average_plot_source,
+                                  all_statistics=all_statistics_source,
+                                  average_statistics=average_statistics_source),
+                        code="""var epoch = cb_obj.value;
+        all_plot.data['all_cost'] = all_statistics.data['all_costs'][epoch];
+        average_plot.data['average_cost'] = average_statistics.data['average_costs'][epoch];
+        all_plot.data['all_fitness'] = all_statistics.data['all_fitnesses'][epoch];
+        average_plot.data['average_fitness'] = average_statistics.data['average_fitnesses'][epoch];
+        all_plot.data['all_relevance'] = all_statistics.data['all_relevances'][epoch];
+        average_plot.data['average_relevance'] = average_statistics.data['average_relevances'][epoch];
+        all_plot.change.emit();
+        average_plot.change.emit();
     """)
 
-    slider = Slider(start=0, end=epochs-1, value=0, step=1, title='Epochs')
+    slider = Slider(start=0, end=statistics.epochs - 1, value=0, step=1, title='Epochs')
     slider.js_on_change('value', callback)
 
-    return column(slider, p)
+    grid = gridplot([[None, slider, None], [relevance_plot, fitness_plot, cost_plot]])
+    return show(grid)

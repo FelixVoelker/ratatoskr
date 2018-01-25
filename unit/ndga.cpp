@@ -163,7 +163,7 @@ TEST_CASE("NDGA", "[ndga]") {
 
             system->run();
             auto & statistics = system->getStatistics();
-            REQUIRE(statistics.bestFitnesses(0).at(200) == 0);
+            REQUIRE(statistics.bestFitness(0).at(200) == 0);
 
             delete system;
             delete session;

@@ -349,57 +349,81 @@ TEST_CASE("Core", "[core]") {
         }
 
         SECTION("Checking best cost recording...") {
-            REQUIRE(statistics->bestCosts(0).at(0) == 6.25f);
-            REQUIRE(statistics->bestCosts(1).at(0) == 3.75f);
-            REQUIRE(statistics->bestCosts(2).at(0) == 2.5f);
-        }
-
-        SECTION("Checking best fitness recording...") {
-            REQUIRE(statistics->bestFitnesses(0).at(0) == 1.25f);
-            REQUIRE(statistics->bestFitnesses(1).at(0) == 2.5f);
-            REQUIRE(statistics->bestFitnesses(2).at(0) == 5.0f);
-        }
-
-        SECTION("Checking best relevance recording") {
-            REQUIRE(statistics->bestRelevances(0).at(0) == 1.25f);
-            REQUIRE(statistics->bestRelevances(1).at(0) == 3.125f);
-            REQUIRE(statistics->bestRelevances(2).at(0) == 2.5f);
+            REQUIRE(statistics->bestCost(0).at(0) == 2.5f);
+            REQUIRE(statistics->bestCost(1).at(0) == 2.5f);
+            REQUIRE(statistics->bestCost(2).at(0) == 2.5f);
         }
 
         SECTION("Checking average cost recording...") {
-            REQUIRE(statistics->averageCosts(0).at(0) == 4.375f);
-            REQUIRE(statistics->averageCosts(1).at(0) == 4.375f);
-            REQUIRE(statistics->averageCosts(2).at(0) == 4.375f);
-        }
-
-        SECTION("Checking average fitness recording...") {
-            REQUIRE(statistics->averageFitnesses(0).at(0) == 3.125f);
-            REQUIRE(statistics->averageFitnesses(1).at(0) == 3.125f);
-            REQUIRE(statistics->averageFitnesses(2).at(0) == 3.125f);
-        }
-
-        SECTION("Checking average relevance recording... ") {
-            REQUIRE(statistics->averageRelevances(0).at(0) == 3.125f);
-            REQUIRE(statistics->averageRelevances(1).at(0) == 3.75f);
-            REQUIRE(statistics->averageRelevances(2).at(0) == 4.375f);
+            REQUIRE(statistics->averageCost(0).at(0) == 4.375f);
+            REQUIRE(statistics->averageCost(1).at(0) == 4.375f);
+            REQUIRE(statistics->averageCost(2).at(0) == 4.375f);
         }
 
         SECTION("Checking worst cost recording...") {
-            REQUIRE(statistics->worstCosts(0).at(0) == 2.5f);
-            REQUIRE(statistics->worstCosts(1).at(0) == 5.0f);
-            REQUIRE(statistics->worstCosts(2).at(0) == 6.25f);
+            REQUIRE(statistics->worstCost(0).at(0) == 6.25f);
+            REQUIRE(statistics->worstCost(1).at(0) == 6.25f);
+            REQUIRE(statistics->worstCost(2).at(0) == 6.25f);
+        }
+
+        SECTION("Checking best fitness recording...") {
+            REQUIRE(statistics->bestFitness(0).at(0) == 1.25f);
+            REQUIRE(statistics->bestFitness(1).at(0) == 1.25f);
+            REQUIRE(statistics->bestFitness(2).at(0) == 1.25f);
+        }
+
+        SECTION("Checking average fitness recording...") {
+            REQUIRE(statistics->averageFitness(0).at(0) == 3.125f);
+            REQUIRE(statistics->averageFitness(1).at(0) == 3.125f);
+            REQUIRE(statistics->averageFitness(2).at(0) == 3.125f);
         }
 
         SECTION("Checking worst fitness recording...") {
-            REQUIRE(statistics->worstFitnesses(0).at(0) == 5.0f);
-            REQUIRE(statistics->worstFitnesses(1).at(0) == 3.75f);
-            REQUIRE(statistics->worstFitnesses(2).at(0) == 1.25f);
+            REQUIRE(statistics->worstFitness(0).at(0) == 5.0f);
+            REQUIRE(statistics->worstFitness(1).at(0) == 5.0f);
+            REQUIRE(statistics->worstFitness(2).at(0) == 5.0f);
+        }
+
+        SECTION("Checking best relevance recording") {
+            REQUIRE(statistics->bestRelevance(0).at(0) == 1.25f);
+            REQUIRE(statistics->bestRelevance(1).at(0) == 3.125f);
+            REQUIRE(statistics->bestRelevance(2).at(0) == 2.5f);
+        }
+
+        SECTION("Checking average relevance recording... ") {
+            REQUIRE(statistics->averageRelevance(0).at(0) == 3.125f);
+            REQUIRE(statistics->averageRelevance(1).at(0) == 3.75f);
+            REQUIRE(statistics->averageRelevance(2).at(0) == 4.375f);
         }
 
         SECTION("Checking worst relevance recording...") {
-            REQUIRE(statistics->worstRelevances(0).at(0) == 5.0f);
-            REQUIRE(statistics->worstRelevances(1).at(0) == 4.375f);
-            REQUIRE(statistics->worstRelevances(2).at(0) == 6.25f);
+            REQUIRE(statistics->worstRelevance(0).at(0) == 5.0f);
+            REQUIRE(statistics->worstRelevance(1).at(0) == 4.375f);
+            REQUIRE(statistics->worstRelevance(2).at(0) == 6.25f);
+        }
+
+        SECTION("Checking most relevant cost recording...") {
+            REQUIRE(statistics->mostRelevantCost(0).at(0) == 6.25f);
+            REQUIRE(statistics->mostRelevantCost(1).at(0) == 3.75f);
+            REQUIRE(statistics->mostRelevantCost(2).at(0) == 2.5f);
+        }
+
+        SECTION("Checking least relevant cost recording...") {
+            REQUIRE(statistics->leastRelevantCost(0).at(0) == 2.5f);
+            REQUIRE(statistics->leastRelevantCost(1).at(0) == 5.0f);
+            REQUIRE(statistics->leastRelevantCost(2).at(0) == 6.25f);
+        }
+
+        SECTION("Checking most relevant fitness recording...") {
+            REQUIRE(statistics->mostRelevantFitness(0).at(0) == 1.25f);
+            REQUIRE(statistics->mostRelevantFitness(1).at(0) == 2.5f);
+            REQUIRE(statistics->mostRelevantFitness(2).at(0) == 5.0f);
+        }
+
+        SECTION("Checking least relevant fitness recording...") {
+            REQUIRE(statistics->leastRelevantFitness(0).at(0) == 5.0f);
+            REQUIRE(statistics->leastRelevantFitness(1).at(0) == 3.75f);
+            REQUIRE(statistics->leastRelevantFitness(2).at(0) == 1.25f);
         }
 
         delete p;

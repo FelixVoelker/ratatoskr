@@ -90,15 +90,22 @@ BOOST_PYTHON_MODULE(core) {
             .def("breed", pure_virtual(&BreedingOperatorWrapper::breed), return_internal_reference<>());
 
     class_<Statistics>("Statistics", init<const Configuration &>())
-            .def("bestCosts", &Statistics::bestCosts)
-            .def("bestFitnesses", &Statistics::bestFitnesses)
-            .def("bestRelevances", &Statistics::bestRelevances)
-            .def("averagesCosts", &Statistics::averageCosts)
-            .def("averageFitnesses", &Statistics::averageFitnesses)
-            .def("averageRelevances", &Statistics::averageRelevances)
-            .def("worstCosts", &Statistics::worstCosts)
-            .def("worstFitnesses", &Statistics::worstFitnesses)
-            .def("worstRelevances", &Statistics::worstRelevances);
+            .add_property("epochs", &Statistics::getEpochs)
+            .add_property("episodes", &Statistics::getEpisodes)
+            .add_property("generations", &Statistics::getGenerations)
+            .def("bestCost", &Statistics::bestCost)
+            .def("averageCost", &Statistics::averageCost)
+            .def("worstCost", &Statistics::worstCost)
+            .def("bestFitness", &Statistics::bestFitness)
+            .def("averageFitness", &Statistics::averageFitness)
+            .def("worstFitness", &Statistics::worstFitness)
+            .def("bestRelevance", &Statistics::bestRelevance)
+            .def("averageRelevance", &Statistics::averageRelevance)
+            .def("worstRelevance", &Statistics::worstRelevance)
+            .def("mostRelevantCost", &Statistics::mostRelevantCost)
+            .def("leastRelevantCost", &Statistics::leastRelevantCost)
+            .def("mostRelevantFitness", &Statistics::mostRelevantFitness)
+            .def("leastRelevantFitness", &Statistics::leastRelevantFitness);
 
     class_<EvolutionarySystem>("EvolutionarySystem", init<const Configuration &, Builder*, std::function<void(Individual &, Thread &)>&, EvolutionaryNetwork*, BreedingOperator*>())
             .add_property("statistics", make_function(&EvolutionarySystem::getStatistics, return_internal_reference<>()))
