@@ -12,7 +12,7 @@ using namespace boost::python;
  *
  * @author  Felix Voelker
  * @version 0.1.0
- * @since   19.1.2018
+ * @since   25.1.2018
  */
 BOOST_PYTHON_MODULE(common) {
     class_<common::Problem, bases<core::Problem>>("Problem", no_init)

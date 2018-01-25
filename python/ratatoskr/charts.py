@@ -3,7 +3,13 @@ from bokeh.models import Range1d, CustomJS, ColumnDataSource, Slider
 from bokeh.plotting import figure, show
 import numpy as np
 
+'''
+Creates a Reference-Fitness-Cost (RFC) plot from the given statistic.
 
+@author  Felix Voelker
+@version 0.1.0
+@since   25.1.2018
+'''
 def rfc(statistics):
     generations = np.arange(statistics.generations + 1)
     reverse_generations = np.array([])

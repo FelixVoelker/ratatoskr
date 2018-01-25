@@ -14,7 +14,7 @@
  *
  * @author  Felix Voelker
  * @version 0.1.0
- * @since   19.1.2018
+ * @since   25.1.2018
  */
 class Evaluator : public Singleton {
 
