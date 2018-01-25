@@ -4,20 +4,16 @@ engine is supposed to allow simple configuration through a multi-language suppor
 currently under development and therefore is not provided with all features yet. The state of the framework and all current
 features will be listed in this document.
 
-## Current Features (v0.1)
+## Current Features (v0.1.0)
 * Core-Engine
-   * Supports traditional Evolutionary Computation only
-   * Programmable representations, initialization, evaluation, variation and sessions
-   * Statistics: Recoring of the best, average and worst getFitness of each generation
+  * TBA
 * C++-API
-  * Toolkit
-    * Neuro-Dynamic Genetic Algorithm (NDGA)
-      * OneMax-Task
+  * Dynamic Genetic Algorithm (NDGA)
+    * Available Problems: OneMaxProble
 * Python-API
-  * Programmable Problems
-  * Running existing C++ sessions
+  * TBA
   
-## Prerequiries
+## Prerequiries (out of date, TBA)
 Ratatoskr's C++ API does only require you to have cmake installed. However, if you want to use the framework in Python, you will 
 need the following:
 * wheels
