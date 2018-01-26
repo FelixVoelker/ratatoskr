@@ -33,21 +33,19 @@ public:
 
 protected:
     std::vector<Thread *> evalthreads;
-    std::vector<EvaluationFunction *> evals;
 
     /** Components */
+    EvaluationFunction  *eval;
     EvolutionaryNetwork &network;
 
     /**
      * Evaluates a given chunk of the population only. This function is called by each of the evaluation threads
      * and performs the problem specific evaluation on the individuals in the chunk.
-     * @param eval        The evaluation function to be used.
      * @param individuals The individuals within the population.
      * @param costs       The approximated cost of each individual.
      * @param thread      The evaluating thread.
      */
-    void evaluateChunk(EvaluationFunction &eval,
-                       std::vector<Individual *> &individuals,
+    void evaluateChunk(std::vector<Individual *> &individuals,
                        std::vector<float> costs,
                        Thread &thread) const;
 
