@@ -36,14 +36,15 @@ BOOST_PYTHON_MODULE(common) {
             .add_property("crossover", make_function(crossover, return_internal_reference<>()))
             .add_property("mutation", make_function(mutation, return_internal_reference<>()));
 
-    class_<FeatureVector, bases<FeatureMap>>("FeatureVector", init<const common::Configuration &>())
+    class_<FeatureVector, bases<FeatureMap>, boost::noncopyable>("FeatureVector", init<const common::Configuration &>())
             .def("__copy__", &FeatureVector::clone, return_value_policy<manage_new_object>())
             .def("compute", &FeatureVector::compute, return_internal_reference<>());
 
-    class_<VectorIndividual, bases<Individual>, boost::noncopyable>("VectorIndividual", init<const common::Configuration &, FeatureVector *, Relevance *>())
+    class_<VectorIndividual, bases<Individual>, boost::noncopyable>("VectorIndividual", init<const common::Configuration &, FeatureVector &, Relevance &>())
             .add_property("chromosome", make_function(&VectorIndividual::getChromosome, return_internal_reference<>()))
             .def("__copy__", &VectorIndividual::clone, return_value_policy<manage_new_object>())
             .def("tostring", &VectorIndividual::toString);
 
-    class_<FitnessProportionateSelection, bases<SelectionOperator>>("FitnessProportionateSelection", init<const common::Configuration &>());
+    class_<FitnessProportionateSelection, bases<SelectionOperator>, boost::noncopyable>("FitnessProportionateSelection", init<const common::Configuration &>())
+            .def("__copy__", &FitnessProportionateSelection::clone, return_value_policy<manage_new_object>());
 }

@@ -2,13 +2,12 @@
 #include "VectorIndividual.h"
 
 VectorIndividual::VectorIndividual(const common::Configuration &configuration,
-                                   FeatureVector *featurevector,
-                                   Relevance *relevance)
+                                   FeatureVector &featurevector,
+                                   Relevance &relevance)
         : Individual(configuration, featurevector, relevance)
 {
     auto problem = dynamic_cast<const common::Configuration::ProblemConfiguration &>(configuration.getProblemConfiguration());
-    unsigned int genes = problem.genes;
-    this->chromosome = std::vector<float>(genes);
+    this->chromosome = std::vector<float>(problem.genes);
 }
 
 std::string VectorIndividual::toString() {

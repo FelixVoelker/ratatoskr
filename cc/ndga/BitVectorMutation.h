@@ -18,8 +18,12 @@ class BitVectorMutation : public BreedingOperator {
 public:
     explicit BitVectorMutation(const common::Configuration &configuration);
 
+    BitVectorMutation * clone() const override;
+
 protected:
     float pm;
+
+    BitVectorMutation(const BitVectorMutation &obj);
 
     unsigned long expectedSources() const override;
 

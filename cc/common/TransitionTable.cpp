@@ -2,22 +2,21 @@
 #include "Problem.h"
 #include "VectorIndividual.h"
 
-TransitionTable::TransitionTable(const common::Configuration &configuration) : EvolutionaryNetwork(configuration) {
-    auto problem = dynamic_cast<const common::Configuration::ProblemConfiguration &>(configuration.getProblemConfiguration());
-    lookup_table = new std::vector<std::vector<float>>(problem.popsize,
-            std::vector<float>(static_cast<unsigned long>(pow(2, problem.genes)), 0)
-    );
-}
-
-TransitionTable::~TransitionTable() {
-    std::vector<std::vector<float>>().swap(*lookup_table);
+TransitionTable::TransitionTable(const common::Configuration &configuration) :
+        EvolutionaryNetwork(configuration),
+        lookup_table(std::vector<std::vector<float>>(
+                configuration.getProblemConfiguration().popsize,
+                std::vector<float>(static_cast<unsigned long>(
+                                           pow(2, dynamic_cast<const common::Configuration::ProblemConfiguration &>(
+                                                   configuration.getProblemConfiguration()).genes)), 0)) )
+{
 }
 
 std::vector<float> TransitionTable::output(std::vector<Individual *> &individuals) const {
-    std::vector<float> cost = std::vector<float>(lookup_table->size());
+    std::vector<float> cost = std::vector<float>(lookup_table.size());
     std::vector<unsigned int> indices = preprocess(individuals);
     for (unsigned int k = 0; k < individuals.size(); k++) {
-        cost.at(k) = lookup_table->at(k).at(indices.at(k));
+        cost.at(k) = lookup_table.at(k).at(indices.at(k));
     }
     return cost;
 }
@@ -26,12 +25,20 @@ void TransitionTable::update(std::vector<Individual *> &parents, std::vector<Ind
     std::vector<unsigned int> parent_indices = preprocess(parents);
     std::vector<unsigned int> offspring_indices = preprocess(offsprings);
 
-    for (unsigned int k = 0; k < lookup_table->size(); k++) {
-        float precost = lookup_table->at(k).at(parent_indices.at(k));
-        float postcost = lookup_table->at(k).at(offspring_indices.at(k));
+    for (unsigned int k = 0; k < lookup_table.size(); k++) {
+        float precost = lookup_table.at(k).at(parent_indices.at(k));
+        float postcost = lookup_table.at(k).at(offspring_indices.at(k));
         float fitness = parents.at(k)->getRelevance().getFitness();
-        lookup_table->at(k).at(parent_indices.at(k)) = precost + learning_rate * (fitness + discount_factor * postcost - precost);
+        lookup_table.at(k).at(parent_indices.at(k)) = precost + learning_rate * (fitness + discount_factor * postcost - precost);
     }
+}
+
+EvolutionaryNetwork* TransitionTable::clone() const {
+    return new TransitionTable(*this);
+}
+
+TransitionTable::TransitionTable(const TransitionTable &obj) : EvolutionaryNetwork(obj) {
+    this->lookup_table = std::vector<std::vector<float>>(obj.lookup_table);
 }
 
 std::vector<unsigned int> TransitionTable::preprocess(std::vector<Individual *> &individuals) const {

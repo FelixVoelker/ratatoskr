@@ -27,12 +27,16 @@ TEST_CASE("NDGA", "[ndga]") {
 
     auto *featurevector = new FeatureVector(*configuration);
     auto *relevance = new Relevance(*configuration);
-    auto *prototype = new VectorIndividual(*configuration, featurevector, relevance);
-    auto *builder = new RandomBitVectorBuilder(*configuration, prototype);
+    auto *prototype = new VectorIndividual(*configuration, *featurevector, *relevance);
+    auto *builder = new RandomBitVectorBuilder(*configuration, *prototype);
     auto *pop = new Population(*configuration);
 
+    delete featurevector;
+    delete relevance;
+    delete prototype;
+
     unsigned int epoch = 0;
-    auto *initializer = new Initializer(*configuration, builder, epoch);
+    auto *initializer = new Initializer(*configuration, *builder, epoch);
     SECTION("RandomBitVectorBuilder") {
         SECTION("Checking initialization...") {
             std::vector<unsigned int> counts(8, 0);
@@ -58,17 +62,19 @@ TEST_CASE("NDGA", "[ndga]") {
         }
     }
 
+    delete builder;
+
     auto *thread = new Thread(0, 2, epoch);
     initializer->initializePopulation(*pop);
 
     configuration->getCrossoverConfiguration().xover_rate = 1.0;
     auto *crossover = new BitVectorCrossover(*configuration);
-    std::vector<VariationSource *> sources = {
+    std::vector<VariationSource *> *sources = new std::vector<VariationSource *>({
             new FitnessProportionateSelection(*configuration),
             new FitnessProportionateSelection(*configuration)
-    };
-    sources.at(0)->setup(*new std::vector<VariationSource *>(0));
-    sources.at(1)->setup(*new std::vector<VariationSource *>(0));
+    });
+    sources->at(0)->setup(new std::vector<VariationSource *>(0));
+    sources->at(1)->setup(new std::vector<VariationSource *>(0));
     crossover->setup(sources);
     SECTION("BitVectorCrossover") {
         SECTION("Checking breeding...") {
@@ -126,12 +132,14 @@ TEST_CASE("NDGA", "[ndga]") {
         }
     }
 
+    delete crossover;
+
     configuration->getMutationConfiguration().mutation_rate = 1.0;
     auto *mutation = new BitVectorMutation(*configuration);
-    sources = {
+    sources = new std::vector<VariationSource *> {
             new FitnessProportionateSelection(*configuration)
     };
-    sources.at(0)->setup(*new std::vector<VariationSource *>(0));
+    sources->at(0)->setup(new std::vector<VariationSource *>(0));
     mutation->setup(sources);
     SECTION("BitVectorMutation") {
         SECTION("Checking breeding...") {
@@ -152,6 +160,10 @@ TEST_CASE("NDGA", "[ndga]") {
         }
     }
 
+    delete mutation;
+    delete pop;
+    delete initializer;
+
     SECTION("EvaluationFunctions") {
         SECTION("Checking OneMaxProblem...") {
             auto *p =  new common::Problem(ndga::EvaluationFunctions::oneMax(), 200, 20);
@@ -171,11 +183,6 @@ TEST_CASE("NDGA", "[ndga]") {
         }
     }
 
-    delete mutation;
-    delete crossover;
-    delete initializer;
-    delete pop;
-    delete builder;
     delete configuration;
     delete problem;
 }

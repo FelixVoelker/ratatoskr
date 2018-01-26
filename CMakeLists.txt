@@ -48,8 +48,8 @@ set(CC_API
 add_library(ratatoskr_cc SHARED ${CORE_SOURCES} ${CC_API})
 target_link_libraries(ratatoskr_cc ${Boost_LIBRARIES} ${PYTHON_LIBRARIES})
 
-#add_executable(ratatoskr_cc_debug cc/main.cpp)
-#target_link_libraries(ratatoskr_cc_debug ratatoskr_cc)
+add_executable(ratatoskr_cc_debug cc/main.cpp)
+target_link_libraries(ratatoskr_cc_debug ratatoskr_cc)
 
 set(PYTHON_API_CORE
         python/ext/wrapper/BreedingOperatorWrapper.cpp python/ext/wrapper/BreedingOperatorWrapper.h

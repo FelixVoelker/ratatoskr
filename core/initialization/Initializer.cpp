@@ -1,13 +1,13 @@
 #include "Initializer.h"
 
-Initializer::Initializer(const core::Configuration &configuration, Builder *builder, unsigned int &epoch)
+Initializer::Initializer(const core::Configuration &configuration, Builder &builder, unsigned int &epoch)
         : Singleton(configuration),
           initthreads(std::vector<Thread *>(configuration.getInitializerConfiguration().threads))
 {
     this->epochs = configuration.getEvolutionarySystemConfiguration().epochs;
     if (this->epochs > 1)
         this->epochs -= 1;
-    this->builder = builder;
+    this->builder = builder.clone();
     unsigned int onset  = 0;
     unsigned int offset = configuration.getProblemConfiguration().popsize / configuration.getInitializerConfiguration().threads;
     for (unsigned int k = 0; k < initthreads.size() - 1; k++) {
@@ -18,7 +18,11 @@ Initializer::Initializer(const core::Configuration &configuration, Builder *buil
 }
 
 Initializer::~Initializer() {
+    for (auto *thread : initthreads)
+        delete thread;
     std::vector<Thread *>().swap(initthreads);
+
+    delete builder;
 }
 
 void Initializer::initializePopulation(Population &pop) {

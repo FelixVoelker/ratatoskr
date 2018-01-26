@@ -18,7 +18,7 @@
  * @version 0.1.0
  * @since   25.1.2018
  */
-class VariationSource : public Singleton {
+class VariationSource : public Prototype {
 
 public:
     explicit VariationSource(const core::Configuration &configuration);
@@ -30,7 +30,7 @@ public:
      * @param  sources A list of child sources.
      * @throws InitializationException if the number of children does not match the expected number of sources.
      */
-    virtual void setup(std::vector<VariationSource *> &sources);
+    virtual void setup(std::vector<VariationSource *> *sources);
 
     /**
      * Creates offspring individuals by varying the given parent individuals recursively, i.e. the variation source's
@@ -42,8 +42,12 @@ public:
      */
     std::vector<Individual *> vary(std::vector<Individual *> &parents, Thread &thread) const;
 
+    virtual VariationSource * clone() const = 0;
+
 protected:
-    std::vector<VariationSource *> sources;
+    std::vector<VariationSource *> *sources;
+
+    VariationSource(const VariationSource &obj);
 
     /**
      * Specifies the expected number of the variation source's children.

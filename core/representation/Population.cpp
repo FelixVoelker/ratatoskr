@@ -5,6 +5,9 @@ Population::Population(const core::Configuration &configuration) : Singleton(con
 }
 
 Population::~Population() {
+    for (auto *individual : individuals) {
+        delete individual;
+    }
     std::vector<Individual *>().swap(individuals);
 }
 

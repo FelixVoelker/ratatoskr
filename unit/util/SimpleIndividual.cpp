@@ -2,7 +2,7 @@
 
 #include <utility>
 
-SimpleIndividual::SimpleIndividual(const core::Configuration &configuration, FeatureMap *featuremap, Relevance *relevance)
+SimpleIndividual::SimpleIndividual(const core::Configuration &configuration, FeatureMap &featuremap, Relevance &relevance)
         : Individual(configuration, featuremap, relevance)
 {
 }

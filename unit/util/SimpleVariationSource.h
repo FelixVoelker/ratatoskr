@@ -16,7 +16,11 @@ class SimpleVariationSource : public VariationSource {
 public:
     explicit SimpleVariationSource(const core::Configuration &configuration);
 
+    SimpleVariationSource * clone() const override;
+
 protected:
+    SimpleVariationSource(const SimpleVariationSource &obj) = default;
+
     unsigned long expectedSources() const override;
 
     std::vector<Individual *> perform(std::vector<Individual *> &parents, Thread &thread) const override;

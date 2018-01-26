@@ -20,8 +20,8 @@ class VectorIndividual : public Individual {
 
 public:
     explicit VectorIndividual(const common::Configuration &configuration,
-                              FeatureVector *featurevector,
-                              Relevance *relevance);
+                              FeatureVector &featurevector,
+                              Relevance &relevance);
 
     /**
      * Returns a human readable representation of the chromosome. This representation is a bit string for a binary

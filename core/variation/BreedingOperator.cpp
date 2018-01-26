@@ -3,9 +3,9 @@
 
 BreedingOperator::BreedingOperator(const core::Configuration &configuration) : VariationSource(configuration) {}
 
-void BreedingOperator::setup(std::vector<VariationSource *> &sources) {
+void BreedingOperator::setup(std::vector<VariationSource *> *sources) {
     try {
-        if (sources.empty())
+        if (sources->empty())
             throw InitializationException("Breeding operator has zero sources but needs at least one.");
         else
             VariationSource::setup(sources);

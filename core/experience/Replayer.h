@@ -14,12 +14,12 @@
 class Replayer : public Singleton {
 
 public:
-    explicit Replayer(const core::Configuration &configuration, EvolutionaryNetwork *network);
+    explicit Replayer(const core::Configuration &configuration, EvolutionaryNetwork &network);
 
     void replay(Population &pop, std::vector<Individual *> &offsprings) const;
 
 protected:
-    EvolutionaryNetwork *network;
+    EvolutionaryNetwork &network;
 
 };
 

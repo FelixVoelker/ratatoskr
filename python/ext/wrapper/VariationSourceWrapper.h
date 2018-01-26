@@ -23,6 +23,8 @@ public:
 
     std::vector<Individual *> perform(std::vector<Individual *> &parents, Thread &thread) const override;
 
+    VariationSource * clone() const override;
+
 };
 
 

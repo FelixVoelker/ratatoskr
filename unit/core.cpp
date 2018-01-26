@@ -106,7 +106,7 @@ TEST_CASE("Core", "[core]") {
 
     auto *featuremap = new SimpleFeatureMap(configuration);
     auto *relevance = new Relevance(configuration);
-    auto *individual = new SimpleIndividual(configuration, featuremap, relevance);
+    auto *individual = new SimpleIndividual(configuration, *featuremap, *relevance);
     SECTION("Individual") {
         individual->getRelevance().setFitness(2.5);
         individual->getRelevance().setCost(5);
@@ -119,6 +119,9 @@ TEST_CASE("Core", "[core]") {
             delete copy;
         }
     }
+
+    delete featuremap;
+    delete relevance;
 
     unsigned int epoch = 0;
     auto *thread = new Thread(0, 3, epoch);
@@ -162,7 +165,7 @@ TEST_CASE("Core", "[core]") {
         }
     }
 
-    auto *builder = new SimpleBuilder(configuration, individual);
+    auto *builder = new SimpleBuilder(configuration, *individual);
     SECTION("Builder") {
         auto *ind = builder->build(*thread);
 
@@ -172,6 +175,8 @@ TEST_CASE("Core", "[core]") {
 
         delete ind;
     }
+
+    delete individual;
 
     problem->getConfiguration().popsize = 3;
     auto *pop = new Population(configuration);
@@ -238,7 +243,7 @@ TEST_CASE("Core", "[core]") {
     }
 
     configuration.getInitializerConfiguration().threads = 2;
-    auto *initializer = new Initializer(configuration, builder, epoch);
+    auto *initializer = new Initializer(configuration, *builder, epoch);
     initializer->initializePopulation(*pop);
     SECTION("Initializer") {
         SECTION("Initializating a population...") {
@@ -248,9 +253,11 @@ TEST_CASE("Core", "[core]") {
         }
     }
 
+    delete initializer;
+
     configuration.getEvaluatorConfiguration().threads = 2;
     auto *network = new SimpleEvolutionaryNetwork(configuration);
-    auto *evaluator = new Evaluator(configuration, eval, network, epoch);
+    auto *evaluator = new Evaluator(configuration, eval, *network, epoch);
     SECTION("Evaluator") {
         SECTION("Evaluating a population...") {
             evaluator->evaluatePopulation(*pop);
@@ -261,10 +268,11 @@ TEST_CASE("Core", "[core]") {
         }
     }
 
+    delete evaluator;
 
     SECTION("VariationSource") {
         auto *vs = new SimpleVariationSource(configuration);
-        vs->setup(*new std::vector<VariationSource *>(0));
+        vs->setup(new std::vector<VariationSource *>(0));
 
         SECTION("Checking workflow...") {
             std::vector<Individual *> parents = pop->getIndividuals();
@@ -276,7 +284,7 @@ TEST_CASE("Core", "[core]") {
     }
 
     auto *so = new SimpleSelectionOperator(configuration);
-    so->setup(*new std::vector<VariationSource *>(0));
+    so->setup(new std::vector<VariationSource *>(0));
     SECTION("SelectionOperator") {
         SECTION("Checking selection...") {
             std::vector<Individual *> parents = pop->getIndividuals();
@@ -290,7 +298,7 @@ TEST_CASE("Core", "[core]") {
     }
 
     auto *bo = new SimpleBreedingOperator(configuration);
-    bo->setup(*new std::vector<VariationSource *> = { so });
+    bo->setup(new std::vector<VariationSource *>({ so }));
     SECTION("BreedingOperator") {
         SECTION("Checking breeding...") {
             std::vector<Individual *> parents = pop->getIndividuals();
@@ -304,7 +312,7 @@ TEST_CASE("Core", "[core]") {
     }
 
     configuration.getBreederConfiguration().threads = 2;
-    auto *breeder = new Breeder(configuration, bo, epoch);
+    auto *breeder = new Breeder(configuration, *bo, epoch);
     SECTION("Breeder") {
         dynamic_cast<SimpleIndividual *>(pop->getIndividuals().at(0))->setLabel("first");
         SECTION("Variating a population...") {
@@ -319,10 +327,10 @@ TEST_CASE("Core", "[core]") {
 
     }
 
-    delete thread;
-    delete initializer;
-    delete evaluator;
     delete breeder;
+    delete thread;
+    delete pop;
+
 
     SECTION("Statistics") {
         problem->getConfiguration().popsize = 2;
@@ -330,7 +338,7 @@ TEST_CASE("Core", "[core]") {
         configuration.getEvolutionarySystemConfiguration().episodes = 2;
         configuration.getEvolutionarySystemConfiguration().generations = 1;
         auto *p = new Population(configuration);
-        auto *init = new Initializer(configuration, builder, epoch);
+        auto *init = new Initializer(configuration, *builder, epoch);
         init->initializePopulation(*p);
         auto *statistics = new Statistics(configuration);
         for (unsigned int k = 0; k < 3; k++) {
@@ -426,8 +434,9 @@ TEST_CASE("Core", "[core]") {
             REQUIRE(statistics->leastRelevantFitness(2).at(0) == 1.25f);
         }
 
-        delete p;
         delete statistics;
+        delete init;
+        delete p;
     }
 
     problem->getConfiguration().popsize = 10;
@@ -435,7 +444,7 @@ TEST_CASE("Core", "[core]") {
     configuration.getEvolutionarySystemConfiguration().episodes = 1;
     configuration.getEvolutionarySystemConfiguration().generations = 10;
     SECTION("EvolutionarySystem") {
-        auto *system = new EvolutionarySystem(configuration, builder, eval, network, bo);
+        auto *system = new EvolutionarySystem(configuration, *builder, eval, *network, *bo);
 
         SECTION("Running a dummy...") {
             system->run();
@@ -448,7 +457,6 @@ TEST_CASE("Core", "[core]") {
     delete bo;
     delete network;
     delete builder;
-    delete pop;
     delete session;
     delete problem;
 }

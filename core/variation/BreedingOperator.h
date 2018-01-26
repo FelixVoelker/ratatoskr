@@ -19,9 +19,13 @@ class BreedingOperator : public VariationSource {
 public:
     explicit BreedingOperator(const core::Configuration &configuration);
 
-    void setup(std::vector<VariationSource *> &sources) override;
+    void setup(std::vector<VariationSource *> *sources) override;
+
+    virtual BreedingOperator * clone() const = 0;
 
 protected:
+    BreedingOperator(const BreedingOperator &obj) = default;
+
     /**
      * Breeds new offsprings from given parent individuals according to the operator's strategy.
      * @param parents A list of parent individuals.

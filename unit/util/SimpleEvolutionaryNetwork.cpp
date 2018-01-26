@@ -8,6 +8,10 @@ std::vector<float> SimpleEvolutionaryNetwork::output(std::vector<Individual *> &
 
 void SimpleEvolutionaryNetwork::update(std::vector<Individual *> &parents, std::vector<Individual *> &offsprings) {}
 
+SimpleEvolutionaryNetwork* SimpleEvolutionaryNetwork::clone() const {
+    return new SimpleEvolutionaryNetwork(*this);
+}
+
 std::vector<unsigned int> SimpleEvolutionaryNetwork::preprocess(std::vector<Individual *> &individuals) const {
     return std::vector<unsigned int>(individuals.size());
 }

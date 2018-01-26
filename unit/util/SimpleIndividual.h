@@ -14,7 +14,7 @@
 class SimpleIndividual : public Individual {
 
 public:
-    explicit SimpleIndividual(const core::Configuration &configuration, FeatureMap *featuremap, Relevance *relevance);
+    explicit SimpleIndividual(const core::Configuration &configuration, FeatureMap &featuremap, Relevance &relevance);
 
     std::string toString() override;
 

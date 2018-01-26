@@ -32,40 +32,40 @@ namespace ndga {
          * Sets up the evolutionary system for a NDGA with an arbitrary builder.
          * @param builder The bit vector builder of the evolutionary system's vector individuals.
          */
-        EvolutionarySystem * build(RandomBitVectorBuilder *builder);
+        EvolutionarySystem * build(RandomBitVectorBuilder &builder);
 
         /**
          * Sets up the evolutionary system for a NDGA with an arbitrary evolutionary network.
          * @param network The cost approximating evolutionary network.
          */
-        EvolutionarySystem * build(TransitionTable *network);
+        EvolutionarySystem * build(TransitionTable &network);
 
         /**
          * Sets up the evolutionary system for a NDGA with an arbitrary variation tree.
          * @param variation_tree The offspring breeding variation tree.
          */
-        EvolutionarySystem * build(BreedingOperator *variation_tree);
+        EvolutionarySystem * build(BreedingOperator &variation_tree);
 
         /**
          * Sets up the evolutionary system for a NDGA with an arbitrary builder and evolutionary network.
          * @param builder The bit vector builder of the evolutionary system's vector individuals.
          * @param network The cost approximating evolutionary network.
          */
-        EvolutionarySystem * build(RandomBitVectorBuilder *builder, TransitionTable *network);
+        EvolutionarySystem * build(RandomBitVectorBuilder &builder, TransitionTable &network);
 
         /**
          * Sets up the evolutionary system for a NDGA with an arbitrary builder and variation tree.
          * @param builder The bit vector builder of the evolutionary system's vector individuals.
          * @param variation_tree The offspring breeding variation tree.
          */
-        EvolutionarySystem * build(RandomBitVectorBuilder *builder, BreedingOperator *variation_tree);
+        EvolutionarySystem * build(RandomBitVectorBuilder &builder, BreedingOperator &variation_tree);
 
         /**
          * Sets up the evolutionary system for a NDGA with an arbitrary evolutionary network and variation tree.
          * @param network The cost approximating evolutionary network.
          * @param variation_tree The offspring breeding variation tree.
          */
-        EvolutionarySystem * build(TransitionTable *network, BreedingOperator *variation_tree);
+        EvolutionarySystem * build(TransitionTable &network, BreedingOperator &variation_tree);
 
     protected:
         /**

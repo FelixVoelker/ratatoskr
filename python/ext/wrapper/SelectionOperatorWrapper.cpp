@@ -5,3 +5,7 @@ SelectionOperatorWrapper::SelectionOperatorWrapper(const core::Configuration &co
 Individual* SelectionOperatorWrapper::select(std::vector<Individual *> &parents, Thread &thread) const {
     return this->get_override("select")(parents, thread);
 }
+
+SelectionOperator * SelectionOperatorWrapper::clone() const {
+    return this->get_override("clone")();
+}

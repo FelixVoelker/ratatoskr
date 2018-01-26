@@ -17,9 +17,11 @@ using namespace boost::python;
 class BuilderWrapper : public Builder, public wrapper<Builder> {
 
 public:
-    explicit BuilderWrapper(const core::Configuration &configuration, Individual *prototype);
+    explicit BuilderWrapper(const core::Configuration &configuration, Individual &prototype);
 
     void initialize(Individual &individual, Thread &thread) const override;
+
+    Builder * clone() const override;
 };
 
 

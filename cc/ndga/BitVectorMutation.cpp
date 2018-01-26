@@ -6,6 +6,14 @@ BitVectorMutation::BitVectorMutation(const common::Configuration &configuration)
     this->pm = configuration.getMutationConfiguration().mutation_rate;
 }
 
+BitVectorMutation * BitVectorMutation::clone() const {
+    return new BitVectorMutation(*this);
+}
+
+BitVectorMutation::BitVectorMutation(const BitVectorMutation &obj) : BreedingOperator(obj) {
+    this->pm = obj.pm;
+}
+
 unsigned long BitVectorMutation::expectedSources() const { return 1; }
 
 std::vector<Individual *> & BitVectorMutation::breed(std::vector<Individual *> &parents, Thread &thread) const {

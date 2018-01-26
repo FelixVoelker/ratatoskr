@@ -10,3 +10,7 @@ unsigned long VariationSourceWrapper::expectedSources() const {
 std::vector<Individual *> VariationSourceWrapper::perform(std::vector<Individual *> &parents, Thread &thread) const {
     return this->get_override("perform")(parents, thread);
 }
+
+VariationSource * VariationSourceWrapper::clone() const {
+    return this->get_override("clone")();
+}

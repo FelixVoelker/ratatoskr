@@ -37,7 +37,7 @@ TEST_CASE("Common", "[common]") {
     }
 
     auto *relevance = new Relevance(*configuration);
-    auto *individual = new VectorIndividual(*configuration, featurevector, relevance);
+    auto *individual = new VectorIndividual(*configuration, *featurevector, *relevance);
     SECTION("VectorIndividual") {
         individual->getChromosome().at(0) = 0;
         individual->getChromosome().at(1) = 1;
@@ -77,6 +77,9 @@ TEST_CASE("Common", "[common]") {
         }
     }
 
+    delete featurevector;
+    delete relevance;
+
     auto *pop = new Population(*configuration);
     pop->getIndividuals().at(0) = individual->clone();
     pop->getIndividuals().at(0)->getRelevance().setCost(10);
@@ -88,8 +91,9 @@ TEST_CASE("Common", "[common]") {
     pop->getIndividuals().at(2)->getRelevance().setCost(0);
     pop->getIndividuals().at(2)->getRelevance().setFitness(10);
     configuration->getEvolutionarySystemConfiguration().epochs = 2;
-    auto *so = new FitnessProportionateSelection(*configuration);
     SECTION("FitnessProportionateSelection") {
+        auto *so = new FitnessProportionateSelection(*configuration);
+
         unsigned int epoch = 0;
         auto *thread = new Thread(0, 3, epoch);
 
@@ -162,9 +166,10 @@ TEST_CASE("Common", "[common]") {
         }
 
         delete thread;
+        delete so;
     }
 
-    delete so;
+
     delete pop;
     delete individual;
     delete configuration;

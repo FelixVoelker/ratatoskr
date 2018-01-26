@@ -14,10 +14,14 @@
 class SimpleBuilder : public Builder {
 
 public:
-    explicit SimpleBuilder(const core::Configuration &configuration, Individual *individual);
+    explicit SimpleBuilder(const core::Configuration &configuration, Individual &individual);
+
+    SimpleBuilder * clone() const override;
 
 protected:
     void initialize(Individual &ind, Thread &thread) const override;
+
+    SimpleBuilder(const SimpleBuilder &obj) = default;
 
 };
 

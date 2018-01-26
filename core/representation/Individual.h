@@ -18,8 +18,8 @@
 class Individual : public Prototype {
 
 public:
-    explicit Individual(const core::Configuration &configuration, FeatureMap *featuremap, Relevance *relevance);
-    ~Individual();
+    explicit Individual(const core::Configuration &configuration, FeatureMap &featuremap, Relevance &relevance);
+    virtual ~Individual();
 
     /**
      * Returns a human-readable representation of the individual.

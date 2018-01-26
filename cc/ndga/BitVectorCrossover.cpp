@@ -5,6 +5,14 @@ BitVectorCrossover::BitVectorCrossover(const common::Configuration &configuratio
     this->pc = configuration.getCrossoverConfiguration().xover_rate;
 }
 
+BitVectorCrossover* BitVectorCrossover::clone() const {
+    return new BitVectorCrossover(*this);
+}
+
+BitVectorCrossover::BitVectorCrossover(const BitVectorCrossover &obj) : BreedingOperator(obj) {
+    this->pc = obj.pc;
+}
+
 unsigned long BitVectorCrossover::expectedSources() const { return 2; }
 
 std::vector<Individual *> & BitVectorCrossover::breed(std::vector<Individual *> &parents, Thread &thread) const {

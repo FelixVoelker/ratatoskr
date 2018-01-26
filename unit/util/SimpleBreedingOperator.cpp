@@ -7,6 +7,9 @@ std::vector<Individual *>& SimpleBreedingOperator::breed(std::vector<Individual 
     return *offsprings;
 }
 
+SimpleBreedingOperator* SimpleBreedingOperator::clone() const {
+    return new SimpleBreedingOperator(*this);
+}
 
 unsigned long SimpleBreedingOperator::expectedSources() const {
     return 1;

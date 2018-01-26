@@ -15,3 +15,13 @@ Individual * FitnessProportionateSelection::select(std::vector<Individual *> &pa
     unsigned long index = thread.random.sampleIntFromDiscreteDistribution(relevances);
     return parents.at(index);
 }
+
+FitnessProportionateSelection* FitnessProportionateSelection::clone() const {
+    return new FitnessProportionateSelection(*this);
+}
+
+FitnessProportionateSelection::FitnessProportionateSelection(const FitnessProportionateSelection &obj)
+        : SelectionOperator(obj)
+{
+    this->epochs = obj.epochs;
+}

@@ -21,7 +21,7 @@ class Evaluator : public Singleton {
 public:
     explicit Evaluator(const core::Configuration &configuration,
                        const std::function<void(Individual &, Thread &)> &eval,
-                       EvolutionaryNetwork *network,
+                       EvolutionaryNetwork &network,
                        unsigned int &epoch);
     ~Evaluator();
 
@@ -36,7 +36,7 @@ protected:
 
     /** Components */
     const std::function<void(Individual &, Thread &)> &eval;
-    EvolutionaryNetwork *network;
+    EvolutionaryNetwork &network;
 
     /**
      * Evaluates a given chunk of the population only. This function is called by each of the evaluation threads

@@ -17,7 +17,7 @@ using namespace boost::python;
 class IndividualWrapper : public Individual, public wrapper<Individual> {
 
 public:
-    explicit IndividualWrapper(const core::Configuration &configuration, FeatureMap *featuremap, Relevance *relevance);
+    explicit IndividualWrapper(const core::Configuration &configuration, FeatureMap &featuremap, Relevance &relevance);
 
     std::string toString() override;
 

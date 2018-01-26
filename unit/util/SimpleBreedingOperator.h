@@ -18,8 +18,12 @@ public:
 
     std::vector<Individual *> & breed(std::vector<Individual *> &parents, Thread &thread) const override;
 
+    SimpleBreedingOperator * clone() const override;
+
 protected:
     unsigned long expectedSources() const override;
+
+    SimpleBreedingOperator(const SimpleBreedingOperator &obj) = default;
 
 };
 

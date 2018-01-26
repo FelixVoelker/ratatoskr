@@ -32,7 +32,8 @@ BOOST_PYTHON_MODULE(core) {
     class_<std::vector<VariationSource *>>("std::vector<VariationSource>")
             .def(vector_indexing_suite<std::vector<VariationSource *>>());
 
-    class_<BuilderWrapper, boost::noncopyable>("Builder", init<const Configuration &, Individual *>())
+    class_<BuilderWrapper, boost::noncopyable>("Builder", init<const Configuration &, Individual &>())
+            .def("__copy__", pure_virtual(&BuilderWrapper::clone), return_value_policy<manage_new_object>())
             .def("initialize", pure_virtual(&BuilderWrapper::initialize));
 
     class_<FeatureMapWrapper, boost::noncopyable>("FeatureMap", init<const Configuration &>())
@@ -54,7 +55,7 @@ BOOST_PYTHON_MODULE(core) {
             .def("__eq__", &RelevanceWrapper::operator==, &RelevanceWrapper::default_eq)
             .def("__neq__", &RelevanceWrapper::operator!=, &RelevanceWrapper::default_neq);
 
-    class_<IndividualWrapper, boost::noncopyable>("Individual", init<const Configuration &, FeatureMap *, Relevance *>())
+    class_<IndividualWrapper, boost::noncopyable>("Individual", init<const Configuration &, FeatureMap &, Relevance &>())
             .add_property("evaluated", &IndividualWrapper::isEvaluated, &IndividualWrapper::setEvaluated)
             .def("__copy__", &IndividualWrapper::clone, return_value_policy<manage_new_object>())
             .def("tostring", pure_virtual(&IndividualWrapper::toString))
@@ -78,14 +79,17 @@ BOOST_PYTHON_MODULE(core) {
             .def("sampleIntFromDiscreteDistribution", &Thread::Random::sampleIntFromDiscreteDistribution);
 
     class_<VariationSourceWrapper, boost::noncopyable>("VariationSource", init<const Configuration &>())
+            .def("__copy__", pure_virtual(&VariationSourceWrapper::clone), return_value_policy<manage_new_object>())
             .def("setup", &VariationSourceWrapper::setup)
             .def("expectedSources", pure_virtual(&VariationSourceWrapper::expectedSources))
             .def("perform", pure_virtual(&VariationSourceWrapper::perform));
 
     class_<SelectionOperatorWrapper, bases<VariationSourceWrapper>, boost::noncopyable>("SelectionOperator", init<const Configuration &>())
+            .def("__copy__", pure_virtual(&SelectionOperatorWrapper::clone), return_value_policy<manage_new_object>())
             .def("select", pure_virtual(&SelectionOperatorWrapper::select), return_internal_reference<>());
 
     class_<BreedingOperatorWrapper, bases<VariationSourceWrapper>, boost::noncopyable>("BreedingOperator", init<const Configuration &>())
+            .def("__copy__", pure_virtual(&BreedingOperatorWrapper::clone), return_value_policy<manage_new_object>())
             .def("expectedSources", pure_virtual(&BreedingOperatorWrapper::expectedSources))
             .def("breed", pure_virtual(&BreedingOperatorWrapper::breed), return_internal_reference<>());
 
@@ -107,7 +111,7 @@ BOOST_PYTHON_MODULE(core) {
             .def("mostRelevantFitness", &Statistics::mostRelevantFitness)
             .def("leastRelevantFitness", &Statistics::leastRelevantFitness);
 
-    class_<EvolutionarySystem>("EvolutionarySystem", init<const Configuration &, Builder*, std::function<void(Individual &, Thread &)>&, EvolutionaryNetwork*, BreedingOperator*>())
+    class_<EvolutionarySystem>("EvolutionarySystem", init<const Configuration &, Builder &, std::function<void(Individual &, Thread &)>&, EvolutionaryNetwork &, BreedingOperator &>())
             .add_property("statistics", make_function(&EvolutionarySystem::getStatistics, return_internal_reference<>()))
             .def("run", &EvolutionarySystem::run);
 

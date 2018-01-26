@@ -129,7 +129,9 @@ void Statistics::recordCost(Population &pop, unsigned int epoch, unsigned int ge
     }
 
     best_cost.at(epoch).at(generation) += best / episodes;
-    average_cost.at(epoch).at(generation) += pop.averageIndividual()->getRelevance().getCost() / episodes;
+    Individual *average_individual = pop.averageIndividual();
+    average_cost.at(epoch).at(generation) += average_individual->getRelevance().getCost() / episodes;
+    delete average_individual;
     worst_cost.at(epoch).at(generation) += worst / episodes;
     most_relevant_cost.at(epoch).at(generation) += pop.bestIndividual()->getRelevance().getCost() / episodes;
     least_relevant_cost.at(epoch).at(generation) += pop.worstIndividual()->getRelevance().getCost() / episodes;
@@ -149,7 +151,9 @@ void Statistics::recordFitness(Population &pop, unsigned int epoch, unsigned int
     }
 
     best_fitness.at(epoch).at(generation) += best / episodes;
-    average_fitness.at(epoch).at(generation) += pop.averageIndividual()->getRelevance().getFitness() / episodes;
+    Individual *average_individual = pop.averageIndividual();
+    average_fitness.at(epoch).at(generation) += average_individual->getRelevance().getFitness() / episodes;
+    delete average_individual;
     worst_fitness.at(epoch).at(generation) += worst / episodes;
     most_relevant_fitness.at(epoch).at(generation) += pop.bestIndividual()->getRelevance().getFitness() / episodes;
     least_relevant_fitness.at(epoch).at(generation) += pop.worstIndividual()->getRelevance().getFitness() / episodes;
@@ -157,6 +161,8 @@ void Statistics::recordFitness(Population &pop, unsigned int epoch, unsigned int
 
 void Statistics::recordRelevance(Population &pop, unsigned int epoch, unsigned int generation) {
     best_relevance.at(epoch).at(generation) += pop.bestIndividual()->getRelevance().relevance() / episodes;
-    average_relevance.at(epoch).at(generation) += pop.averageIndividual()->getRelevance().relevance() / episodes;
+    Individual *average_individual = pop.averageIndividual();
+    average_relevance.at(epoch).at(generation) += average_individual->getRelevance().relevance() / episodes;
+    delete average_individual;
     worst_relevance.at(epoch).at(generation) += pop.worstIndividual()->getRelevance().relevance() / episodes;
 }

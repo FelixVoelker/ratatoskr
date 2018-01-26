@@ -16,7 +16,7 @@
 class Breeder : public Singleton {
 
 public:
-    explicit Breeder(const core::Configuration &configuration, BreedingOperator *variation_tree, unsigned int &epoch);
+    explicit Breeder(const core::Configuration &configuration, BreedingOperator &variation_tree, unsigned int &epoch);
     ~Breeder();
 
     /**

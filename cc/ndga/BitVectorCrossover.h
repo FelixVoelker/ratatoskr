@@ -18,8 +18,12 @@ class BitVectorCrossover : public BreedingOperator {
 public:
     explicit BitVectorCrossover(const common::Configuration &configuration);
 
+    BitVectorCrossover * clone() const override;
+
 protected:
     float pc;
+
+    BitVectorCrossover(const BitVectorCrossover &obj);
 
     unsigned long expectedSources() const override;
 

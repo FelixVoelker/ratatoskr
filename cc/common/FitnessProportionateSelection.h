@@ -23,8 +23,12 @@ public:
      */
     Individual * select(std::vector<Individual *> &parents, Thread &thread) const override;
 
+    FitnessProportionateSelection * clone() const override;
+
 protected:
     unsigned int epochs;
+
+    FitnessProportionateSelection(const FitnessProportionateSelection &obj);
 
 };
 

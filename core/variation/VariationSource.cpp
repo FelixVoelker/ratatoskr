@@ -1,19 +1,22 @@
 #include <iostream>
 #include "VariationSource.h"
 
-VariationSource::VariationSource(const core::Configuration &configuration) : Singleton(configuration) {}
+VariationSource::VariationSource(const core::Configuration &configuration) : Prototype(configuration) {}
 
 VariationSource::~VariationSource() {
     if (initialized) {
-        std::vector<VariationSource *>().swap(sources);
+        for (auto *source : *sources)
+            delete source;
+        std::vector<VariationSource *>().swap(*sources);
+        delete sources;
     }
 }
 
-void VariationSource::setup(std::vector<VariationSource *> &sources) {
+void VariationSource::setup(std::vector<VariationSource *> *sources) {
     try {
-        if (sources.size() != expectedSources()) {
+        if (sources->size() != expectedSources()) {
             std::string error_message = "Number of given sources does not match the expected number.";
-            error_message += " Actual: " + std::to_string(this->sources.size());
+            error_message += " Actual: " + std::to_string(this->sources->size());
             error_message += " Expected: " + std::to_string(expectedSources()) + ".";
             throw InitializationException(error_message);
         }
@@ -32,7 +35,7 @@ std::vector<Individual *> VariationSource::vary(std::vector<Individual *> &paren
             throw InitializationException("Variation Source has not been set up.");
 
         std::vector<Individual *> offsprings;
-        for (auto source : sources) {
+        for (auto source : *sources) {
             std::vector<Individual *> breed  = source->vary(parents, thread);
             offsprings.insert(offsprings.end(), breed.begin(), breed.end());
         }
@@ -45,6 +48,14 @@ std::vector<Individual *> VariationSource::vary(std::vector<Individual *> &paren
     } catch (InitializationException &e) {
         std::cout << e.what() << std::endl;
         exit(1);
+    }
+}
+
+VariationSource::VariationSource(const VariationSource &obj) : Prototype(obj) {
+    this->initialized = obj.initialized;
+    this->sources = new std::vector<VariationSource *>(obj.sources->size());
+    for (unsigned int k = 0; k < sources->size(); k++) {
+        this->sources->at(k) = obj.sources->at(k)->clone();
     }
 }
 

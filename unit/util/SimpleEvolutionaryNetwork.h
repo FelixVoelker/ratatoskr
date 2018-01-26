@@ -20,8 +20,12 @@ public:
 
     void update(std::vector<Individual *> &parents, std::vector<Individual *> &offsprings) override;
 
+    SimpleEvolutionaryNetwork * clone() const override;
+
 protected:
     std::vector<unsigned int> preprocess(std::vector<Individual *> &individuals) const override;
+
+    SimpleEvolutionaryNetwork(const SimpleEvolutionaryNetwork &obj) = default;
 
 };
 

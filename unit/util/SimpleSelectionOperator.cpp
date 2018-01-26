@@ -5,3 +5,7 @@ SimpleSelectionOperator::SimpleSelectionOperator(const core::Configuration &conf
 Individual* SimpleSelectionOperator::select(std::vector<Individual *> &parents, Thread &thread) const {
     return parents.at(0);
 }
+
+SimpleSelectionOperator* SimpleSelectionOperator::clone() const {
+    return new SimpleSelectionOperator(*this);
+}

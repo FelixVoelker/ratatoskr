@@ -23,6 +23,8 @@ public:
 
     std::vector<Individual *> & breed(std::vector<Individual *> &parents, Thread &thread) const override;
 
+    BreedingOperator * clone() const override;
+
 };
 
 

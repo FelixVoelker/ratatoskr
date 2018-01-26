@@ -14,13 +14,16 @@ class TransitionTable : public EvolutionaryNetwork {
 
 public:
     explicit TransitionTable(const common::Configuration &configuration);
-    ~TransitionTable();
 
     std::vector<float> output(std::vector<Individual *> &individuals) const override;
     void update(std::vector<Individual *> &parents, std::vector<Individual *> &offsprings) override;
 
+    EvolutionaryNetwork * clone() const override;
+
 protected:
-    std::vector<std::vector<float>> *lookup_table;
+    std::vector<std::vector<float>> lookup_table;
+
+    TransitionTable(const TransitionTable &obj);
 
     std::vector<unsigned int> preprocess(std::vector<Individual *> &individuals) const override;
 

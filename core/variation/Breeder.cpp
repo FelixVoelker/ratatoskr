@@ -1,10 +1,10 @@
 #include "Breeder.h"
 
-Breeder::Breeder(const core::Configuration &configuration, BreedingOperator *variation_tree, unsigned int &epoch)
+Breeder::Breeder(const core::Configuration &configuration, BreedingOperator &variation_tree, unsigned int &epoch)
         : Singleton(configuration),
           varythreads(std::vector<Thread *>(configuration.getBreederConfiguration().threads))
 {
-    this->variation_tree = variation_tree;
+    this->variation_tree = variation_tree.clone();
     unsigned int onset  = 0;
     unsigned int offset = configuration.getProblemConfiguration().popsize / configuration.getBreederConfiguration().threads;
     for (unsigned int k = 0; k < varythreads.size() - 1; k++) {
@@ -15,7 +15,11 @@ Breeder::Breeder(const core::Configuration &configuration, BreedingOperator *var
 }
 
 Breeder::~Breeder() {
+    for (auto *thread : varythreads)
+        delete thread;
     std::vector<Thread *>().swap(varythreads);
+
+    delete variation_tree;
 }
 
 std::vector<Individual *> * Breeder::breedPopulation(Population &pop) const {

@@ -18,6 +18,11 @@ public:
 
     Individual * select(std::vector<Individual *> &parents, Thread &thread) const override;
 
+    SimpleSelectionOperator * clone() const override;
+
+protected:
+    SimpleSelectionOperator(const SimpleSelectionOperator &obj) = default;
+
 };
 
 

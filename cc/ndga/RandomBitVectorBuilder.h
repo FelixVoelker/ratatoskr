@@ -16,9 +16,13 @@
 class RandomBitVectorBuilder : public Builder {
 
 public:
-    explicit RandomBitVectorBuilder(const common::Configuration &configuration, VectorIndividual *prototype);
+    explicit RandomBitVectorBuilder(const common::Configuration &configuration, VectorIndividual &prototype);
+
+    Builder * clone() const override;
 
 protected:
+    RandomBitVectorBuilder(const RandomBitVectorBuilder &obj) = default;
+
     /**
      * Samples each gene of the chromosome from a uniform discrete distribution U~(0,1).
      * @param individual The individual to be initialized.

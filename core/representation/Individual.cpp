@@ -1,10 +1,10 @@
 #include "Individual.h"
 
-Individual::Individual(const core::Configuration &configuration, FeatureMap *featuremap, Relevance *relevance)
+Individual::Individual(const core::Configuration &configuration, FeatureMap &featuremap, Relevance &relevance)
         : Prototype(configuration)
 {
-    this->featuremap = featuremap;
-    this->relevance = relevance;
+    this->featuremap = featuremap.clone();
+    this->relevance = relevance.clone();
 }
 
 Individual::~Individual() {

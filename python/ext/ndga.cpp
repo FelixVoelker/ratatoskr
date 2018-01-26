@@ -15,19 +15,23 @@ using namespace boost::python;
  * @since   25.1.2018
  */
 BOOST_PYTHON_MODULE(ndga) {
-    class_<RandomBitVectorBuilder, bases<Builder>>("RandomBitVectorIndividual", init<const common::Configuration &, VectorIndividual *>());
+    class_<RandomBitVectorBuilder, bases<Builder>, boost::noncopyable>("RandomBitVectorIndividual", init<const common::Configuration &, VectorIndividual &>())
+            .def("__copy__", &RandomBitVectorBuilder::clone, return_value_policy<manage_new_object>());
 
-    class_<BitVectorCrossover, bases<BreedingOperator>>("BitVectorCrossover", init<const common::Configuration &>());
+    class_<BitVectorCrossover, bases<BreedingOperator>, boost::noncopyable>("BitVectorCrossover", init<const common::Configuration &>())
+            .def("__copy__", &BitVectorCrossover::clone, return_value_policy<manage_new_object>());
 
-    class_<BitVectorMutation, bases<BreedingOperator>>("BitVectorMutation", init<const common::Configuration &>());
+    class_<BitVectorMutation, bases<BreedingOperator>, boost::noncopyable>("BitVectorMutation", init<const common::Configuration &>())
+            .def("__copy__", &BitVectorMutation::clone, return_value_policy<manage_new_object>());
+    ;
 
     EvolutionarySystem* (ndga::Session::*build0)() = &ndga::Session::build;
-    EvolutionarySystem* (ndga::Session::*build1)(RandomBitVectorBuilder*) = &ndga::Session::build;
-    EvolutionarySystem* (ndga::Session::*build2)(TransitionTable*) = &ndga::Session::build;
-    EvolutionarySystem* (ndga::Session::*build3)(BreedingOperator*) = &ndga::Session::build;
-    EvolutionarySystem* (ndga::Session::*build4)(RandomBitVectorBuilder*, TransitionTable*) = &ndga::Session::build;
-    EvolutionarySystem* (ndga::Session::*build5)(RandomBitVectorBuilder*, BreedingOperator*) = &ndga::Session::build;
-    EvolutionarySystem* (ndga::Session::*build6)(TransitionTable*, BreedingOperator*) = &ndga::Session::build;
+    EvolutionarySystem* (ndga::Session::*build1)(RandomBitVectorBuilder &) = &ndga::Session::build;
+    EvolutionarySystem* (ndga::Session::*build2)(TransitionTable &) = &ndga::Session::build;
+    EvolutionarySystem* (ndga::Session::*build3)(BreedingOperator &) = &ndga::Session::build;
+    EvolutionarySystem* (ndga::Session::*build4)(RandomBitVectorBuilder &, TransitionTable &) = &ndga::Session::build;
+    EvolutionarySystem* (ndga::Session::*build5)(RandomBitVectorBuilder &, BreedingOperator &) = &ndga::Session::build;
+    EvolutionarySystem* (ndga::Session::*build6)(TransitionTable &, BreedingOperator &) = &ndga::Session::build;
 
     class_<ndga::Session, bases<core::Session>>("Session", init<const common::Problem &>())
             .def(init<const common::Problem &, common::Configuration *>())

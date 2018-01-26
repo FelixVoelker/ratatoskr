@@ -18,7 +18,7 @@
 class Initializer : public Singleton {
 
 public:
-    explicit Initializer(const core::Configuration &configuration, Builder *builder, unsigned int &epoch);
+    explicit Initializer(const core::Configuration &configuration, Builder &builder, unsigned int &epoch);
     ~Initializer();
 
     /**

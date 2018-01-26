@@ -18,7 +18,11 @@ class SelectionOperator : public VariationSource {
 public:
     explicit SelectionOperator(const core::Configuration &configuration);
 
+    virtual SelectionOperator * clone() const = 0;
+
 protected:
+    SelectionOperator(const SelectionOperator &obj) = default;
+
     unsigned long expectedSources() const override;
 
     /**

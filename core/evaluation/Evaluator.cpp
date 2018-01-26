@@ -2,7 +2,7 @@
 
 Evaluator::Evaluator(const core::Configuration &configuration,
                      const std::function<void(Individual &, Thread &)> &eval,
-                     EvolutionaryNetwork *network,
+                     EvolutionaryNetwork &network,
                      unsigned int &epoch)
         : Singleton(configuration),
           evalthreads(std::vector<Thread *>(configuration.getEvaluatorConfiguration().threads)),
@@ -19,13 +19,15 @@ Evaluator::Evaluator(const core::Configuration &configuration,
 }
 
 Evaluator::~Evaluator() {
+    for (auto *thread : evalthreads)
+        delete thread;
     std::vector<Thread *>().swap(evalthreads);
 }
 
 void Evaluator::evaluatePopulation(Population &pop) const {
     auto &individuals = pop.getIndividuals();
 
-    std::vector<float> costs = network->output(individuals);
+    std::vector<float> costs = network.output(individuals);
 
     std::vector<std::thread> threads(evalthreads.size());
     for (unsigned int k = 0; k < evalthreads.size(); k++) {

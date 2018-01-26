@@ -14,10 +14,10 @@
  * @version 0.1.0
  * @since   25.1.2018
  */
-class Builder : public Singleton {
+class Builder : public Prototype {
 
 public:
-    explicit Builder(const core::Configuration &configuration, Individual *prototype);
+    explicit Builder(const core::Configuration &configuration, Individual &prototype);
     ~Builder();
 
     /**
@@ -26,8 +26,12 @@ public:
      */
     Individual * build(Thread &thread) const;
 
+    virtual Builder * clone() const = 0;
+
 protected:
     Individual *prototype;
+
+    Builder(const Builder &obj);
 
     /**
     * Initializes an individual according to the builder's strategy.

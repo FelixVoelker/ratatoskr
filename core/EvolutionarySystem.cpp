@@ -2,21 +2,26 @@
 #include "EvolutionarySystem.h"
 
 EvolutionarySystem::EvolutionarySystem(const core::Configuration &configuration,
-                                       Builder *builder,
+                                       Builder &builder,
                                        const std::function<void(Individual &, Thread &)> &eval,
-                                       EvolutionaryNetwork *network,
-                                       BreedingOperator *variation_tree)
-        : population(Population(configuration)),
+                                       EvolutionaryNetwork &network,
+                                       BreedingOperator &variation_tree)
+        : network(network.clone()),
+          population(Population(configuration)),
           initializer(Initializer(configuration, builder, epoch)),
-          evaluator(Evaluator(configuration, eval, network, epoch)),
+          evaluator(Evaluator(configuration, eval, *this->network, epoch)),
           breeder(Breeder(configuration, variation_tree, epoch)),
           statistics(Statistics(configuration)),
-          replayer(Replayer(configuration, network))
+          replayer(Replayer(configuration, *this->network))
 {
     complete = configuration.getEvolutionarySystemConfiguration().complete;
     epochs = configuration.getEvolutionarySystemConfiguration().epochs;
     episodes = configuration.getEvolutionarySystemConfiguration().episodes;
     generations = configuration.getEvolutionarySystemConfiguration().generations;
+}
+
+EvolutionarySystem::~EvolutionarySystem() {
+    delete network;
 }
 
 void EvolutionarySystem::run() {
@@ -51,7 +56,9 @@ void EvolutionarySystem::evolve() {
 
         std::vector<Individual *> *offsprings = breeder.breedPopulation(population);
         replayer.replay(population, *offsprings);
+        population.exterminate();
         population.setIndividuals(*offsprings);
+        delete offsprings;
     }
     evaluator.evaluatePopulation(population);
     statistics.record(population, epoch, generations);

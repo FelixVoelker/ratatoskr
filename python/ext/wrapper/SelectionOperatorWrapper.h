@@ -20,6 +20,8 @@ public:
     explicit SelectionOperatorWrapper(const core::Configuration &configuration);
 
     Individual * select(std::vector<Individual *> &parents, Thread &thread) const override;
+
+    SelectionOperator * clone() const override;
 };
 
 

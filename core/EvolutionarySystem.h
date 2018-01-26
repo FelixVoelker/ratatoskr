@@ -25,10 +25,12 @@ class EvolutionarySystem {
 
 public:
     explicit EvolutionarySystem(const core::Configuration &configuration,
-                                Builder *builder,
+                                Builder &builder,
                                 const std::function<void(Individual &, Thread &)> &eval,
-                                EvolutionaryNetwork *network,
-                                BreedingOperator *variation_tree);
+                                EvolutionaryNetwork &network,
+                                BreedingOperator &variation_tree);
+
+    ~EvolutionarySystem();
 
     /**
      * Runs consecutive episodes of the evolutionary system until the total number of epochs has been processed.
@@ -44,6 +46,8 @@ private:
     unsigned int generations;
 
     unsigned int epoch;
+
+    EvolutionaryNetwork * network;
 
     /** Components */
     Population  population;
