@@ -1,16 +1,17 @@
 #include <iostream>
 #include "EvolutionarySystem.h"
+#include "../cc/ndga/EvaluationFunctions.h"
 
 EvolutionarySystem::EvolutionarySystem(const core::Configuration &configuration,
                                        Builder &builder,
-                                       const std::function<void(Individual &, Thread &)> &eval,
+                                       const EvaluationFunction &eval,
                                        EvolutionaryNetwork &network,
                                        BreedingOperator &variation_tree)
         : network(network.clone()),
           population(Population(configuration)),
           initializer(Initializer(configuration, builder, epoch)),
-          evaluator(Evaluator(configuration, eval, *this->network, epoch)),
-          breeder(Breeder(configuration, variation_tree, epoch)),
+          evaluator(Evaluator(configuration, eval, *this->network)),
+          breeder(Breeder(configuration, variation_tree)),
           statistics(Statistics(configuration)),
           replayer(Replayer(configuration, *this->network))
 {

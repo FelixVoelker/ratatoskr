@@ -1,6 +1,6 @@
 #include "Breeder.h"
 
-Breeder::Breeder(const core::Configuration &configuration, BreedingOperator &variation_tree, unsigned int &epoch)
+Breeder::Breeder(const core::Configuration &configuration, BreedingOperator &variation_tree)
         : Singleton(configuration),
           varythreads(std::vector<Thread *>(configuration.getBreederConfiguration().threads))
 {
@@ -8,10 +8,10 @@ Breeder::Breeder(const core::Configuration &configuration, BreedingOperator &var
     unsigned int onset  = 0;
     unsigned int offset = configuration.getProblemConfiguration().popsize / configuration.getBreederConfiguration().threads;
     for (unsigned int k = 0; k < varythreads.size() - 1; k++) {
-        varythreads.at(k) = new Thread(onset, offset, epoch);
+        varythreads.at(k) = new Thread(onset, offset);
         onset += offset;
     }
-    varythreads.at(varythreads.size() - 1) = new Thread(onset, configuration.getProblemConfiguration().popsize - onset , epoch);
+    varythreads.at(varythreads.size() - 1) = new Thread(onset, configuration.getProblemConfiguration().popsize - onset);
 }
 
 Breeder::~Breeder() {

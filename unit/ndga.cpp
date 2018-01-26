@@ -8,21 +8,20 @@
 #include "../cc/ndga/BitVectorMutation.h"
 #include "../cc/ndga/Session.h"
 #include "../cc/ndga/EvaluationFunctions.h"
+#include "util/SimpleEvaluationFunction.h"
 
 /**
  * Unit tests for Neuro-Dynamic Genetic Algorithms.
  *
  * @author  Felix Voelker
- * @version 0.1.0
+ * @version 0.1.1
  * @since   25.1.2018
  */
 TEST_CASE("NDGA", "[ndga]") {
-    std::function<void(Individual &, Thread &)> eval = [](Individual &individual, Thread &thread) {
-        individual.getRelevance().setFitness(1);
-    };
+    auto *eval = new SimpleEvaluationFunction();
 
     unsigned int genes = 3;
-    auto *problem = new common::Problem(eval, 2, genes);
+    auto *problem = new common::Problem(*eval, 2, genes);
     auto *configuration = new common::Configuration(dynamic_cast<common::Configuration::ProblemConfiguration &>(problem->getConfiguration()));
 
     auto *featurevector = new FeatureVector(*configuration);
@@ -64,7 +63,7 @@ TEST_CASE("NDGA", "[ndga]") {
 
     delete builder;
 
-    auto *thread = new Thread(0, 2, epoch);
+    auto *thread = new Thread(0, 2);
     initializer->initializePopulation(*pop);
 
     configuration->getCrossoverConfiguration().xover_rate = 1.0;
@@ -166,7 +165,8 @@ TEST_CASE("NDGA", "[ndga]") {
 
     SECTION("EvaluationFunctions") {
         SECTION("Checking OneMaxProblem...") {
-            auto *p =  new common::Problem(ndga::EvaluationFunctions::oneMax(), 200, 20);
+            auto *e = ndga::EvaluationFunctions::oneMaxEval();
+            auto *p =  new common::Problem(*e, 200, 20);
             auto *session = new ndga::Session(*p);
             session->getConfiguration().getEvolutionarySystemConfiguration().epochs = 1;
             session->getConfiguration().getEvolutionarySystemConfiguration().episodes = 1;
@@ -180,11 +180,13 @@ TEST_CASE("NDGA", "[ndga]") {
             delete system;
             delete session;
             delete p;
+            delete e;
         }
     }
 
     delete configuration;
     delete problem;
+    delete eval;
 }
 
 

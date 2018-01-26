@@ -28,6 +28,7 @@ public:
     void initializePopulation(Population &pop);
 
 protected:
+    unsigned int &epoch;
     unsigned int epochs;
     std::vector<Thread *> initthreads;
 

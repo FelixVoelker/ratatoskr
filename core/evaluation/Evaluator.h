@@ -6,6 +6,7 @@
 #include "../experience/EvolutionaryNetwork.h"
 #include "../representation/Population.h"
 #include "../util/Thread.h"
+#include "EvaluationFunction.h"
 
 /**
  * The core module that drives the evaluation phase of an Neuro-Dynamic Evolutionary Algorithm (NDEA). This evaluation
@@ -20,9 +21,8 @@ class Evaluator : public Singleton {
 
 public:
     explicit Evaluator(const core::Configuration &configuration,
-                       const std::function<void(Individual &, Thread &)> &eval,
-                       EvolutionaryNetwork &network,
-                       unsigned int &epoch);
+                       const EvaluationFunction &eval,
+                       EvolutionaryNetwork &network);
     ~Evaluator();
 
     /**
@@ -33,18 +33,23 @@ public:
 
 protected:
     std::vector<Thread *> evalthreads;
+    std::vector<EvaluationFunction *> evals;
 
     /** Components */
-    const std::function<void(Individual &, Thread &)> &eval;
     EvolutionaryNetwork &network;
 
     /**
      * Evaluates a given chunk of the population only. This function is called by each of the evaluation threads
      * and performs the problem specific evaluation on the individuals in the chunk.
+     * @param eval        The evaluation function to be used.
      * @param individuals The individuals within the population.
+     * @param costs       The approximated cost of each individual.
      * @param thread      The evaluating thread.
      */
-    void evaluateChunk(std::vector<Individual *> &individuals, std::vector<float> costs, Thread &thread) const;
+    void evaluateChunk(EvaluationFunction &eval,
+                       std::vector<Individual *> &individuals,
+                       std::vector<float> costs,
+                       Thread &thread) const;
 
 };
 

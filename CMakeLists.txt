@@ -10,6 +10,7 @@ include_directories(${PYTHON_INCLUDE_DIRS})
 include_directories(${BOOST_INCLUDEDIR} )
 
 set(CORE_SOURCES
+        core/evaluation/EvaluationFunction.cpp core/evaluation/EvaluationFunction.h
         core/evaluation/Evaluator.cpp core/evaluation/Evaluator.h
         core/experience/EvolutionaryNetwork.cpp core/experience/EvolutionaryNetwork.h
         core/experience/Replayer.cpp core/experience/Replayer.h
@@ -30,7 +31,7 @@ set(CORE_SOURCES
         core/Configuration.cpp core/Configuration.h
         core/EvolutionarySystem.cpp core/EvolutionarySystem.h
         core/Problem.cpp core/Problem.h
-        core/Session.cpp core/Session.h)
+        core/Session.cpp core/Session.h core/util/Clonable.h)
 
 set(CC_API
         cc/common/Configuration.cpp cc/common/Configuration.h
@@ -54,6 +55,7 @@ target_link_libraries(ratatoskr_cc_debug ratatoskr_cc)
 set(PYTHON_API_CORE
         python/ext/wrapper/BreedingOperatorWrapper.cpp python/ext/wrapper/BreedingOperatorWrapper.h
         python/ext/wrapper/BuilderWrapper.cpp python/ext/wrapper/BuilderWrapper.h
+        python/ext/wrapper/EvaluationFunctionWrapper.cpp python/ext/wrapper/EvaluationFunctionWrapper.h
         python/ext/wrapper/FeatureMapWrapper.cpp python/ext/wrapper/FeatureMapWrapper.h
         python/ext/wrapper/IndividualWrapper.cpp python/ext/wrapper/IndividualWrapper.h
         python/ext/core.cpp python/ext/wrapper/RelevanceWrapper.cpp python/ext/wrapper/RelevanceWrapper.h
@@ -92,7 +94,7 @@ set(UNIT_SOURCES
         unit/common.cpp
         unit/core.cpp
         unit/ndga.cpp
-        catch.hpp)
+        catch.hpp unit/util/SimpleEvaluationFunction.cpp unit/util/SimpleEvaluationFunction.h)
 
 add_executable(unit ${UNIT_SOURCES})
 target_link_libraries(unit ratatoskr_cc)

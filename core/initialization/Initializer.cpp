@@ -2,7 +2,8 @@
 
 Initializer::Initializer(const core::Configuration &configuration, Builder &builder, unsigned int &epoch)
         : Singleton(configuration),
-          initthreads(std::vector<Thread *>(configuration.getInitializerConfiguration().threads))
+          initthreads(std::vector<Thread *>(configuration.getInitializerConfiguration().threads)),
+          epoch(epoch)
 {
     this->epochs = configuration.getEvolutionarySystemConfiguration().epochs;
     if (this->epochs > 1)
@@ -11,10 +12,10 @@ Initializer::Initializer(const core::Configuration &configuration, Builder &buil
     unsigned int onset  = 0;
     unsigned int offset = configuration.getProblemConfiguration().popsize / configuration.getInitializerConfiguration().threads;
     for (unsigned int k = 0; k < initthreads.size() - 1; k++) {
-        initthreads.at(k) = new Thread(onset, offset, epoch);
+        initthreads.at(k) = new Thread(onset, offset);
         onset += offset;
     }
-    initthreads.at(initthreads.size() - 1) = new Thread(onset, configuration.getProblemConfiguration().popsize - onset , epoch);
+    initthreads.at(initthreads.size() - 1) = new Thread(onset, configuration.getProblemConfiguration().popsize - onset);
 }
 
 Initializer::~Initializer() {
@@ -41,6 +42,6 @@ void Initializer::initializePopulation(Population &pop) {
 void Initializer::initializeChunk(std::vector<Individual *> &individuals, Thread &thread) {
     for (unsigned int k = 0; k < thread.getChunkOffset(); k++) {
         individuals.at(k + thread.getChunkOnset()) = builder->build(thread);
-        individuals.at(k + thread.getChunkOnset())->getRelevance().setFraction(static_cast<float>(thread.getEpoch()) / epochs);
+        individuals.at(k + thread.getChunkOnset())->getRelevance().setFraction(static_cast<float>(epoch) / epochs);
     }
 }

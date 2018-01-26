@@ -2,8 +2,7 @@
 #define RATATOSKR_NDGA_EVALUATIONFUNCTIONS_H
 
 
-#include "../common/VectorIndividual.h"
-#include "../../core/util/Thread.h"
+#include "../../core/evaluation/EvaluationFunction.h"
 
 namespace ndga {
 
@@ -11,16 +10,29 @@ namespace ndga {
      * A collection of common evaluation functions for Neuro-Dynamic Genetic Algorithms (NDGAs).
      *
      * @author  Felix Voelker
-     * @version 0.1.0
-     * @since   25.1.2018
+     * @version 0.1.1
+     * @since   26 .1.2018
      */
     class EvaluationFunctions {
 
-    public:
         /**
          * Problem of finding the bit vector with the highest number of ones possible.
          */
-        static std::function<void(Individual &, Thread &)> oneMax();
+        class OneMaxEval : public EvaluationFunction {
+
+        public:
+            explicit OneMaxEval();
+
+            EvaluationFunction * clone() const override;
+
+            void operator()(Individual &individual, Thread &thread) override;
+
+        protected:
+            OneMaxEval(const OneMaxEval &obj) = default;
+        };
+
+    public:
+        static EvaluationFunction * oneMaxEval();
 
     };
 }

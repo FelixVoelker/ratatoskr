@@ -6,6 +6,7 @@
 #include "../cc/common/VectorIndividual.h"
 #include "../core/representation/Population.h"
 #include "../cc/common/FitnessProportionateSelection.h"
+#include "util/SimpleEvaluationFunction.h"
 
 /**
  * Unit tests for common components of many Neuro-Dynamic Evolutionary Algorithms.
@@ -15,11 +16,8 @@
  * @since   25.1.2018
  */
 TEST_CASE("Common", "[common]") {
-    std::function<void(Individual &, Thread &)> eval = [](Individual &individual, Thread &thread) {
-        individual.getRelevance().setFitness(1);
-    };
-
-    auto *problem = new common::Problem(eval, 3, 8);
+    auto *eval = new SimpleEvaluationFunction();
+    auto *problem = new common::Problem(*eval, 3, 8);
     auto *configuration = new common::Configuration(dynamic_cast<common::Configuration::ProblemConfiguration &>(problem->getConfiguration()));
 
     auto *featurevector = new FeatureVector(*configuration);
@@ -95,7 +93,7 @@ TEST_CASE("Common", "[common]") {
         auto *so = new FitnessProportionateSelection(*configuration);
 
         unsigned int epoch = 0;
-        auto *thread = new Thread(0, 3, epoch);
+        auto *thread = new Thread(0, 3);
 
         std::vector<unsigned int> counts = {0, 0, 0};
 
@@ -174,4 +172,5 @@ TEST_CASE("Common", "[common]") {
     delete individual;
     delete configuration;
     delete problem;
+    delete eval;
 }

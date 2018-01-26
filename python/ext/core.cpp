@@ -2,6 +2,7 @@
 #include <boost/python/suite/indexing/vector_indexing_suite.hpp>
 #include "wrapper/BreedingOperatorWrapper.h"
 #include "wrapper/BuilderWrapper.h"
+#include "wrapper/EvaluationFunctionWrapper.h"
 #include "wrapper/FeatureMapWrapper.h"
 #include "wrapper/IndividualWrapper.h"
 #include "wrapper/RelevanceWrapper.h"
@@ -19,8 +20,8 @@ using namespace core;
  * Builds the core package of the Python-API.
  *
  * @author  Felix Voelker
- * @version 0.1.0
- * @since   25.1.2018
+ * @version 0.1.1
+ * @since   26.1.2018
  */
 BOOST_PYTHON_MODULE(core) {
     class_<std::vector<float>>("std::vector<float>")
@@ -31,6 +32,10 @@ BOOST_PYTHON_MODULE(core) {
 
     class_<std::vector<VariationSource *>>("std::vector<VariationSource>")
             .def(vector_indexing_suite<std::vector<VariationSource *>>());
+
+    class_<EvaluationFunctionWrapper, boost::noncopyable>("EvaluationFunction", init<>())
+            .def("__copy__", pure_virtual(&EvaluationFunctionWrapper::clone), return_value_policy<manage_new_object>())
+            .def("__call__", pure_virtual(&EvaluationFunctionWrapper::operator()));
 
     class_<BuilderWrapper, boost::noncopyable>("Builder", init<const Configuration &, Individual &>())
             .def("__copy__", pure_virtual(&BuilderWrapper::clone), return_value_policy<manage_new_object>())
@@ -67,11 +72,10 @@ BOOST_PYTHON_MODULE(core) {
             .def("averageIndividual", &Population::averageIndividual, return_internal_reference<>())
             .def("worstIndividual", &Population::worstIndividual, return_internal_reference<>());
 
-    class_<Thread>("Thread", init<unsigned int, unsigned int, unsigned int &>())
+    class_<Thread>("Thread", init<unsigned int, unsigned int>())
             .def_readonly("random", &Thread::random)
             .add_property("chunk_onset", &Thread::getChunkOnset)
-            .add_property("chunk_offset", &Thread::getChunkOffset)
-            .add_property("epoch", &Thread::getEpoch);
+            .add_property("chunk_offset", &Thread::getChunkOffset);
 
     class_<Thread::Random>("Random")
             .def("sample", &Thread::Random::sample)
@@ -111,19 +115,14 @@ BOOST_PYTHON_MODULE(core) {
             .def("mostRelevantFitness", &Statistics::mostRelevantFitness)
             .def("leastRelevantFitness", &Statistics::leastRelevantFitness);
 
-    class_<EvolutionarySystem>("EvolutionarySystem", init<const Configuration &, Builder &, std::function<void(Individual &, Thread &)>&, EvolutionaryNetwork &, BreedingOperator &>())
+    class_<EvolutionarySystem>("EvolutionarySystem", init<const Configuration &, Builder &, EvaluationFunction &, EvolutionaryNetwork &, BreedingOperator &>())
             .add_property("statistics", make_function(&EvolutionarySystem::getStatistics, return_internal_reference<>()))
             .def("run", &EvolutionarySystem::run);
 
     Configuration::ProblemConfiguration& (Problem::*problem)() = &Problem::getConfiguration;
 
-    class_<Problem>("Problem", no_init)
-            .def("__init__", make_constructor(+[](boost::python::object eval, unsigned int popsize) {
-                return new Problem([eval](Individual &individual, Thread &thread) { eval(boost::ref(individual), boost::ref(thread)); }, popsize);
-            }))
-            .add_property("eval", make_function(&Problem::getEval, return_internal_reference<>()), +[](Problem &problem, boost::python::object eval) {
-                problem.setEval([eval](Individual &individual, Thread &thread) { eval(boost::ref(individual), boost::ref(thread)); });
-            })
+    class_<Problem>("Problem", init<EvaluationFunction &, unsigned int>())
+            .add_property("eval", make_function(&Problem::getEval, return_internal_reference<>()), &Problem::setEval)
             .add_property("configuration", make_function(problem, return_internal_reference<>()));
 
     class_<Configuration::ProblemConfiguration>("ProblemConfiguration", init<>())

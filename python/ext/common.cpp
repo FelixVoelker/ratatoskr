@@ -15,16 +15,7 @@ using namespace boost::python;
  * @since   25.1.2018
  */
 BOOST_PYTHON_MODULE(common) {
-    class_<common::Problem, bases<core::Problem>>("Problem", no_init)
-            .def("__init__", make_constructor(+[](boost::python::object eval, unsigned int popsize, unsigned int genes) {
-                return new common::Problem(
-                        [eval](Individual &individual, Thread &thread) {
-                            eval(boost::ref(individual), boost::ref(thread));
-                        },
-                        popsize,
-                        genes);
-                })
-            );
+    class_<common::Problem, bases<core::Problem>>("Problem", init<EvaluationFunction &, unsigned int, unsigned int>());
 
     class_<common::Configuration::ProblemConfiguration, bases<core::Configuration::ProblemConfiguration>>("ProblemConfiguration", init<>())
             .def_readwrite("genes", &common::Configuration::ProblemConfiguration::genes);

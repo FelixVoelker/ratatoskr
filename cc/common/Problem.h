@@ -18,7 +18,7 @@ namespace common {
     class Problem : public core::Problem {
 
     public:
-        Problem(std::function<void(Individual &, Thread &)> eval, unsigned int popsize, unsigned int genes);
+        Problem(EvaluationFunction &eval, unsigned int popsize, unsigned int genes);
         Problem(const Problem &obj);
 
     };

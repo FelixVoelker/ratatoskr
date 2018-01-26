@@ -17,6 +17,7 @@
 #include "util/SimpleEvolutionaryNetwork.h"
 #include "../core/Problem.h"
 #include "../core/Session.h"
+#include "util/SimpleEvaluationFunction.h"
 
 using namespace core;
 
@@ -28,10 +29,8 @@ using namespace core;
  * @since   25.1.2018
  */
 TEST_CASE("Core", "[core]") {
-    std::function<void(Individual &, Thread &)> eval = [](Individual &individual, Thread &thread) {
-        individual.getRelevance().setFitness(1);
-    };
-    auto *problem = new Problem(eval, 1);
+    auto *eval = new SimpleEvaluationFunction();
+    auto *problem = new Problem(*eval, 1);
     auto *session = new Session(*problem);
     auto &configuration = session->getConfiguration();
 
@@ -124,7 +123,7 @@ TEST_CASE("Core", "[core]") {
     delete relevance;
 
     unsigned int epoch = 0;
-    auto *thread = new Thread(0, 3, epoch);
+    auto *thread = new Thread(0, 3);
     SECTION("Thread") {
         SECTION("Checking sampling from uniform distribution...") {
             std::vector<unsigned int> counts = std::vector<unsigned int>(3);
@@ -257,7 +256,7 @@ TEST_CASE("Core", "[core]") {
 
     configuration.getEvaluatorConfiguration().threads = 2;
     auto *network = new SimpleEvolutionaryNetwork(configuration);
-    auto *evaluator = new Evaluator(configuration, eval, *network, epoch);
+    auto *evaluator = new Evaluator(configuration, *eval, *network);
     SECTION("Evaluator") {
         SECTION("Evaluating a population...") {
             evaluator->evaluatePopulation(*pop);
@@ -312,7 +311,7 @@ TEST_CASE("Core", "[core]") {
     }
 
     configuration.getBreederConfiguration().threads = 2;
-    auto *breeder = new Breeder(configuration, *bo, epoch);
+    auto *breeder = new Breeder(configuration, *bo);
     SECTION("Breeder") {
         dynamic_cast<SimpleIndividual *>(pop->getIndividuals().at(0))->setLabel("first");
         SECTION("Variating a population...") {
@@ -444,7 +443,7 @@ TEST_CASE("Core", "[core]") {
     configuration.getEvolutionarySystemConfiguration().episodes = 1;
     configuration.getEvolutionarySystemConfiguration().generations = 10;
     SECTION("EvolutionarySystem") {
-        auto *system = new EvolutionarySystem(configuration, *builder, eval, *network, *bo);
+        auto *system = new EvolutionarySystem(configuration, *builder, *eval, *network, *bo);
 
         SECTION("Running a dummy...") {
             system->run();
@@ -459,4 +458,5 @@ TEST_CASE("Core", "[core]") {
     delete builder;
     delete session;
     delete problem;
+    delete eval;
 }

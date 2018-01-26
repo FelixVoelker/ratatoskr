@@ -23,7 +23,6 @@ BOOST_PYTHON_MODULE(ndga) {
 
     class_<BitVectorMutation, bases<BreedingOperator>, boost::noncopyable>("BitVectorMutation", init<const common::Configuration &>())
             .def("__copy__", &BitVectorMutation::clone, return_value_policy<manage_new_object>());
-    ;
 
     EvolutionarySystem* (ndga::Session::*build0)() = &ndga::Session::build;
     EvolutionarySystem* (ndga::Session::*build1)(RandomBitVectorBuilder &) = &ndga::Session::build;
@@ -44,5 +43,5 @@ BOOST_PYTHON_MODULE(ndga) {
             .def("build", build6, return_value_policy<manage_new_object>());
 
     class_<ndga::EvaluationFunctions>("EvaluationFunctions", init<>())
-            .def("one_max", +[]() { return make_function(ndga::EvaluationFunctions::oneMax(), default_call_policies(), boost::mpl::vector<void, Individual &, Thread &>()); });
+            .def("one_max", &ndga::EvaluationFunctions::oneMaxEval, return_value_policy<manage_new_object>());
 }
