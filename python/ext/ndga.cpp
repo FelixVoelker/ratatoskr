@@ -43,5 +43,7 @@ BOOST_PYTHON_MODULE(ndga) {
             .def("build", build6, return_value_policy<manage_new_object>());
 
     class_<ndga::EvaluationFunctions>("EvaluationFunctions", init<>())
-            .def("one_max", &ndga::EvaluationFunctions::oneMaxEval, return_value_policy<manage_new_object>());
+            .def("evalOneMax", &ndga::EvaluationFunctions::evalOneMax, return_value_policy<manage_new_object>())
+            .def("evalNarrowedOneMax", &ndga::EvaluationFunctions::evalNarrowedOneMax, return_value_policy<manage_new_object>())
+            .def("evalDeceptivedOneMax", &ndga::EvaluationFunctions::evalDeceptiveOneMax, return_value_policy<manage_new_object>());
 }

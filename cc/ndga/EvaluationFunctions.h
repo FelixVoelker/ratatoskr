@@ -16,7 +16,8 @@ namespace ndga {
     class EvaluationFunctions {
 
         /**
-         * Problem of finding the bit vector with the highest number of ones possible.
+         * The evaluation function of the one max problem, i.e. the problem of finding the bit vector with the highest
+         * number of ones possible.
          */
         class OneMaxEval : public EvaluationFunction {
 
@@ -31,8 +32,44 @@ namespace ndga {
             OneMaxEval(const OneMaxEval &obj) = default;
         };
 
+        /**
+         * The evaluation function of the one max problem, i.e. the problem of finding the bit vector with the highest
+         * number of ones possible. However, the fitness is squeezed through an evaluation bottleneck.
+         */
+        class NarrowedOneMaxEval : public EvaluationFunction {
+
+        public:
+            explicit NarrowedOneMaxEval();
+
+            EvaluationFunction * clone() const override;
+
+            void operator()(Individual &individual, Thread &thread) override;
+
+        protected:
+            NarrowedOneMaxEval(const NarrowedOneMaxEval &obj) = default;
+        };
+
+        /**
+         * The evaluation function of the one max problem, i.e. the problem of finding the bit vector with the highest
+         * number of ones possible. However, the fitness leads to the wrong search gradient deliberately.
+         */
+        class DeceptiveOneMaxEval : public EvaluationFunction {
+
+        public:
+            explicit DeceptiveOneMaxEval();
+
+            EvaluationFunction * clone() const override;
+
+            void operator()(Individual &individual, Thread &thread) override;
+
+        protected:
+            DeceptiveOneMaxEval(const DeceptiveOneMaxEval &obj) = default;
+        };
+
     public:
-        static EvaluationFunction * oneMaxEval();
+        static EvaluationFunction * evalOneMax();
+        static EvaluationFunction * evalNarrowedOneMax();
+        static EvaluationFunction * evalDeceptiveOneMax();
 
     };
 }

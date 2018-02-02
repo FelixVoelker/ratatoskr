@@ -29,7 +29,9 @@ void TransitionTable::update(std::vector<Individual *> &parents, std::vector<Ind
         float precost = lookup_table.at(k).at(parent_indices.at(k));
         float postcost = lookup_table.at(k).at(offspring_indices.at(k));
         float fitness = parents.at(k)->getRelevance().getFitness();
-        lookup_table.at(k).at(parent_indices.at(k)) = precost + learning_rate * (fitness + discount_factor * postcost - precost);
+
+        if (fitness > 0)
+            lookup_table.at(k).at(parent_indices.at(k)) = precost + learning_rate * (fitness + discount_factor * postcost - precost);
     }
 }
 

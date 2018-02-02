@@ -44,7 +44,7 @@ set(CC_API
         cc/ndga/BitVectorMutation.cpp cc/ndga/BitVectorMutation.h
         cc/ndga/EvaluationFunctions.cpp cc/ndga/EvaluationFunctions.h
         cc/ndga/RandomBitVectorBuilder.cpp cc/ndga/RandomBitVectorBuilder.h
-        cc/ndga/Session.cpp cc/ndga/Session.h)
+        cc/ndga/Session.cpp cc/ndga/Session.h cc/main.cpp)
 
 add_library(ratatoskr_cc SHARED ${CORE_SOURCES} ${CC_API})
 target_link_libraries(ratatoskr_cc ${Boost_LIBRARIES} ${PYTHON_LIBRARIES})
@@ -86,6 +86,7 @@ add_dependencies(ratatoskr_py core ndga)
 set(UNIT_SOURCES
         unit/util/SimpleBreedingOperator.cpp unit/util/SimpleBreedingOperator.h
         unit/util/SimpleBuilder.cpp unit/util/SimpleBuilder.h
+        unit/util/SimpleEvaluationFunction.cpp unit/util/SimpleEvaluationFunction.h
         unit/util/SimpleEvolutionaryNetwork.cpp unit/util/SimpleEvolutionaryNetwork.h
         unit/util/SimpleFeatureMap.cpp unit/util/SimpleFeatureMap.h
         unit/util/SimpleIndividual.cpp unit/util/SimpleIndividual.h
@@ -94,7 +95,7 @@ set(UNIT_SOURCES
         unit/common.cpp
         unit/core.cpp
         unit/ndga.cpp
-        catch.hpp unit/util/SimpleEvaluationFunction.cpp unit/util/SimpleEvaluationFunction.h)
+        catch.hpp)
 
 add_executable(unit ${UNIT_SOURCES})
 target_link_libraries(unit ratatoskr_cc)

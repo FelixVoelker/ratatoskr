@@ -87,8 +87,8 @@ namespace core {
             EvolutionaryNetworkConfiguration() = default;
             EvolutionaryNetworkConfiguration(const EvolutionaryNetworkConfiguration &obj);
 
-            float discount_factor = 1;
-            float learning_rate = 0.1;
+            float discount_factor = 0.1f;
+            float learning_rate = 0.1f;
         };
 
         explicit Configuration(const ProblemConfiguration &problem);

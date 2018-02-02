@@ -165,7 +165,7 @@ TEST_CASE("NDGA", "[ndga]") {
 
     SECTION("EvaluationFunctions") {
         SECTION("Checking OneMaxProblem...") {
-            auto *e = ndga::EvaluationFunctions::oneMaxEval();
+            auto *e = ndga::EvaluationFunctions::evalOneMax();
             auto *p =  new common::Problem(*e, 200, 20);
             auto *session = new ndga::Session(*p);
             session->getConfiguration().getEvolutionarySystemConfiguration().epochs = 1;

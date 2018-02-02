@@ -31,14 +31,14 @@ namespace common {
             CrossoverConfiguration() = default;
             CrossoverConfiguration(const CrossoverConfiguration &obj);
 
-            float xover_rate = 0.7;
+            float xover_rate = 0.7f;
         };
 
         struct MutationConfiguration {
             MutationConfiguration() = default;
             MutationConfiguration(const MutationConfiguration &obj);
 
-            float mutation_rate = 0.001;
+            float mutation_rate = 0.001f;
         };
 
         explicit Configuration(const ProblemConfiguration &problem);
