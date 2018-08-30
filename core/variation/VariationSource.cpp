@@ -29,19 +29,21 @@ void VariationSource::setup(std::vector<VariationSource *> *sources) {
     }
 }
 
-std::vector<Individual *> VariationSource::vary(std::vector<Individual *> &parents, Thread &thread) const {
+std::vector<Individual *> VariationSource::vary(std::vector<Individual *> &parents, std::vector<Individual *> &record, Thread &thread) const {
     try {
         if (!initialized)
             throw InitializationException("Variation Source has not been set up.");
 
         std::vector<Individual *> offsprings;
         for (auto source : *sources) {
-            std::vector<Individual *> breed  = source->vary(parents, thread);
+            std::vector<Individual *> breed  = source->vary(parents, record, thread);
             offsprings.insert(offsprings.end(), breed.begin(), breed.end());
         }
 
         if (offsprings.empty()) {
-            return perform(parents, thread);
+            std::vector<Individual *> selected = perform(parents, thread);
+            record.push_back(selected.at(0)->clone());
+            return selected;
         } else {
             return perform(offsprings, thread);
         }

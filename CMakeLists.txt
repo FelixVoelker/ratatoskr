@@ -10,41 +10,33 @@ include_directories(${PYTHON_INCLUDE_DIRS})
 include_directories(${BOOST_INCLUDEDIR} )
 
 set(CORE_SOURCES
-        core/evaluation/EvaluationFunction.cpp core/evaluation/EvaluationFunction.h
+        core/evaluation/EvaluationFunction.h
         core/evaluation/Evaluator.cpp core/evaluation/Evaluator.h
         core/experience/EvolutionaryNetwork.cpp core/experience/EvolutionaryNetwork.h
         core/experience/Replayer.cpp core/experience/Replayer.h
-        core/initialization/Builder.cpp core/initialization/Builder.h
+        core/experience/ReplayMemory.cpp core/experience/ReplayMemory.h
+        core/representation/Builder.h
         core/initialization/Initializer.cpp core/initialization/Initializer.h
-        core/representation/FeatureMap.cpp core/representation/FeatureMap.h
-        core/representation/Individual.cpp core/representation/Individual.h
-        core/representation/Population.cpp core/representation/Population.h
-        core/representation/Relevance.cpp core/representation/Relevance.h
+        core/state/Individual.cpp core/state/Individual.h
+        core/state/Population.cpp core/state/Population.h
+        core/state/Relevance.cpp core/state/Relevance.h
         core/statistics/Statistics.cpp core/statistics/Statistics.h
-        core/util/Prototype.h
-        core/util/Singleton.h
         core/util/Thread.cpp core/util/Thread.h
         core/variation/Breeder.cpp core/variation/Breeder.h
         core/variation/BreedingOperator.cpp core/variation/BreedingOperator.h
         core/variation/SelectionOperator.cpp core/variation/SelectionOperator.h
         core/variation/VariationSource.cpp core/variation/VariationSource.h
-        core/Configuration.cpp core/Configuration.h
         core/EvolutionarySystem.cpp core/EvolutionarySystem.h
-        core/Problem.cpp core/Problem.h
-        core/Session.cpp core/Session.h core/util/Clonable.h)
+        core/Session.cpp core/Session.h core/util/Clonable.h core/representation/Genotype.h core/representation/MutationOperator.h core/representation/RecombinationOperator.h core/TerminationCondition.h)
 
 set(CC_API
-        cc/common/Configuration.cpp cc/common/Configuration.h
-        cc/common/FeatureVector.cpp cc/common/FeatureVector.h
-        cc/common/FitnessProportionateSelection.cpp cc/common/FitnessProportionateSelection.h
-        cc/common/Problem.cpp cc/common/Problem.h
+        cc/selection/FitnessProportionateSelection.cpp cc/selection/FitnessProportionateSelection.h
         cc/common/TransitionTable.cpp cc/common/TransitionTable.h
-        cc/common/VectorIndividual.cpp cc/common/VectorIndividual.h
-        cc/ndga/BitVectorCrossover.cpp cc/ndga/BitVectorCrossover.h
-        cc/ndga/BitVectorMutation.cpp cc/ndga/BitVectorMutation.h
+        cc/representation/vector/binary/BinaryVectorCrossover.cpp cc/representation/vector/binary/BinaryVectorCrossover.h
+        cc/representation/vector/binary/BinaryVectorMutation.cpp cc/representation/vector/binary/BinaryVectorMutation.h
         cc/ndga/EvaluationFunctions.cpp cc/ndga/EvaluationFunctions.h
-        cc/ndga/RandomBitVectorBuilder.cpp cc/ndga/RandomBitVectorBuilder.h
-        cc/ndga/Session.cpp cc/ndga/Session.h cc/main.cpp)
+        cc/representation/vector/binary/RandomBinaryVectorBuilder.cpp cc/representation/vector/binary/RandomBinaryVectorBuilder.h
+        cc/main.cpp core/representation/VariationOperator.h cc/representation/vector/Vector.cpp cc/representation/vector/Vector.h cc/algorithm/GeneticAlgorithm.cpp cc/algorithm/GeneticAlgorithm.h)
 
 add_library(ratatoskr_cc SHARED ${CORE_SOURCES} ${CC_API})
 target_link_libraries(ratatoskr_cc ${Boost_LIBRARIES} ${PYTHON_LIBRARIES})
@@ -63,7 +55,7 @@ set(PYTHON_API_CORE
         python/ext/wrapper/VariationSourceWrapper.cpp python/ext/wrapper/VariationSourceWrapper.h)
 
 set(PYTHON_API_COMMON
-        python/ext/common.cpp)
+        python/ext/common.cpp core/representation/RecombinationOperator.h)
 
 set(PYTHON_API_NDGA
         python/ext/ndga.cpp)

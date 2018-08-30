@@ -3,6 +3,7 @@
 
 
 #include "EvolutionaryNetwork.h"
+#include "ReplayMemory.h"
 
 /**
  * TODO: Comments
@@ -14,12 +15,24 @@
 class Replayer : public Singleton {
 
 public:
-    explicit Replayer(const core::Configuration &configuration, EvolutionaryNetwork &network);
+    explicit Replayer(const core::Configuration &configuration, EvolutionaryNetwork &network, ReplayMemory &memory);
+    ~Replayer();
 
-    void replay(Population &pop, std::vector<Individual *> &offsprings) const;
+    void replay() const;
 
 protected:
+    unsigned int batch_size;
+
+    std::vector<Thread *> replaythreads;
+
+    /** Components */
     EvolutionaryNetwork &network;
+    ReplayMemory &memory;
+
+    void sampleChunk(std::vector<float> &fitness,
+                     std::vector<std::vector<float>> &parent,
+                     std::vector<std::vector<float>> &offspring,
+                     Thread &thread) const;
 
 };
 

@@ -5,7 +5,7 @@
 #include "evaluation/Evaluator.h"
 #include "experience/Replayer.h"
 #include "initialization/Initializer.h"
-#include "representation/Population.h"
+#include "state/Population.h"
 #include "statistics/Statistics.h"
 #include "variation/Breeder.h"
 
@@ -24,43 +24,26 @@
 class EvolutionarySystem {
 
 public:
-    explicit EvolutionarySystem(const core::Configuration &configuration,
-                                Builder &builder,
-                                const EvaluationFunction &eval,
-                                EvolutionaryNetwork &network,
-                                BreedingOperator &variation_tree);
+    explicit EvolutionarySystem(Initializer &initializer,
+                                Evaluator &evaluator,
+                                Breeder &breeder);
 
     ~EvolutionarySystem();
 
-    /**
-     * Runs consecutive episodes of the evolutionary system until the total number of epochs has been processed.
-     */
-    void run();
-
-    Statistics & getStatistics();
+    Genotype & getGenotype() const;
 
 private:
-    bool complete;
-    unsigned int epochs;
-    unsigned int episodes;
-    unsigned int generations;
-
-    unsigned int epoch;
-
-    EvolutionaryNetwork * network;
 
     /** Components */
-    Population  population;
+    Genotype    genotype;
     Initializer initializer;
     Evaluator   evaluator;
     Breeder     breeder;
-    Replayer    replayer;
-    Statistics  statistics;
 
     /**
      * Evolves the evolutionary system over a number of generations or until an ideal individual has been found.
      */
-    void evolve();
+    void evolutionaryCycle(Population &population);
 
 };
 

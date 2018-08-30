@@ -2,7 +2,7 @@
 #define RATATOSKR_EVOLUTIONARYNETWORK_H
 
 
-#include "../representation/Population.h"
+#include "../state/Population.h"
 
 /**
  * TODO: Comments
@@ -28,7 +28,9 @@ public:
      * @param parents
      * @param offsprings
      */
-    virtual void update(std::vector<Individual *> &parents, std::vector<Individual *> &offsprings) = 0;
+    virtual void update(std::vector<float> &fitness,
+                        std::vector<std::vector<float>> &parent,
+                        std::vector<std::vector<float>> &offspring) = 0;
 
     virtual EvolutionaryNetwork * clone() const = 0;
 

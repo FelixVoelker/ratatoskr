@@ -2,10 +2,11 @@
 #define RATATOSKR_EVALUATIONFUNCTION_H
 
 
-#include "../representation/Individual.h"
+#include "../representation/Genotype.h"
 #include "../util/Thread.h"
 
 /**
+ * @todo change comment
  * The abstract base class for all evaluation functions that are used as part of an optimization problem's
  * specification. These functions are provided to the evolutionary system as functors and therefore need to override
  * the call operator.
@@ -17,19 +18,12 @@
 class EvaluationFunction : public Clonable {
 
 public:
-    explicit EvaluationFunction();
-
-    virtual EvaluationFunction * clone() const = 0;
-
     /**
      * Assigns a fitness value to an individual according to the specification of the problem.
      * @param individual The individual to be evaluated.
      * @param thread     The evaluating thread.
      */
-    virtual void operator()(Individual &individual, Thread &thread) = 0;
-
-protected:
-    EvaluationFunction(const EvaluationFunction &obj) = default;
+    virtual void operator()(Genotype &genotype, Thread &thread) = 0;
 
 };
 

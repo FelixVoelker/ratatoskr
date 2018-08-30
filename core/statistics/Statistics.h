@@ -2,7 +2,7 @@
 #define RATATOSKR_STATISTICS_H
 
 
-#include "../representation/Population.h"
+#include "../state/Population.h"
 
 /**
  * The core module that records a time series of fitness, cost and relevance data that is obtained during a run of a
@@ -16,7 +16,7 @@
 class Statistics {
 
 public:
-    explicit Statistics(const core::Configuration &configuration);
+    explicit Statistics();
     ~Statistics();
 
     /**

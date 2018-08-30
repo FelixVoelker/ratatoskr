@@ -3,7 +3,7 @@
 
 
 #include <boost/python.hpp>
-#include "../../../core/initialization/Builder.h"
+#include "../../../core/representation/Builder.h"
 
 using namespace boost::python;
 

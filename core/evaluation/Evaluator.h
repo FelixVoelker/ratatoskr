@@ -4,7 +4,7 @@
 
 #include <functional>
 #include "../experience/EvolutionaryNetwork.h"
-#include "../representation/Population.h"
+#include "../state/Population.h"
 #include "../util/Thread.h"
 #include "EvaluationFunction.h"
 

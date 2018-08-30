@@ -24,13 +24,13 @@ using namespace core;
  * @since   26.1.2018
  */
 BOOST_PYTHON_MODULE(core) {
-    class_<std::vector<float>>("std::vector<float>")
+    class_<std::vector<float>>("std::genotype<float>")
             .def(vector_indexing_suite<std::vector<float>>());
 
-    class_<std::vector<Individual *>>("std::vector<Individual>")
+    class_<std::vector<Individual *>>("std::genotype<Individual>")
             .def(vector_indexing_suite<std::vector<Individual *>>());
 
-    class_<std::vector<VariationSource *>>("std::vector<VariationSource>")
+    class_<std::vector<VariationSource *>>("std::genotype<VariationSource>")
             .def(vector_indexing_suite<std::vector<VariationSource *>>());
 
     class_<EvaluationFunctionWrapper, boost::noncopyable>("EvaluationFunction", init<>())
@@ -72,7 +72,7 @@ BOOST_PYTHON_MODULE(core) {
             .def("averageIndividual", &Population::averageIndividual, return_internal_reference<>())
             .def("worstIndividual", &Population::worstIndividual, return_internal_reference<>());
 
-    class_<Thread>("Thread", init<unsigned int, unsigned int>())
+    class_<Thread>("Thread", init<unsigned int, unsigned int, unsigned int>())
             .def_readonly("random", &Thread::random)
             .add_property("chunk_onset", &Thread::getChunkOnset)
             .add_property("chunk_offset", &Thread::getChunkOffset);
@@ -115,7 +115,7 @@ BOOST_PYTHON_MODULE(core) {
             .def("mostRelevantFitness", &Statistics::mostRelevantFitness)
             .def("leastRelevantFitness", &Statistics::leastRelevantFitness);
 
-    class_<EvolutionarySystem>("EvolutionarySystem", init<const Configuration &, Builder &, EvaluationFunction &, EvolutionaryNetwork &, BreedingOperator &>())
+    class_<EvolutionarySystem>("EvolutionarySystem", init<const Configuration &, Builder &, EvaluationFunction &, EvolutionaryNetwork &, BreedingOperator &, ReplayMemory &>())
             .add_property("statistics", make_function(&EvolutionarySystem::getStatistics, return_internal_reference<>()))
             .def("run", &EvolutionarySystem::run);
 

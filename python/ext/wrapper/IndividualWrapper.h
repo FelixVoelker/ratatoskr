@@ -3,7 +3,7 @@
 
 
 #include <boost/python.hpp>
-#include "../../../core/representation/Individual.h"
+#include "../../../core/state/Individual.h"
 
 using namespace boost::python;
 

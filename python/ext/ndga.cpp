@@ -1,7 +1,7 @@
 #include <boost/python.hpp>
-#include "../../cc/ndga/RandomBitVectorBuilder.h"
-#include "../../cc/ndga/BitVectorCrossover.h"
-#include "../../cc/ndga/BitVectorMutation.h"
+#include "../../cc/representation/vector/binary/RandomBinaryVectorBuilder.h"
+#include "../../cc/representation/vector/binary/BinaryVectorCrossover.h"
+#include "../../cc/representation/vector/binary/BinaryVectorMutation.h"
 #include "../../cc/ndga/Session.h"
 #include "../../cc/ndga/EvaluationFunctions.h"
 
@@ -15,21 +15,21 @@ using namespace boost::python;
  * @since   25.1.2018
  */
 BOOST_PYTHON_MODULE(ndga) {
-    class_<RandomBitVectorBuilder, bases<Builder>, boost::noncopyable>("RandomBitVectorIndividual", init<const common::Configuration &, VectorIndividual &>())
-            .def("__copy__", &RandomBitVectorBuilder::clone, return_value_policy<manage_new_object>());
+    class_<RandomBinaryVectorBuilder, bases<Builder>, boost::noncopyable>("RandomBitVectorIndividual", init<const common::Configuration &, VectorIndividual &>())
+            .def("__copy__", &RandomBinaryVectorBuilder::clone, return_value_policy<manage_new_object>());
 
-    class_<BitVectorCrossover, bases<BreedingOperator>, boost::noncopyable>("BitVectorCrossover", init<const common::Configuration &>())
-            .def("__copy__", &BitVectorCrossover::clone, return_value_policy<manage_new_object>());
+    class_<BinaryVectorCrossover, bases<BreedingOperator>, boost::noncopyable>("BitVectorCrossover", init<const common::Configuration &>())
+            .def("__copy__", &BinaryVectorCrossover::clone, return_value_policy<manage_new_object>());
 
-    class_<BitVectorMutation, bases<BreedingOperator>, boost::noncopyable>("BitVectorMutation", init<const common::Configuration &>())
-            .def("__copy__", &BitVectorMutation::clone, return_value_policy<manage_new_object>());
+    class_<BinaryVectorMutation, bases<BreedingOperator>, boost::noncopyable>("BitVectorMutation", init<const common::Configuration &>())
+            .def("__copy__", &BinaryVectorMutation::clone, return_value_policy<manage_new_object>());
 
     EvolutionarySystem* (ndga::Session::*build0)() = &ndga::Session::build;
-    EvolutionarySystem* (ndga::Session::*build1)(RandomBitVectorBuilder &) = &ndga::Session::build;
+    EvolutionarySystem* (ndga::Session::*build1)(RandomBinaryVectorBuilder &) = &ndga::Session::build;
     EvolutionarySystem* (ndga::Session::*build2)(TransitionTable &) = &ndga::Session::build;
     EvolutionarySystem* (ndga::Session::*build3)(BreedingOperator &) = &ndga::Session::build;
-    EvolutionarySystem* (ndga::Session::*build4)(RandomBitVectorBuilder &, TransitionTable &) = &ndga::Session::build;
-    EvolutionarySystem* (ndga::Session::*build5)(RandomBitVectorBuilder &, BreedingOperator &) = &ndga::Session::build;
+    EvolutionarySystem* (ndga::Session::*build4)(RandomBinaryVectorBuilder &, TransitionTable &) = &ndga::Session::build;
+    EvolutionarySystem* (ndga::Session::*build5)(RandomBinaryVectorBuilder &, BreedingOperator &) = &ndga::Session::build;
     EvolutionarySystem* (ndga::Session::*build6)(TransitionTable &, BreedingOperator &) = &ndga::Session::build;
 
     class_<ndga::Session, bases<core::Session>>("Session", init<const common::Problem &>())
@@ -45,5 +45,5 @@ BOOST_PYTHON_MODULE(ndga) {
     class_<ndga::EvaluationFunctions>("EvaluationFunctions", init<>())
             .def("evalOneMax", &ndga::EvaluationFunctions::evalOneMax, return_value_policy<manage_new_object>())
             .def("evalNarrowedOneMax", &ndga::EvaluationFunctions::evalNarrowedOneMax, return_value_policy<manage_new_object>())
-            .def("evalDeceptivedOneMax", &ndga::EvaluationFunctions::evalDeceptiveOneMax, return_value_policy<manage_new_object>());
+            .def("evalDeceptiveOneMax", &ndga::EvaluationFunctions::evalDeceptiveOneMax, return_value_policy<manage_new_object>());
 }

@@ -1,4 +1,5 @@
 #include <iostream>
+#include <thread>
 #include "Evaluator.h"
 
 Evaluator::Evaluator(const core::Configuration &configuration,
@@ -12,10 +13,10 @@ Evaluator::Evaluator(const core::Configuration &configuration,
     unsigned int onset  = 0;
     unsigned int offset = configuration.getProblemConfiguration().popsize / configuration.getEvaluatorConfiguration().threads;
     for (unsigned int k = 0; k < evalthreads.size() - 1; k++) {
-        evalthreads.at(k) = new Thread(onset, offset);
+        evalthreads.at(k) = new Thread(k, onset, offset);
         onset += offset;
     }
-    evalthreads.at(evalthreads.size() - 1) = new Thread(onset, configuration.getProblemConfiguration().popsize - onset);
+    evalthreads.at(evalthreads.size() - 1) = new Thread(evalthreads.size() - 1, onset, configuration.getProblemConfiguration().popsize - onset);
 }
 
 Evaluator::~Evaluator() {

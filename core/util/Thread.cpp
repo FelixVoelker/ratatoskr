@@ -1,8 +1,13 @@
 #include "Thread.h"
 
-Thread::Thread(unsigned int onset, unsigned int offset) {
+Thread::Thread(unsigned int id, unsigned int onset, unsigned int offset) {
+    this->id = id;
     this->onset = onset;
     this->offset = offset;
+}
+
+unsigned int Thread::getID() const {
+    return id;
 }
 
 unsigned int Thread::getChunkOnset() const {

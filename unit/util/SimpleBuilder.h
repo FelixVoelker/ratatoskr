@@ -2,7 +2,7 @@
 #define RATATOSKR_UNIT_SIMPLEBUILDER_H
 
 
-#include "../../core/initialization/Builder.h"
+#include "../../core/representation/Builder.h"
 
 /**
  * A simple instance of Builder to test core functionality.

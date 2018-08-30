@@ -3,7 +3,7 @@
 
 
 #include <boost/python.hpp>
-#include "../../../core/representation/Relevance.h"
+#include "../../../core/state/Relevance.h"
 
 using namespace boost::python;
 

@@ -2,6 +2,7 @@
 #define RATATOSKR_BREEDER_H
 
 
+#include "../experience/ReplayMemory.h"
 #include "BreedingOperator.h"
 
 /**
@@ -16,7 +17,7 @@
 class Breeder : public Singleton {
 
 public:
-    explicit Breeder(const core::Configuration &configuration, BreedingOperator &variation_tree);
+    explicit Breeder(const core::Configuration &configuration, ReplayMemory &replay_memory, BreedingOperator &variation_tree);
     ~Breeder();
 
     /**
@@ -29,6 +30,7 @@ protected:
     std::vector<Thread *> varythreads;
 
     /** Components */
+    ReplayMemory &replay_memory;
     BreedingOperator *variation_tree;
 
     /**

@@ -1,7 +1,7 @@
 #include <boost/python.hpp>
 #include "../../cc/common/Configuration.h"
 #include "../../cc/common/FeatureVector.h"
-#include "../../cc/common/FitnessProportionateSelection.h"
+#include "../../cc/selection/FitnessProportionateSelection.h"
 #include "../../cc/common/Problem.h"
 #include "../../cc/common/VectorIndividual.h"
 

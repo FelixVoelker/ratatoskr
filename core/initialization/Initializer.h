@@ -2,11 +2,12 @@
 #define RATATOSKR_INITIALIZER_H
 
 
-#include "Builder.h"
-#include "../representation/Population.h"
+#include "../representation/Builder.h"
+#include "../state/Population.h"
 #include "../util/Thread.h"
 
 /**
+ * @todo: check comments
  * The core module that drives the initialization phase of an Neuro-Dynamic Evolutionary Algorithm (NDEA).
  * This initialization is performed on the entire population that is split into several uniformly divided chunks.
  * These chunks are concurrently processed by the initialization threads whose number equals the amount of chunks.
@@ -15,25 +16,20 @@
  * @version 0.1.0
  * @since   25.1.2018
  */
-class Initializer : public Singleton {
+class Initializer  {
 
 public:
-    explicit Initializer(const core::Configuration &configuration, Builder &builder, unsigned int &epoch);
-    ~Initializer();
+    explicit Initializer(Builder &builder);
 
     /**
      * Initializes an entire population by building each individual concurrently.
      * @param pop State of evolutionary system's population.
      */
-    void initializePopulation(Population &pop);
+    void initializePopulation(Population &pop, std::vector<Thread> &threads);
 
-protected:
-    unsigned int &epoch;
-    unsigned int epochs;
-    std::vector<Thread *> initthreads;
-
+private:
     /** Components */
-    Builder *builder;
+    Builder builder;
 
     /**
      * Initializes a given chunk of the population only. This function is called by each of the initialization threads
@@ -42,6 +38,7 @@ protected:
      * @param thread      The initializing thread.
      */
     void initializeChunk(std::vector<Individual *> &individuals, Thread &thread);
+
 };
 
 

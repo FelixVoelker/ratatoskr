@@ -1,17 +1,20 @@
+#include <thread>
 #include "Breeder.h"
+#include "../experience/ReplayMemory.h"
 
-Breeder::Breeder(const core::Configuration &configuration, BreedingOperator &variation_tree)
+Breeder::Breeder(const core::Configuration &configuration, ReplayMemory &replay_memory, BreedingOperator &variation_tree)
         : Singleton(configuration),
+          replay_memory(replay_memory),
           varythreads(std::vector<Thread *>(configuration.getBreederConfiguration().threads))
 {
     this->variation_tree = variation_tree.clone();
     unsigned int onset  = 0;
     unsigned int offset = configuration.getProblemConfiguration().popsize / configuration.getBreederConfiguration().threads;
     for (unsigned int k = 0; k < varythreads.size() - 1; k++) {
-        varythreads.at(k) = new Thread(onset, offset);
+        varythreads.at(k) = new Thread(k, onset, offset);
         onset += offset;
     }
-    varythreads.at(varythreads.size() - 1) = new Thread(onset, configuration.getProblemConfiguration().popsize - onset);
+    varythreads.at(varythreads.size() - 1) = new Thread(varythreads.size() - 1, onset, configuration.getProblemConfiguration().popsize - onset);
 }
 
 Breeder::~Breeder() {
@@ -43,7 +46,9 @@ void Breeder::breedChunk(std::vector<Individual *> &parents,
                          Thread &thread) const {
     unsigned int survivors = 0;
     for (unsigned int k = 0; k < thread.getChunkOffset(); k += survivors) {
-        std::vector<Individual *> offspring = variation_tree->vary(parents, thread);
+        auto record = std::vector<Individual *>();
+        std::vector<Individual *> offspring = variation_tree->vary(parents, record, thread);
+        replay_memory.record(record, offspring, thread);
         if (thread.getChunkOnset() + thread.getChunkOffset() < thread.getChunkOnset() + k + offspring.size()) {
             survivors = thread.getChunkOffset() - k;
             for (unsigned int l = 0; l < survivors; l++) {

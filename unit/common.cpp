@@ -1,11 +1,11 @@
 #include <catch.hpp>
-#include "../core/representation/Individual.h"
+#include "../core/state/Individual.h"
 #include "../core/util/Thread.h"
 #include "../cc/common/Problem.h"
 #include "../cc/common/FeatureVector.h"
 #include "../cc/common/VectorIndividual.h"
-#include "../core/representation/Population.h"
-#include "../cc/common/FitnessProportionateSelection.h"
+#include "../core/state/Population.h"
+#include "../cc/selection/FitnessProportionateSelection.h"
 #include "util/SimpleEvaluationFunction.h"
 
 /**
@@ -46,7 +46,7 @@ TEST_CASE("Common", "[common]") {
         individual->getChromosome().at(6) = 1;
         individual->getChromosome().at(7) = 1;
 
-        SECTION("Checking human-readable bit vector representation...") {
+        SECTION("Checking human-readable bit genotype representation...") {
             REQUIRE(individual->toString() == "01010011");
         }
 
@@ -58,7 +58,7 @@ TEST_CASE("Common", "[common]") {
         individual->getChromosome().at(5) = 0.5;
         individual->getChromosome().at(6) = 1.5;
         individual->getChromosome().at(7) = 1.5;
-        SECTION("Checking human-readable numerical vector representation...") {
+        SECTION("Checking human-readable numerical genotype representation...") {
             REQUIRE(individual->toString() == "(40.0, 1.5, 0.5, 1.5, 0.5, 0.5, 1.5, 1.5)");
         }
 

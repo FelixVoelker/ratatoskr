@@ -5,7 +5,7 @@
 #include "ndga/Session.h"
 
 int main() {
-    auto *eval = ndga::EvaluationFunctions::evalOneMax();
+    auto *eval = ndga::EvaluationFunctions::evalDeceptiveOneMax();
     auto *problem = new common::Problem(*eval, 10, 3);
     auto *session = new ndga::Session(*problem);
     session->getConfiguration().getEvolutionarySystemConfiguration().complete = true;
@@ -15,6 +15,7 @@ int main() {
     session->getConfiguration().getEvaluatorConfiguration().threads = 3;
     session->getConfiguration().getBreederConfiguration().threads = 3;
     session->getConfiguration().getInitializerConfiguration().threads = 3;
+    session->getConfiguration().getReplayerConfiguration().threads = 3;
     auto *system = session->build();
     system->run();
 

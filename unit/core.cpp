@@ -3,7 +3,7 @@
 
 #include <catch.hpp>
 #include "util/SimpleBuilder.h"
-#include "../core/representation/Population.h"
+#include "../core/state/Population.h"
 #include "util/SimpleVariationSource.h"
 #include "util/SimpleIndividual.h"
 #include "util/SimpleSelectionOperator.h"

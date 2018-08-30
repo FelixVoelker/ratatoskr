@@ -1,20 +1,31 @@
 #include "Session.h"
 
-core::Session::Session(const Problem &problem) : problem(problem), configuration(new Configuration(problem.getConfiguration())) {}
+Session::Session(const EvolutionarySystem &system) : system(system) {}
 
-core::Session::Session(const Problem &problem, core::Configuration *config) : problem(problem), configuration(config) {}
+void Session::run(TerminationCondition &condition) {
+    Population state(popsize);
 
-core::Session::~Session() {
-    delete configuration;
+    std::vector<Thread> initthreads = buildThreads(this->initthreads);
+    std::vector<Thread> evalthreads = buildThreads(this->evalthreads);
+    std::vector<Thread> varythreads = buildThreads(this->varythreads);
+
+    while (condition.evaluate(state)) {
+        system.evolutionaryCycle(state);
+    }
 }
 
-EvolutionarySystem * core::Session::build(Builder &builder,
-                                   EvolutionaryNetwork &network,
-                                   BreedingOperator &variation_tree) {
-    return new EvolutionarySystem(*configuration, builder, problem.getEval(), network, variation_tree);
+Statistics& Session::getStatistics() {
+    return statistics;
 }
 
-core::Configuration & core::Session::getConfiguration() {
-    return *configuration;
+std::vector<Thread> Session::buildThreads(unsigned int n_threads) {
+    std::vector<Thread> threads(n_threads);
+    unsigned int onset = 0;
+    unsigned int offset = popsize / n_threads;
+    for (unsigned int k = 0; k < n_threads - 1; k++) {
+        threads.at(k) = Thread(k, onset, offset);
+        onset += offset;
+    }
+    threads.at(n_threads - 1) = Thread(n_threads - 1, onset, popsize - onset);
+    return threads;
 }
-

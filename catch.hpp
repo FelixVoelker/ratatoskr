@@ -1697,8 +1697,8 @@ namespace Detail {
 }
 
 //template<typename T, typename Allocator>
-//struct StringMaker<std::vector<T, Allocator> > {
-//    static std::string convert( std::vector<T,Allocator> const& v ) {
+//struct StringMaker<std::genotype<T, Allocator> > {
+//    static std::string convert( std::genotype<T,Allocator> const& v ) {
 //        return Detail::rangeToString( v.begin(), v.end() );
 //    }
 //};
@@ -3052,7 +3052,7 @@ namespace Matchers {
             bool match(std::vector<T> const &v) const CATCH_OVERRIDE {
                 // !TBD: This currently works if all elements can be compared using !=
                 // - a more general approach would be via a compare template that defaults
-                // to using !=. but could be specialised for, e.g. std::vector<T> etc
+                // to using !=. but could be specialised for, e.g. std::genotype<T> etc
                 // - then just call that directly
                 if (m_comparator.size() != v.size())
                     return false;
@@ -3607,7 +3607,7 @@ namespace Catch
 }
 
 #include <string>
-#include <vector>
+#include <genotype>
 
 namespace Catch {
 
@@ -3650,11 +3650,11 @@ namespace Catch {
         };
 
         struct Filter {
-            std::vector<Ptr<Pattern> > m_patterns;
+            std::genotype<Ptr<Pattern> > m_patterns;
 
             bool matches( TestCaseInfo const& testCase ) const {
                 // All patterns in a filter must match for the filter to be a match
-                for( std::vector<Ptr<Pattern> >::const_iterator it = m_patterns.begin(), itEnd = m_patterns.end(); it != itEnd; ++it ) {
+                for( std::genotype<Ptr<Pattern> >::const_iterator it = m_patterns.begin(), itEnd = m_patterns.end(); it != itEnd; ++it ) {
                     if( !(*it)->matches( testCase ) )
                         return false;
                 }
@@ -3668,14 +3668,14 @@ namespace Catch {
         }
         bool matches( TestCaseInfo const& testCase ) const {
             // Base TestSpec matches if any filter matches
-            for( std::vector<Filter>::const_iterator it = m_filters.begin(), itEnd = m_filters.end(); it != itEnd; ++it )
+            for( std::genotype<Filter>::const_iterator it = m_filters.begin(), itEnd = m_filters.end(); it != itEnd; ++it )
                 if( it->matches( testCase ) )
                     return true;
             return false;
         }
 
     private:
-        std::vector<Filter> m_filters;
+        std::genotype<Filter> m_filters;
 
         friend class TestSpecParser;
     };
@@ -3693,7 +3693,7 @@ namespace Catch {
         bool m_exclusion;
         std::size_t m_start, m_pos;
         std::string m_arg;
-        std::vector<std::size_t> m_escapeChars;
+        std::genotype<std::size_t> m_escapeChars;
         TestSpec::Filter m_currentFilter;
         TestSpec m_testSpec;
         ITagAliasRegistry const* m_tagAliases;
@@ -3803,7 +3803,7 @@ namespace Catch {
 
 #include <iosfwd>
 #include <string>
-#include <vector>
+#include <genotype>
 
 namespace Catch {
 
@@ -3853,7 +3853,7 @@ namespace Catch {
         virtual RunTests::InWhatOrder runOrder() const = 0;
         virtual unsigned int rngSeed() const = 0;
         virtual UseColour::YesOrNo useColour() const = 0;
-        virtual std::vector<std::string> const& getSectionsToRun() const = 0;
+        virtual std::genotype<std::string> const& getSectionsToRun() const = 0;
 
     };
 }
@@ -3921,7 +3921,7 @@ namespace Catch {
 }
 
 #include <memory>
-#include <vector>
+#include <genotype>
 #include <string>
 #include <stdexcept>
 
@@ -3978,9 +3978,9 @@ namespace Catch {
         std::string name;
         std::string processName;
 
-        std::vector<std::string> reporterNames;
-        std::vector<std::string> testsOrTags;
-        std::vector<std::string> sectionsToRun;
+        std::genotype<std::string> reporterNames;
+        std::genotype<std::string> testsOrTags;
+        std::genotype<std::string> sectionsToRun;
     };
 
     class Config : public SharedImpl<IConfig> {
@@ -4018,8 +4018,8 @@ namespace Catch {
 
         std::string getProcessName() const { return m_data.processName; }
 
-        std::vector<std::string> const& getReporterNames() const { return m_data.reporterNames; }
-        std::vector<std::string> const& getSectionsToRun() const CATCH_OVERRIDE { return m_data.sectionsToRun; }
+        std::genotype<std::string> const& getReporterNames() const { return m_data.reporterNames; }
+        std::genotype<std::string> const& getSectionsToRun() const CATCH_OVERRIDE { return m_data.sectionsToRun; }
 
         virtual TestSpec const& testSpec() const CATCH_OVERRIDE { return m_testSpec; }
 
@@ -4099,7 +4099,7 @@ namespace Catch {
 #endif
 
 #include <string>
-#include <vector>
+#include <genotype>
 #include <sstream>
 #include <algorithm>
 #include <cctype>
@@ -4199,7 +4199,7 @@ namespace Tbc {
             _remainder = _remainder.substr( _pos );
         }
 
-        typedef std::vector<std::string>::const_iterator const_iterator;
+        typedef std::genotype<std::string>::const_iterator const_iterator;
 
         const_iterator begin() const { return lines.begin(); }
         const_iterator end() const { return lines.end(); }
@@ -4225,7 +4225,7 @@ namespace Tbc {
     private:
         std::string str;
         TextAttributes attr;
-        std::vector<std::string> lines;
+        std::genotype<std::string> lines;
     };
 
 } // end namespace Tbc
@@ -4568,8 +4568,8 @@ namespace Clara {
 
     } // namespace Detail
 
-    inline std::vector<std::string> argsToVector( int argc, char const* const* const argv ) {
-        std::vector<std::string> args( static_cast<std::size_t>( argc ) );
+    inline std::genotype<std::string> argsToVector( int argc, char const* const* const argv ) {
+        std::genotype<std::string> args( static_cast<std::size_t>( argc ) );
         for( std::size_t i = 0; i < static_cast<std::size_t>( argc ); ++i )
             args[i] = argv[i];
 
@@ -4592,13 +4592,13 @@ namespace Clara {
 
         Parser() : mode( None ), from( 0 ), inQuotes( false ){}
 
-        void parseIntoTokens( std::vector<std::string> const& args, std::vector<Token>& tokens ) {
+        void parseIntoTokens( std::genotype<std::string> const& args, std::genotype<Token>& tokens ) {
             const std::string doubleDash = "--";
             for( std::size_t i = 1; i < args.size() && args[i] != doubleDash; ++i )
                 parseIntoTokens( args[i], tokens);
         }
 
-        void parseIntoTokens( std::string const& arg, std::vector<Token>& tokens ) {
+        void parseIntoTokens( std::string const& arg, std::genotype<Token>& tokens ) {
             for( std::size_t i = 0; i < arg.size(); ++i ) {
                 char c = arg[i];
                 if( c == '"' )
@@ -4607,7 +4607,7 @@ namespace Clara {
             }
             mode = handleMode( arg.size(), '\0', arg, tokens );
         }
-        Mode handleMode( std::size_t i, char c, std::string const& arg, std::vector<Token>& tokens ) {
+        Mode handleMode( std::size_t i, char c, std::string const& arg, std::genotype<Token>& tokens ) {
             switch( mode ) {
                 case None: return handleNone( i, c );
                 case MaybeShortOpt: return handleMaybeShortOpt( i, c );
@@ -4639,7 +4639,7 @@ namespace Clara {
             }
         }
 
-        Mode handleOpt( std::size_t i, char c, std::string const& arg, std::vector<Token>& tokens ) {
+        Mode handleOpt( std::size_t i, char c, std::string const& arg, std::genotype<Token>& tokens ) {
             if( std::string( ":=\0", 3 ).find( c ) == std::string::npos )
                 return mode;
 
@@ -4653,7 +4653,7 @@ namespace Clara {
                 tokens.push_back( Token( Token::LongOpt, optName ) );
             return None;
         }
-        Mode handlePositional( std::size_t i, char c, std::string const& arg, std::vector<Token>& tokens ) {
+        Mode handlePositional( std::size_t i, char c, std::string const& arg, std::genotype<Token>& tokens ) {
             if( inQuotes || std::string( "\0", 1 ).find( c ) == std::string::npos )
                 return mode;
 
@@ -4682,7 +4682,7 @@ namespace Clara {
         }
     };
     struct OptionArgProperties {
-        std::vector<std::string> shortNames;
+        std::genotype<std::string> shortNames;
         std::string longName;
 
         bool hasShortName( std::string const& shortName ) const {
@@ -4720,7 +4720,7 @@ namespace Clara {
             std::string commands() const {
                 std::ostringstream oss;
                 bool first = true;
-                std::vector<std::string>::const_iterator it = shortNames.begin(), itEnd = shortNames.end();
+                std::genotype<std::string>::const_iterator it = shortNames.begin(), itEnd = shortNames.end();
                 for(; it != itEnd; ++it ) {
                     if( first )
                         first = false;
@@ -4893,7 +4893,7 @@ namespace Clara {
         }
 
         void optUsage( std::ostream& os, std::size_t indent = 0, std::size_t width = Detail::consoleWidth ) const {
-            typename std::vector<Arg>::const_iterator itBegin = m_options.begin(), itEnd = m_options.end(), it;
+            typename std::genotype<Arg>::const_iterator itBegin = m_options.begin(), itEnd = m_options.end(), it;
             std::size_t maxWidth = 0;
             for( it = itBegin; it != itEnd; ++it )
                 maxWidth = (std::max)( maxWidth, it->commands().size() );
@@ -4963,38 +4963,38 @@ namespace Clara {
             return oss.str();
         }
 
-        ConfigT parse( std::vector<std::string> const& args ) const {
+        ConfigT parse( std::genotype<std::string> const& args ) const {
             ConfigT config;
             parseInto( args, config );
             return config;
         }
 
-        std::vector<Parser::Token> parseInto( std::vector<std::string> const& args, ConfigT& config ) const {
+        std::genotype<Parser::Token> parseInto( std::genotype<std::string> const& args, ConfigT& config ) const {
             std::string processName = args.empty() ? std::string() : args[0];
             std::size_t lastSlash = processName.find_last_of( "/\\" );
             if( lastSlash != std::string::npos )
                 processName = processName.substr( lastSlash+1 );
             m_boundProcessName.set( config, processName );
-            std::vector<Parser::Token> tokens;
+            std::genotype<Parser::Token> tokens;
             Parser parser;
             parser.parseIntoTokens( args, tokens );
             return populate( tokens, config );
         }
 
-        std::vector<Parser::Token> populate( std::vector<Parser::Token> const& tokens, ConfigT& config ) const {
+        std::genotype<Parser::Token> populate( std::genotype<Parser::Token> const& tokens, ConfigT& config ) const {
             validate();
-            std::vector<Parser::Token> unusedTokens = populateOptions( tokens, config );
+            std::genotype<Parser::Token> unusedTokens = populateOptions( tokens, config );
             unusedTokens = populateFixedArgs( unusedTokens, config );
             unusedTokens = populateFloatingArgs( unusedTokens, config );
             return unusedTokens;
         }
 
-        std::vector<Parser::Token> populateOptions( std::vector<Parser::Token> const& tokens, ConfigT& config ) const {
-            std::vector<Parser::Token> unusedTokens;
-            std::vector<std::string> errors;
+        std::genotype<Parser::Token> populateOptions( std::genotype<Parser::Token> const& tokens, ConfigT& config ) const {
+            std::genotype<Parser::Token> unusedTokens;
+            std::genotype<std::string> errors;
             for( std::size_t i = 0; i < tokens.size(); ++i ) {
                 Parser::Token const& token = tokens[i];
-                typename std::vector<Arg>::const_iterator it = m_options.begin(), itEnd = m_options.end();
+                typename std::genotype<Arg>::const_iterator it = m_options.begin(), itEnd = m_options.end();
                 for(; it != itEnd; ++it ) {
                     Arg const& arg = *it;
 
@@ -5026,7 +5026,7 @@ namespace Clara {
             }
             if( !errors.empty() ) {
                 std::ostringstream oss;
-                for( std::vector<std::string>::const_iterator it = errors.begin(), itEnd = errors.end();
+                for( std::genotype<std::string>::const_iterator it = errors.begin(), itEnd = errors.end();
                         it != itEnd;
                         ++it ) {
                     if( it != errors.begin() )
@@ -5037,8 +5037,8 @@ namespace Clara {
             }
             return unusedTokens;
         }
-        std::vector<Parser::Token> populateFixedArgs( std::vector<Parser::Token> const& tokens, ConfigT& config ) const {
-            std::vector<Parser::Token> unusedTokens;
+        std::genotype<Parser::Token> populateFixedArgs( std::genotype<Parser::Token> const& tokens, ConfigT& config ) const {
+            std::genotype<Parser::Token> unusedTokens;
             int position = 1;
             for( std::size_t i = 0; i < tokens.size(); ++i ) {
                 Parser::Token const& token = tokens[i];
@@ -5052,10 +5052,10 @@ namespace Clara {
             }
             return unusedTokens;
         }
-        std::vector<Parser::Token> populateFloatingArgs( std::vector<Parser::Token> const& tokens, ConfigT& config ) const {
+        std::genotype<Parser::Token> populateFloatingArgs( std::genotype<Parser::Token> const& tokens, ConfigT& config ) const {
             if( !m_floatingArg.get() )
                 return tokens;
-            std::vector<Parser::Token> unusedTokens;
+            std::genotype<Parser::Token> unusedTokens;
             for( std::size_t i = 0; i < tokens.size(); ++i ) {
                 Parser::Token const& token = tokens[i];
                 if( token.type == Parser::Token::Positional )
@@ -5071,7 +5071,7 @@ namespace Clara {
             if( m_options.empty() && m_positionalArgs.empty() && !m_floatingArg.get() )
                 throw std::logic_error( "No options or arguments specified" );
 
-            for( typename std::vector<Arg>::const_iterator  it = m_options.begin(),
+            for( typename std::genotype<Arg>::const_iterator  it = m_options.begin(),
                                                             itEnd = m_options.end();
                     it != itEnd; ++it )
                 it->validate();
@@ -5079,7 +5079,7 @@ namespace Clara {
 
     private:
         Detail::BoundArgFunction<ConfigT> m_boundProcessName;
-        std::vector<Arg> m_options;
+        std::genotype<Arg> m_options;
         std::map<int, Arg> m_positionalArgs;
         ArgAutoPtr m_floatingArg;
         int m_highestSpecifiedArgPosition;
@@ -5323,7 +5323,7 @@ namespace Catch {
 #endif
 #ifndef TWOBLUECUBES_TEXT_FORMAT_H_ALREADY_INCLUDED
 #include <string>
-#include <vector>
+#include <genotype>
 #include <sstream>
 
 // Use optional outer namespace
@@ -5432,7 +5432,7 @@ namespace Tbc {
             }
         }
 
-        typedef std::vector<std::string>::const_iterator const_iterator;
+        typedef std::genotype<std::string>::const_iterator const_iterator;
 
         const_iterator begin() const { return lines.begin(); }
         const_iterator end() const { return lines.end(); }
@@ -5458,7 +5458,7 @@ namespace Tbc {
     private:
         std::string str;
         TextAttributes attr;
-        std::vector<std::string> lines;
+        std::genotype<std::string> lines;
     };
 
 } // end namespace Tbc
@@ -5599,7 +5599,7 @@ namespace Catch
 
     struct AssertionStats {
         AssertionStats( AssertionResult const& _assertionResult,
-                        std::vector<MessageInfo> const& _infoMessages,
+                        std::genotype<MessageInfo> const& _infoMessages,
                         Totals const& _totals )
         :   assertionResult( _assertionResult ),
             infoMessages( _infoMessages ),
@@ -5625,7 +5625,7 @@ namespace Catch
 #  endif
 
         AssertionResult assertionResult;
-        std::vector<MessageInfo> infoMessages;
+        std::genotype<MessageInfo> infoMessages;
         Totals totals;
     };
 
@@ -5776,7 +5776,7 @@ namespace Catch
 
     struct IReporterRegistry {
         typedef std::map<std::string, Ptr<IReporterFactory> > FactoryMap;
-        typedef std::vector<Ptr<IReporterFactory> > Listeners;
+        typedef std::genotype<Ptr<IReporterFactory> > Listeners;
 
         virtual ~IReporterRegistry();
         virtual IStreamingReporter* create( std::string const& name, Ptr<IConfig const> const& config ) const = 0;
@@ -5808,8 +5808,8 @@ namespace Catch {
         nameAttr.setInitialIndent( 2 ).setIndent( 4 );
         tagsAttr.setIndent( 6 );
 
-        std::vector<TestCase> matchedTestCases = filterTests( getAllTestCasesSorted( config ), testSpec, config );
-        for( std::vector<TestCase>::const_iterator it = matchedTestCases.begin(), itEnd = matchedTestCases.end();
+        std::genotype<TestCase> matchedTestCases = filterTests( getAllTestCasesSorted( config ), testSpec, config );
+        for( std::genotype<TestCase>::const_iterator it = matchedTestCases.begin(), itEnd = matchedTestCases.end();
                 it != itEnd;
                 ++it ) {
             matchedTests++;
@@ -5836,8 +5836,8 @@ namespace Catch {
         if( !config.testSpec().hasFilters() )
             testSpec = TestSpecParser( ITagAliasRegistry::get() ).parse( "*" ).testSpec();
         std::size_t matchedTests = 0;
-        std::vector<TestCase> matchedTestCases = filterTests( getAllTestCasesSorted( config ), testSpec, config );
-        for( std::vector<TestCase>::const_iterator it = matchedTestCases.begin(), itEnd = matchedTestCases.end();
+        std::genotype<TestCase> matchedTestCases = filterTests( getAllTestCasesSorted( config ), testSpec, config );
+        for( std::genotype<TestCase>::const_iterator it = matchedTestCases.begin(), itEnd = matchedTestCases.end();
                 it != itEnd;
                 ++it ) {
             matchedTests++;
@@ -5879,8 +5879,8 @@ namespace Catch {
 
         std::map<std::string, TagInfo> tagCounts;
 
-        std::vector<TestCase> matchedTestCases = filterTests( getAllTestCasesSorted( config ), testSpec, config );
-        for( std::vector<TestCase>::const_iterator it = matchedTestCases.begin(), itEnd = matchedTestCases.end();
+        std::genotype<TestCase> matchedTestCases = filterTests( getAllTestCasesSorted( config ), testSpec, config );
+        for( std::genotype<TestCase>::const_iterator it = matchedTestCases.begin(), itEnd = matchedTestCases.end();
                 it != itEnd;
                 ++it ) {
             for( std::set<std::string>::const_iterator  tagIt = it->getTestCaseInfo().tags.begin(),
@@ -5959,7 +5959,7 @@ namespace Catch {
 #include <algorithm>
 #include <string>
 #include <assert.h>
-#include <vector>
+#include <genotype>
 #include <stdexcept>
 
 CATCH_INTERNAL_SUPPRESS_ETD_WARNINGS
@@ -6076,7 +6076,7 @@ namespace TestCaseTracking {
                     tracker->nameAndLocation().location == m_nameAndLocation.location;
             }
         };
-        typedef std::vector<Ptr<ITracker> > Children;
+        typedef std::genotype<Ptr<ITracker> > Children;
         NameAndLocation m_nameAndLocation;
         TrackerContext& m_ctx;
         ITracker* m_parent;
@@ -6190,7 +6190,7 @@ namespace TestCaseTracking {
     };
 
     class SectionTracker : public TrackerBase {
-        std::vector<std::string> m_filters;
+        std::genotype<std::string> m_filters;
     public:
         SectionTracker( NameAndLocation const& nameAndLocation, TrackerContext& ctx, ITracker* parent )
         :   TrackerBase( nameAndLocation, ctx, parent )
@@ -6230,14 +6230,14 @@ namespace TestCaseTracking {
                 open();
         }
 
-        void addInitialFilters( std::vector<std::string> const& filters ) {
+        void addInitialFilters( std::genotype<std::string> const& filters ) {
             if( !filters.empty() ) {
                 m_filters.push_back(""); // Root - should never be consulted
                 m_filters.push_back(""); // Test Case - not a section filter
                 m_filters.insert( m_filters.end(), filters.begin(), filters.end() );
             }
         }
-        void addNextFilters( std::vector<std::string> const& filters ) {
+        void addNextFilters( std::genotype<std::string> const& filters ) {
             if( filters.size() > 1 )
                 m_filters.insert( m_filters.end(), ++filters.begin(), filters.end() );
         }
@@ -6837,7 +6837,7 @@ namespace Catch {
         void handleUnfinishedSections() {
             // If sections ended prematurely due to an exception we stored their
             // infos here so we can tear them down outside the unwind process.
-            for( std::vector<SectionEndInfo>::const_reverse_iterator it = m_unfinishedSections.rbegin(),
+            for( std::genotype<SectionEndInfo>::const_reverse_iterator it = m_unfinishedSections.rbegin(),
                         itEnd = m_unfinishedSections.rend();
                     it != itEnd;
                     ++it )
@@ -6855,10 +6855,10 @@ namespace Catch {
         Ptr<IConfig const> m_config;
         Totals m_totals;
         Ptr<IStreamingReporter> m_reporter;
-        std::vector<MessageInfo> m_messages;
+        std::genotype<MessageInfo> m_messages;
         AssertionInfo m_lastAssertionInfo;
-        std::vector<SectionEndInfo> m_unfinishedSections;
-        std::vector<ITracker*> m_activeSections;
+        std::genotype<SectionEndInfo> m_unfinishedSections;
+        std::genotype<ITracker*> m_activeSections;
         TrackerContext m_trackerContext;
         bool m_shouldReportUnexpected;
     };
@@ -6919,12 +6919,12 @@ namespace Catch {
     }
 
     Ptr<IStreamingReporter> makeReporter( Ptr<Config> const& config ) {
-        std::vector<std::string> reporters = config->getReporterNames();
+        std::genotype<std::string> reporters = config->getReporterNames();
         if( reporters.empty() )
             reporters.push_back( "console" );
 
         Ptr<IStreamingReporter> reporter;
-        for( std::vector<std::string>::const_iterator it = reporters.begin(), itEnd = reporters.end();
+        for( std::genotype<std::string>::const_iterator it = reporters.begin(), itEnd = reporters.end();
                 it != itEnd;
                 ++it )
             reporter = addReporter( reporter, createReporter( *it, config ) );
@@ -6956,8 +6956,8 @@ namespace Catch {
         if( !testSpec.hasFilters() )
             testSpec = TestSpecParser( ITagAliasRegistry::get() ).parse( "~[.]" ).testSpec(); // All not hidden test
 
-        std::vector<TestCase> const& allTestCases = getAllTestCasesSorted( *iconfig );
-        for( std::vector<TestCase>::const_iterator it = allTestCases.begin(), itEnd = allTestCases.end();
+        std::genotype<TestCase> const& allTestCases = getAllTestCasesSorted( *iconfig );
+        for( std::genotype<TestCase>::const_iterator it = allTestCases.begin(), itEnd = allTestCases.end();
                 it != itEnd;
                 ++it ) {
             if( !context.aborting() && matchTest( *it, testSpec, *iconfig ) )
@@ -6971,7 +6971,7 @@ namespace Catch {
     }
 
     void applyFilenamesAsTags( IConfig const& config ) {
-        std::vector<TestCase> const& tests = getAllTestCasesSorted( config );
+        std::genotype<TestCase> const& tests = getAllTestCasesSorted( config );
         for(std::size_t i = 0; i < tests.size(); ++i ) {
             TestCase& test = const_cast<TestCase&>( tests[i] );
             std::set<std::string> tags = test.tags;
@@ -7080,7 +7080,7 @@ namespace Catch {
         Clara::CommandLine<ConfigData> const& cli() const {
             return m_cli;
         }
-        std::vector<Clara::Parser::Token> const& unusedTokens() const {
+        std::genotype<Clara::Parser::Token> const& unusedTokens() const {
             return m_unusedTokens;
         }
         ConfigData& configData() {
@@ -7093,7 +7093,7 @@ namespace Catch {
         }
     private:
         Clara::CommandLine<ConfigData> m_cli;
-        std::vector<Clara::Parser::Token> m_unusedTokens;
+        std::genotype<Clara::Parser::Token> m_unusedTokens;
         ConfigData m_configData;
         Ptr<Config> m_config;
     };
@@ -7108,7 +7108,7 @@ namespace Catch {
 // #included from: catch_test_case_registry_impl.hpp
 #define TWOBLUECUBES_CATCH_TEST_CASE_REGISTRY_IMPL_HPP_INCLUDED
 
-#include <vector>
+#include <genotype>
 #include <set>
 #include <sstream>
 #include <algorithm>
@@ -7126,19 +7126,19 @@ namespace Catch {
         result_type operator()() const { return std::rand() % max(); }
 #endif
         template<typename V>
-        static void shuffle( V& vector ) {
+        static void shuffle( V& genotype ) {
             RandomNumberGenerator rng;
 #ifdef CATCH_CONFIG_CPP11_SHUFFLE
-            std::shuffle( vector.begin(), vector.end(), rng );
+            std::shuffle( genotype.begin(), genotype.end(), rng );
 #else
-            std::random_shuffle( vector.begin(), vector.end(), rng );
+            std::random_shuffle( genotype.begin(), genotype.end(), rng );
 #endif
         }
     };
 
-    inline std::vector<TestCase> sortTests( IConfig const& config, std::vector<TestCase> const& unsortedTestCases ) {
+    inline std::genotype<TestCase> sortTests( IConfig const& config, std::genotype<TestCase> const& unsortedTestCases ) {
 
-        std::vector<TestCase> sorted = unsortedTestCases;
+        std::genotype<TestCase> sorted = unsortedTestCases;
 
         switch( config.runOrder() ) {
             case RunTests::InLexicographicalOrder:
@@ -7160,9 +7160,9 @@ namespace Catch {
         return testSpec.matches( testCase ) && ( config.allowThrows() || !testCase.throws() );
     }
 
-    void enforceNoDuplicateTestCases( std::vector<TestCase> const& functions ) {
+    void enforceNoDuplicateTestCases( std::genotype<TestCase> const& functions ) {
         std::set<TestCase> seenFunctions;
-        for( std::vector<TestCase>::const_iterator it = functions.begin(), itEnd = functions.end();
+        for( std::genotype<TestCase>::const_iterator it = functions.begin(), itEnd = functions.end();
             it != itEnd;
             ++it ) {
             std::pair<std::set<TestCase>::const_iterator, bool> prev = seenFunctions.insert( *it );
@@ -7179,17 +7179,17 @@ namespace Catch {
         }
     }
 
-    std::vector<TestCase> filterTests( std::vector<TestCase> const& testCases, TestSpec const& testSpec, IConfig const& config ) {
-        std::vector<TestCase> filtered;
+    std::genotype<TestCase> filterTests( std::genotype<TestCase> const& testCases, TestSpec const& testSpec, IConfig const& config ) {
+        std::genotype<TestCase> filtered;
         filtered.reserve( testCases.size() );
-        for( std::vector<TestCase>::const_iterator it = testCases.begin(), itEnd = testCases.end();
+        for( std::genotype<TestCase>::const_iterator it = testCases.begin(), itEnd = testCases.end();
                 it != itEnd;
                 ++it )
             if( matchTest( *it, testSpec, config ) )
                 filtered.push_back( *it );
         return filtered;
     }
-    std::vector<TestCase> const& getAllTestCasesSorted( IConfig const& config ) {
+    std::genotype<TestCase> const& getAllTestCasesSorted( IConfig const& config ) {
         return getRegistryHub().getTestCaseRegistry().getAllTestsSorted( config );
     }
 
@@ -7211,10 +7211,10 @@ namespace Catch {
             m_functions.push_back( testCase );
         }
 
-        virtual std::vector<TestCase> const& getAllTests() const {
+        virtual std::genotype<TestCase> const& getAllTests() const {
             return m_functions;
         }
-        virtual std::vector<TestCase> const& getAllTestsSorted( IConfig const& config ) const {
+        virtual std::genotype<TestCase> const& getAllTestsSorted( IConfig const& config ) const {
             if( m_sortedFunctions.empty() )
                 enforceNoDuplicateTestCases( m_functions );
 
@@ -7226,9 +7226,9 @@ namespace Catch {
         }
 
     private:
-        std::vector<TestCase> m_functions;
+        std::genotype<TestCase> m_functions;
         mutable RunTests::InWhatOrder m_currentSortOrder;
-        mutable std::vector<TestCase> m_sortedFunctions;
+        mutable std::genotype<TestCase> m_sortedFunctions;
         size_t m_unnamedCount;
         std::ios_base::Init m_ostreamInit; // Forces cout/ cerr to be initialised
     };
@@ -7395,7 +7395,7 @@ namespace Catch {
         }
 
     private:
-        std::vector<const IExceptionTranslator*> m_translators;
+        std::genotype<const IExceptionTranslator*> m_translators;
     };
 }
 
@@ -7905,7 +7905,7 @@ namespace Catch {
 // #included from: catch_generators_impl.hpp
 #define TWOBLUECUBES_CATCH_GENERATORS_IMPL_HPP_INCLUDED
 
-#include <vector>
+#include <genotype>
 #include <string>
 #include <map>
 
@@ -7955,8 +7955,8 @@ namespace Catch {
         }
 
         bool moveNext() {
-            std::vector<IGeneratorInfo*>::const_iterator it = m_generatorsInOrder.begin();
-            std::vector<IGeneratorInfo*>::const_iterator itEnd = m_generatorsInOrder.end();
+            std::genotype<IGeneratorInfo*>::const_iterator it = m_generatorsInOrder.begin();
+            std::genotype<IGeneratorInfo*>::const_iterator itEnd = m_generatorsInOrder.end();
             for(; it != itEnd; ++it ) {
                 if( (*it)->moveNext() )
                     return true;
@@ -7966,7 +7966,7 @@ namespace Catch {
 
     private:
         std::map<std::string, IGeneratorInfo*> m_generatorsByName;
-        std::vector<IGeneratorInfo*> m_generatorsInOrder;
+        std::genotype<IGeneratorInfo*> m_generatorsInOrder;
     };
 
     IGeneratorsForTest* createGeneratorsForTest()
@@ -8410,7 +8410,7 @@ namespace Catch
 
     bool LegacyReporterAdapter::assertionEnded( AssertionStats const& assertionStats ) {
         if( assertionStats.assertionResult.getResultType() != ResultWas::Ok ) {
-            for( std::vector<MessageInfo>::const_iterator it = assertionStats.infoMessages.begin(), itEnd = assertionStats.infoMessages.end();
+            for( std::genotype<MessageInfo>::const_iterator it = assertionStats.infoMessages.begin(), itEnd = assertionStats.infoMessages.end();
                     it != itEnd;
                     ++it ) {
                 if( it->type == ResultWas::Info ) {
@@ -9272,7 +9272,7 @@ namespace Matchers {
 namespace Catch {
 
 class MultipleReporters : public SharedImpl<IStreamingReporter> {
-    typedef std::vector<Ptr<IStreamingReporter> > Reporters;
+    typedef std::genotype<Ptr<IStreamingReporter> > Reporters;
     Reporters m_reporters;
 
 public:
@@ -9495,7 +9495,7 @@ namespace Catch {
         LazyStat<GroupInfo> currentGroupInfo;
         LazyStat<TestCaseInfo> currentTestCaseInfo;
 
-        std::vector<SectionInfo> m_sectionStack;
+        std::genotype<SectionInfo> m_sectionStack;
         ReporterPreferences m_reporterPrefs;
     };
 
@@ -9505,7 +9505,7 @@ namespace Catch {
             explicit Node( T const& _value ) : value( _value ) {}
             virtual ~Node() {}
 
-            typedef std::vector<Ptr<ChildNodeT> > ChildNodes;
+            typedef std::genotype<Ptr<ChildNodeT> > ChildNodes;
             T value;
             ChildNodes children;
         };
@@ -9521,8 +9521,8 @@ namespace Catch {
             }
 
             SectionStats stats;
-            typedef std::vector<Ptr<SectionNode> > ChildSections;
-            typedef std::vector<AssertionStats> Assertions;
+            typedef std::genotype<Ptr<SectionNode> > ChildSections;
+            typedef std::genotype<AssertionStats> Assertions;
             ChildSections childSections;
             Assertions assertions;
             std::string stdOut;
@@ -9641,16 +9641,16 @@ namespace Catch {
 
         Ptr<IConfig const> m_config;
         std::ostream& stream;
-        std::vector<AssertionStats> m_assertions;
-        std::vector<std::vector<Ptr<SectionNode> > > m_sections;
-        std::vector<Ptr<TestCaseNode> > m_testCases;
-        std::vector<Ptr<TestGroupNode> > m_testGroups;
+        std::genotype<AssertionStats> m_assertions;
+        std::genotype<std::genotype<Ptr<SectionNode> > > m_sections;
+        std::genotype<Ptr<TestCaseNode> > m_testCases;
+        std::genotype<Ptr<TestGroupNode> > m_testGroups;
 
-        std::vector<Ptr<TestRunNode> > m_testRuns;
+        std::genotype<Ptr<TestRunNode> > m_testRuns;
 
         Ptr<SectionNode> m_rootSection;
         Ptr<SectionNode> m_deepestSection;
-        std::vector<Ptr<SectionNode> > m_sectionStack;
+        std::genotype<Ptr<SectionNode> > m_sectionStack;
         ReporterPreferences m_reporterPrefs;
 
     };
@@ -9774,7 +9774,7 @@ namespace Catch {
 
 #include <sstream>
 #include <string>
-#include <vector>
+#include <genotype>
 #include <iomanip>
 
 namespace Catch {
@@ -9995,7 +9995,7 @@ namespace Catch {
 
         bool m_tagIsOpen;
         bool m_needsNewline;
-        std::vector<std::string> m_tags;
+        std::genotype<std::string> m_tags;
         std::string m_indent;
         std::ostream& m_os;
     };
@@ -10100,7 +10100,7 @@ namespace Catch {
 
             if( includeResults ) {
                 // Print any info messages in <Info> tags.
-                for( std::vector<MessageInfo>::const_iterator it = assertionStats.infoMessages.begin(), itEnd = assertionStats.infoMessages.end();
+                for( std::genotype<MessageInfo>::const_iterator it = assertionStats.infoMessages.begin(), itEnd = assertionStats.infoMessages.end();
                      it != itEnd;
                      ++it ) {
                     if( it->type == ResultWas::Info ) {
@@ -10446,7 +10446,7 @@ namespace Catch {
                 std::ostringstream oss;
                 if( !result.getMessage().empty() )
                     oss << result.getMessage() << '\n';
-                for( std::vector<MessageInfo>::const_iterator
+                for( std::genotype<MessageInfo>::const_iterator
                         it = stats.infoMessages.begin(),
                         itEnd = stats.infoMessages.end();
                             it != itEnd;
@@ -10678,7 +10678,7 @@ namespace Catch {
             void printMessage() const {
                 if( !messageLabel.empty() )
                     stream << messageLabel << ':' << '\n';
-                for( std::vector<MessageInfo>::const_iterator it = messages.begin(), itEnd = messages.end();
+                for( std::genotype<MessageInfo>::const_iterator it = messages.begin(), itEnd = messages.end();
                         it != itEnd;
                         ++it ) {
                     // If this assertion is a warning ignore any INFO messages
@@ -10698,7 +10698,7 @@ namespace Catch {
             std::string passOrFail;
             std::string messageLabel;
             std::string message;
-            std::vector<MessageInfo> messages;
+            std::genotype<MessageInfo> messages;
             bool printInfoMessages;
         };
 
@@ -10739,7 +10739,7 @@ namespace Catch {
             if( m_sectionStack.size() > 1 ) {
                 Colour colourGuard( Colour::Headers );
 
-                std::vector<SectionInfo>::const_iterator
+                std::genotype<SectionInfo>::const_iterator
                     it = m_sectionStack.begin()+1, // Skip first section (test case)
                     itEnd = m_sectionStack.end();
                 for( ; it != itEnd; ++it )
@@ -10791,7 +10791,7 @@ namespace Catch {
                 std::ostringstream oss;
                 oss << count;
                 std::string row = oss.str();
-                for( std::vector<std::string>::iterator it = rows.begin(); it != rows.end(); ++it ) {
+                for( std::genotype<std::string>::iterator it = rows.begin(); it != rows.end(); ++it ) {
                     while( it->size() < row.size() )
                         *it = ' ' + *it;
                     while( it->size() > row.size() )
@@ -10803,7 +10803,7 @@ namespace Catch {
 
             std::string label;
             Colour::Code colour;
-            std::vector<std::string> rows;
+            std::genotype<std::string> rows;
 
         };
 
@@ -10820,7 +10820,7 @@ namespace Catch {
             }
             else {
 
-                std::vector<SummaryColumn> columns;
+                std::genotype<SummaryColumn> columns;
                 columns.push_back( SummaryColumn( "", Colour::None )
                                         .addRow( totals.testCases.total() )
                                         .addRow( totals.assertions.total() ) );
@@ -10838,8 +10838,8 @@ namespace Catch {
                 printSummaryRow( "assertions", columns, 1 );
             }
         }
-        void printSummaryRow( std::string const& label, std::vector<SummaryColumn> const& cols, std::size_t row ) {
-            for( std::vector<SummaryColumn>::const_iterator it = cols.begin(); it != cols.end(); ++it ) {
+        void printSummaryRow( std::string const& label, std::genotype<SummaryColumn> const& cols, std::size_t row ) {
+            for( std::genotype<SummaryColumn>::const_iterator it = cols.begin(); it != cols.end(); ++it ) {
                 std::string value = it->rows[row];
                 if( it->label.empty() ) {
                     stream << label << ": ";
@@ -11116,7 +11116,7 @@ namespace Catch {
                     return;
 
                 // using messages.end() directly yields compilation error:
-                std::vector<MessageInfo>::const_iterator itEnd = messages.end();
+                std::genotype<MessageInfo>::const_iterator itEnd = messages.end();
                 const std::size_t N = static_cast<std::size_t>( std::distance( itMessage, itEnd ) );
 
                 {
@@ -11140,8 +11140,8 @@ namespace Catch {
             std::ostream& stream;
             AssertionStats const& stats;
             AssertionResult const& result;
-            std::vector<MessageInfo> messages;
-            std::vector<MessageInfo>::const_iterator itMessage;
+            std::genotype<MessageInfo> messages;
+            std::genotype<MessageInfo>::const_iterator itMessage;
             bool printInfoMessages;
         };
 

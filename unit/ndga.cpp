@@ -1,11 +1,11 @@
 #include <catch.hpp>
 #include <iostream>
 #include "../cc/common/Problem.h"
-#include "../cc/ndga/RandomBitVectorBuilder.h"
+#include "../cc/representation/vector/binary/RandomBinaryVectorBuilder.h"
 #include "../core/initialization/Initializer.h"
-#include "../cc/common/FitnessProportionateSelection.h"
-#include "../cc/ndga/BitVectorCrossover.h"
-#include "../cc/ndga/BitVectorMutation.h"
+#include "../cc/selection/FitnessProportionateSelection.h"
+#include "../cc/representation/vector/binary/BinaryVectorCrossover.h"
+#include "../cc/representation/vector/binary/BinaryVectorMutation.h"
 #include "../cc/ndga/Session.h"
 #include "../cc/ndga/EvaluationFunctions.h"
 #include "util/SimpleEvaluationFunction.h"
@@ -27,7 +27,7 @@ TEST_CASE("NDGA", "[ndga]") {
     auto *featurevector = new FeatureVector(*configuration);
     auto *relevance = new Relevance(*configuration);
     auto *prototype = new VectorIndividual(*configuration, *featurevector, *relevance);
-    auto *builder = new RandomBitVectorBuilder(*configuration, *prototype);
+    auto *builder = new RandomBinaryVectorBuilder(*configuration, *prototype);
     auto *pop = new Population(*configuration);
 
     delete featurevector;
@@ -67,7 +67,7 @@ TEST_CASE("NDGA", "[ndga]") {
     initializer->initializePopulation(*pop);
 
     configuration->getCrossoverConfiguration().xover_rate = 1.0;
-    auto *crossover = new BitVectorCrossover(*configuration);
+    auto *crossover = new BinaryVectorCrossover(*configuration);
     std::vector<VariationSource *> *sources = new std::vector<VariationSource *>({
             new FitnessProportionateSelection(*configuration),
             new FitnessProportionateSelection(*configuration)
@@ -134,7 +134,7 @@ TEST_CASE("NDGA", "[ndga]") {
     delete crossover;
 
     configuration->getMutationConfiguration().mutation_rate = 1.0;
-    auto *mutation = new BitVectorMutation(*configuration);
+    auto *mutation = new BinaryVectorMutation(*configuration);
     sources = new std::vector<VariationSource *> {
             new FitnessProportionateSelection(*configuration)
     };

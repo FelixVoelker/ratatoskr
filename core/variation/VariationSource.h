@@ -5,7 +5,7 @@
 #include <vector>
 #include <stdexcept>
 #include "../util/Singleton.h"
-#include "../representation/Population.h"
+#include "../state/Population.h"
 #include "../util/Thread.h"
 
 /**
@@ -15,7 +15,7 @@
  * genetic operation and selects its parameters randomly. However, it needs to be set up before it can be used.
  *
  * @author  Felix Voelker
- * @version 0.1.0
+ * @version 0.1.1
  * @since   25.1.2018
  */
 class VariationSource : public Prototype {
@@ -40,7 +40,7 @@ public:
      * @param thread  The variating thread.
      * @throws InitializationException if setup has not been called.
      */
-    std::vector<Individual *> vary(std::vector<Individual *> &parents, Thread &thread) const;
+    std::vector<Individual *> vary(std::vector<Individual *> &parents, std::vector<Individual *> &record, Thread &thread) const;
 
     virtual VariationSource * clone() const = 0;
 
