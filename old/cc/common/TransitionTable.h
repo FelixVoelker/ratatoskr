@@ -2,7 +2,7 @@
 #define RATATOSKR_TRANSITIONTABLE_H
 
 
-#include "../../core/experience/EvolutionaryNetwork.h"
+#include "../../../core/experience/EvolutionaryNetwork.h"
 #include "Configuration.h"
 
 /**

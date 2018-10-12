@@ -2,7 +2,7 @@
 #define RATATOSKR_UNIT_SIMPLEVARIATIONSOURCE_H
 
 
-#include "../../core/variation/VariationSource.h"
+#include "../../../core/variation/VariationSource.h"
 
 /**
  * A simple instance of VariationSource to test core functionality.

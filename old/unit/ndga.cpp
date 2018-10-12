@@ -1,13 +1,13 @@
 #include <catch.hpp>
 #include <iostream>
 #include "../cc/common/Problem.h"
-#include "../cc/representation/vector/binary/RandomBinaryVectorBuilder.h"
-#include "../core/initialization/Initializer.h"
-#include "../cc/selection/FitnessProportionateSelection.h"
-#include "../cc/representation/vector/binary/BinaryVectorCrossover.h"
-#include "../cc/representation/vector/binary/BinaryVectorMutation.h"
+#include "../../cc/representation/vector/binary/RandomBinaryVectorBuilder.h"
+#include "../../core/initialization/Initializer.h"
+#include "../../cc/selection/FitnessProportionateSelection.h"
+#include "../../cc/representation/vector/binary/BinaryVectorCrossover.h"
+#include "../../cc/representation/vector/binary/BinaryVectorMutation.h"
 #include "../cc/ndga/Session.h"
-#include "../cc/ndga/EvaluationFunctions.h"
+#include "../../cc/ndga/EvaluationFunctions.h"
 #include "util/SimpleEvaluationFunction.h"
 
 /**

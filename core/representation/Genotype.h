@@ -6,11 +6,11 @@
 #include "../util/Clonable.h"
 
 /**
- *
+ * The abstract base class for any genotype representation of an individual, i.e. a solution in the genotype space.
  *
  * @author  Felix Voelker
  * @version 0.1.1
- * @since   12.7.2018
+ * @since   1.9.2018
  */
 class Genotype : public Clonable {
 
@@ -18,7 +18,7 @@ public:
     bool evaluated = false;
 
     /**
-     * Returns a human-readable representation of the individual.
+     * Returns a human-readable representation of the genotype.
      */
     virtual std::string toString() = 0;
 

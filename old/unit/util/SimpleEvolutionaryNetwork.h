@@ -2,7 +2,7 @@
 #define RATATOSKR_SIMPLEEVOLUTIONARYNETWORK_H
 
 
-#include "../../core/experience/EvolutionaryNetwork.h"
+#include "../../../core/experience/EvolutionaryNetwork.h"
 
 /**
  * A simple instance of EvolutionaryNetwork to test core functionality.

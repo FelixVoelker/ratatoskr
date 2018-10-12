@@ -2,7 +2,7 @@
 #define RATATOSKR_UNIT_SIMPLEINDIVIDUAL_H
 
 
-#include "../../core/state/Individual.h"
+#include "../../../core/state/Individual.h"
 
 /**
  * A simple instance of Individual to test core functionality.

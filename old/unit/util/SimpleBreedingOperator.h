@@ -2,7 +2,7 @@
 #define RATATOSKR_UNIT_SIMPLEBREEDINGOPERATOR_H
 
 
-#include "../../core/variation/BreedingOperator.h"
+#include "../../../core/variation/BreedingOperator.h"
 
 /**
  * A simple instance of BreedingOperator to test core functionality.

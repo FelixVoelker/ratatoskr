@@ -6,20 +6,17 @@
 #include "Genotype.h"
 
 /**
- * @todo change comment
- * The abstract base class of a population's builder that initializes each individual of an evolutionary system. Rather
- * than initializing the entire population, a builder builds single individuals based of a given prototype.
- * Any Neuro-Dynamic Evolutionary Algorithm (NDEA) has to take this requirement into account.
+ * The abstract base class for any builder of an individual's genotype. Rather than initializing the entire population,
+ * a builder builds single individuals based of a given prototype.
  *
  * @author  Felix Voelker
  * @version 0.1.1
- * @since   12.7.2018
+ * @since   1.9.2018
  */
 class Builder : public Clonable {
 
 public:
     /**
-     * @todo: change comment
      * Initializes an individual according to the builder's strategy.
      * Builds a new individual by cloning the prototype then initializing it.
      * @param thread The initializing thread.

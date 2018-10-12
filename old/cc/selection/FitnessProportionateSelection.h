@@ -2,7 +2,7 @@
 #define RATATOSKR_FITNESSPROPORTIONATESELECTION_H
 
 
-#include "../../core/variation/SelectionOperator.h"
+#include "../../../core/variation/SelectionOperator.h"
 #include "../common/Configuration.h"
 
 /**

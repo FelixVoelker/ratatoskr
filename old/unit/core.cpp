@@ -3,20 +3,20 @@
 
 #include <catch.hpp>
 #include "util/SimpleBuilder.h"
-#include "../core/state/Population.h"
+#include "../../core/state/Population.h"
 #include "util/SimpleVariationSource.h"
 #include "util/SimpleIndividual.h"
 #include "util/SimpleSelectionOperator.h"
 #include "util/SimpleBreedingOperator.h"
-#include "../core/initialization/Initializer.h"
-#include "../core/evaluation/Evaluator.h"
-#include "../core/variation/Breeder.h"
-#include "../core/statistics/Statistics.h"
-#include "../core/EvolutionarySystem.h"
+#include "../../core/initialization/Initializer.h"
+#include "../../core/evaluation/Evaluator.h"
+#include "../../core/variation/Breeder.h"
+#include "../../core/statistics/Statistics.h"
+#include "../../core/EvolutionarySystem.h"
 #include "util/SimpleFeatureMap.h"
 #include "util/SimpleEvolutionaryNetwork.h"
 #include "../core/Problem.h"
-#include "../core/Session.h"
+#include "../../core/Session.h"
 #include "util/SimpleEvaluationFunction.h"
 
 using namespace core;

@@ -2,7 +2,7 @@
 #define RATATOSKR_RANDOMBITVECTORBUILDER_H
 
 
-#include "../../../../core/representation/Builder.h"
+#include "../../../../../core/representation/Builder.h"
 #include "../Vector.h"
 
 /**

@@ -2,7 +2,7 @@
 #define RATATOSKR_NDGA_EVALUATIONFUNCTIONS_H
 
 
-#include "../../core/evaluation/EvaluationFunction.h"
+#include "../../../core/evaluation/EvaluationFunction.h"
 
 namespace ndga {
 

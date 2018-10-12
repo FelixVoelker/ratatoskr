@@ -2,7 +2,7 @@
 #define RATATOSKR_SIMPLESELECTIONOPERATOR_H
 
 
-#include "../../core/variation/SelectionOperator.h"
+#include "../../../core/variation/SelectionOperator.h"
 
 /**
  * A simple instance of SelectionOperator to test core functionality.

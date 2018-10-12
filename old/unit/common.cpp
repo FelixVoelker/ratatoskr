@@ -1,11 +1,11 @@
 #include <catch.hpp>
-#include "../core/state/Individual.h"
-#include "../core/util/Thread.h"
+#include "../../core/state/Individual.h"
+#include "../../core/util/Thread.h"
 #include "../cc/common/Problem.h"
 #include "../cc/common/FeatureVector.h"
 #include "../cc/common/VectorIndividual.h"
-#include "../core/state/Population.h"
-#include "../cc/selection/FitnessProportionateSelection.h"
+#include "../../core/state/Population.h"
+#include "../../cc/selection/FitnessProportionateSelection.h"
 #include "util/SimpleEvaluationFunction.h"
 
 /**

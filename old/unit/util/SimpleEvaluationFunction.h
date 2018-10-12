@@ -2,7 +2,7 @@
 #define RATATOSKR_UNIT_SIMPLEEVALUATIONFUNCTION_H
 
 
-#include "../../core/evaluation/EvaluationFunction.h"
+#include "../../../core/evaluation/EvaluationFunction.h"
 
 /**
  * A simple instance of EvaluationFunction to test core functionality.

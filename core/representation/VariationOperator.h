@@ -2,15 +2,17 @@
 #define RATATOSKR_VARIATIONOPERATOR_H
 
 
-#include "../util/Clonable.h"
+#include <vector>
+#include "Genotype.h"
 
 /**
+ * The abstract base class for any variation operator of an individual's genotype.
+ *
  * @author  Felix Voelker
  * @version 0.1.1
- * @since   12.7.2018
+ * @since   1.9.2018
  */
 class VariationOperator : public Clonable {
-
 
 };
 
