@@ -6,11 +6,11 @@
 #include "../util/Clonable.h"
 
 /**
- * The abstract base class for any genotype representation of an individual, i.e. a solution in the genotype space.
+ * The abstract base class for any solution in the genotype space, i.e. the representation of an individual to work on.
  *
  * @author  Felix Voelker
  * @version 0.1.1
- * @since   1.9.2018
+ * @since   12.10.2018
  */
 class Genotype : public Clonable {
 

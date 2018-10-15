@@ -917,7 +917,7 @@ namespace Catch {
         }
         virtual void reconstructExpression( std::string& dest ) const = 0;
 
-        // Only simple binary comparisons can be decomposed.
+        // Only simple integer comparisons can be decomposed.
         // If more complex check is required then wrap sub-expressions in parentheses.
         template<typename T> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator + ( T const& );
         template<typename T> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator - ( T const& );

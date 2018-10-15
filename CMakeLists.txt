@@ -34,13 +34,13 @@ set(CORE_SOURCES
         #core/TerminationCondition.h)
 
 set(CC_API
-        cc/representation/Vector.cpp cc/representation/Vector.h)
+        cc/representation/Vector.h)
 #        cc/selection/FitnessProportionateSelection.cpp cc/selection/FitnessProportionateSelection.h
 #        cc/common/TransitionTable.cpp cc/common/TransitionTable.h
-#        cc/representation/vector/binary/BinaryVectorCrossover.cpp cc/representation/vector/binary/BinaryVectorCrossover.h
-#        cc/representation/vector/binary/BinaryVectorMutation.cpp cc/representation/vector/binary/BinaryVectorMutation.h
+#        cc/representation/vector/integer/BinaryVectorCrossover.cpp cc/representation/vector/integer/BinaryVectorCrossover.h
+#        cc/representation/vector/integer/BinaryVectorMutation.cpp cc/representation/vector/integer/BinaryVectorMutation.h
 #        cc/ndga/EvaluationFunctions.cpp cc/ndga/EvaluationFunctions.h
-#        cc/representation/vector/binary/RandomBinaryVectorBuilder.cpp cc/representation/vector/binary/RandomBinaryVectorBuilder.h
+#        cc/representation/vector/integer/RandomBinaryVectorBuilder.cpp cc/representation/vector/integer/RandomBinaryVectorBuilder.h
 #        cc/main.cpp core/representation/VariationOperator.h cc/representation/vector/Vector.cpp cc/representation/vector/Vector.h cc/algorithm/GeneticAlgorithm.cpp cc/algorithm/GeneticAlgorithm.h)
 
 add_library(ratatoskr_cc SHARED ${CORE_SOURCES} ${CC_API})

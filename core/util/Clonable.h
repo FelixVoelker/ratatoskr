@@ -7,7 +7,7 @@
  *
  * @author  Felix Voelker
  * @version 0.1.1
- * @since   26.1.2018
+ * @since   12.10.2018
  */
 class Clonable {
 
