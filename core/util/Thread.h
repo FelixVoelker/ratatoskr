@@ -21,23 +21,25 @@ public:
     struct Random {
         std::mt19937 generator = std::mt19937(std::random_device()());
 
-        /**
-         * Samples a random number from the interval [0.0, 1.0).
-         */
-        double sample();
+        std::function random = std::bind(std::uniform_real_distribution(0.0, 1.0), generator);
 
         /**
-         * Samples a random integer from the discrete uniform distribution U(0, n-1).
-         * @param n Number of discrete values.
+         * Chooses k elements of the given sequence with replacement. Selects elements according to its weight or with
+         * equal probability if weights is null.
+         * @param sequence The list to choose from.
+         * @param weights  The weights of each element within the sequence to define a discrete distribution.
+         * @param k        Number of elements to choose.
          */
-        unsigned int sampleIntFromUniformDistribution(unsigned int n);
+        std::vector<T> choose(std::vector<T> sequence, std::vector<float> weights = null, unsigned int k = 1);
 
         /**
-         * Samples a random integer from the discrete distribution D(0, n-1) with
-         * the probability mass function P(i) = w_i / sum(weights).
-         * @param weights Set of all weights w_i.
+         * Samples k elements of the given sequence without replacement. Selects elements according to its weight or with
+         * equal probability if weights is null.
+         * @param sequence The list to sample from.
+         * @param weights  The weights of each element within the sequence to define a discrete distribution.
+         * @param k        Number of elements to sample.
          */
-        unsigned int sampleIntFromDiscreteDistribution(std::vector<float> weights);
+        std::vector<T> sample(std::vector<T> sequence, std::vector<float> weights = null, unsigned int k = 1);
     };
 
     Random random;

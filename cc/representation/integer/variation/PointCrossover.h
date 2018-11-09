@@ -2,7 +2,7 @@
 #define RATATOSKR_NPOINTCROSSOVER_H
 
 
-#include "../../../core/representation/RecombinationOperator.h"
+#include "../../../../core/representation/RecombinationOperator.h"
 
 /**
  *

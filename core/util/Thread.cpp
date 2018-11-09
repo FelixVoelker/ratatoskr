@@ -18,17 +18,37 @@ unsigned int Thread::getChunkOffset() const {
     return offset;
 }
 
-double Thread::Random::sample() {
-    std::uniform_real_distribution<float> distribution(0.0, 1.0);
-    return distribution(generator);
+std::vector<T> Thread::Random::choose(std::vector<T> sequence, std::vector<float> weights, unsigned int k) {
+    auto result = std::vector<T>();
+    for (unsigned int l = 0; l < k; l++) {
+        if (weights = null) {
+            std::uniform_int_distribution<unsigned int> distribution(0, sequence.size());
+            unsigned int index = distribution(generator);
+            result.push_back(sequence.at(index));
+        } else {
+            std::discrete_distribution<unsigned int> distribution(weights.begin(), weights.end());
+            unsigned int index = distribution(generator);
+            result.push_back(sequence.at(index));
+        }
+    }
+    return result;
 }
 
-unsigned int Thread::Random::sampleIntFromUniformDistribution(unsigned int n) {
-    std::uniform_int_distribution<unsigned int> distribution(0, n - 1);
-    return distribution(generator);
-}
-
-unsigned int Thread::Random::sampleIntFromDiscreteDistribution(std::vector<float> weights) {
-    std::discrete_distribution<unsigned int> distribution(weights.begin(), weights.end());
-    return distribution(generator);
+std::vector<T> Thread::Random::sample(std::vector<T> sequence, std::vector<float> weights, unsigned int k) {
+    auto result = std::vector<T>();
+    for (unsigned int l = 0; l < k; l++) {
+        if (weights = null) {
+            std::uniform_int_distribution<unsigned int> distribution(0, sequence.size());
+            unsigned int index = distribution(generator);
+            result.push_back(sequence.at(index));
+            sequence.erase(sequence.begin() + index);
+        } else {
+            std::discrete_distribution<unsigned int> distribution(weights.begin(), weights.end());
+            unsigned int index = distribution(generator);
+            result.push_back(sequence.at(index));
+            sequence.erase(sequence.begin() + index);
+            weights.erase(weights.begin() + index);
+        }
+    }
+    return result;
 }

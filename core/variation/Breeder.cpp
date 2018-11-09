@@ -52,7 +52,7 @@ void Breeder::breedChunk(std::vector<Individual *> &parents,
         if (thread.getChunkOnset() + thread.getChunkOffset() < thread.getChunkOnset() + k + offspring.size()) {
             survivors = thread.getChunkOffset() - k;
             for (unsigned int l = 0; l < survivors; l++) {
-                unsigned int index = thread.random.sampleIntFromUniformDistribution(static_cast<unsigned int>(offspring.size()));
+                unsigned int index = thread.random.uniformlyChoose(static_cast<unsigned int>(offspring.size()));
                 offsprings.at(thread.getChunkOnset() + k + l) = offspring.at(index);
                 offspring.erase(offspring.begin() + index);
             }

@@ -4,7 +4,9 @@ PointCrossover::PointCrossover(unsigned int numPoints) : RecombinationOperator()
     this->numPoints = numPoints;
 }
 
-void PointCrossover::operator()(Genotype &genotype1, Genotype &genotype2, Thread &thread) const {}
+void PointCrossover::operator()(Genotype &genotype1, Genotype &genotype2, Thread &thread) const {
+    //auto xoverPoints = thread.random.sample(std::vector<unsigned int>({}) )
+}
 
 PointCrossover::PointCrossover(const PointCrossover &obj) {
     this->numPoints = obj.numPoints;

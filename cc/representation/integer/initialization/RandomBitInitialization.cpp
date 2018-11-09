@@ -1,10 +1,10 @@
 #include "RandomBitInitialization.h"
-#include "BitString.h"
+#include "../IntegerVector.h"
 
 void RandomBitInitialization::operator()(Genotype &genotype, Thread &thread) const {
-    std::vector<bool> chromosome = dynamic_cast<BitString &>(genotype).getChromosome();
+    auto chromosome = dynamic_cast<IntegerVector &>(genotype).getChromosome();
     for (auto gene : chromosome) {
-        gene = thread.random.sampleIntFromUniformDistribution(2);
+        gene = thread.random.choose(std::vector<unsigned int>({0, 1})).at(0);
     }
 }
 

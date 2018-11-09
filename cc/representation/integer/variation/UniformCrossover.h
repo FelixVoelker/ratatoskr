@@ -2,7 +2,7 @@
 #define RATATOSKR_UNIFORMCROSSOVER_H
 
 
-#include "../../../core/representation/RecombinationOperator.h"
+#include "../../../../core/representation/RecombinationOperator.h"
 
 /**
  *

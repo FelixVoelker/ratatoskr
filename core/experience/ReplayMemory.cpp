@@ -64,7 +64,7 @@ bool ReplayMemory::isReady() {
 }
 
 unsigned int ReplayMemory::sampleIndex(Thread &thread) {
-    return thread.random.sampleIntFromUniformDistribution(chunk_size);
+    return thread.random.uniformlyChoose(chunk_size);
 }
 
 float ReplayMemory::getFitnessFromSample(unsigned int index) {
