@@ -18,6 +18,14 @@ unsigned int Thread::getChunkOffset() const {
     return offset;
 }
 
+std::vector<int> Thread::Random::choose(int a, int b, std::vector<float> weights, unsigned int k) {
+    auto sequence = std::vector<int>();
+    for (int i = a; i < b; i++) {
+        sequence.push_back(i);
+    }
+    return choose(sequence, weights, k);
+}
+
 std::vector<T> Thread::Random::choose(std::vector<T> sequence, std::vector<float> weights, unsigned int k) {
     auto result = std::vector<T>();
     for (unsigned int l = 0; l < k; l++) {
@@ -32,6 +40,14 @@ std::vector<T> Thread::Random::choose(std::vector<T> sequence, std::vector<float
         }
     }
     return result;
+}
+
+std::vector<int> Thread::Random::sample(int a, int b, std::vector<float> weights, unsigned int k) {
+    auto sequence = std::vector<int>();
+    for (int i = a; i < b; i++) {
+        sequence.push_back(i);
+    }
+    return sample(sequence, weights, k);
 }
 
 std::vector<T> Thread::Random::sample(std::vector<T> sequence, std::vector<float> weights, unsigned int k) {

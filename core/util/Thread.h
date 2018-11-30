@@ -23,6 +23,8 @@ public:
 
         std::function random = std::bind(std::uniform_real_distribution(0.0, 1.0), generator);
 
+        std::vector<int> choose(int a, int b, std::vector<float> weights = null, unsigned int k = 1);
+
         /**
          * Chooses k elements of the given sequence with replacement. Selects elements according to its weight or with
          * equal probability if weights is null.
@@ -31,6 +33,8 @@ public:
          * @param k        Number of elements to choose.
          */
         std::vector<T> choose(std::vector<T> sequence, std::vector<float> weights = null, unsigned int k = 1);
+
+        std::vector<int> sample(int a, int b, std::vector<float> weights = null, unsigned int k = 1);
 
         /**
          * Samples k elements of the given sequence without replacement. Selects elements according to its weight or with
