@@ -1,45 +1,39 @@
-# Ratatoskr - A multi-language framework for NDEC
-Ratatoskr is an open-source Neuro-Dynamic Evolutionary Computation (NDEC) framework that is driven by a C++ core engine. This 
-engine is supposed to allow simple configuration through a multi-language supported API. Please note, that the project is 
-currently under development and therefore is not provided with all features yet. The state of the framework and all current
-features will be listed in this document.
+# Ratatoskr - A multi-language framework for ACEAs
+Ratatoskr is an open-source framework for an Actor-Critic Evolutionary Algorithm (ACEA) that is driven by a C++ core engine. It provides several APIs to build and evaluate these EAs on a broad range of programming languages. Please note, the project is currently under development and does not provided a stable build yet.
 
 ## Current Features (v0.1.0)
 * Core-Engine
-  * TBA
 * C++-API
-  * Dynamic Genetic Algorithm (NDGA)
-    * Available Problems: OneMaxProble
-* Python-API
-  * TBA
+* Python3-API
+* Statistics
   
-## Prerequiries (out of date, TBA)
-Ratatoskr's C++ API does only require you to have cmake installed. However, if you want to use the framework in Python, you will 
-need the following:
-* wheels
-* pip
-* Python 3.0 
-* Boost.Python 1.64
-  * Troubleshooting: Make sure Boost.Python is linked against python3 not python2. 
-  
-# Building from sources (Linux only)
-Independently of what API you may want to use, it is necessary to build the C++ API first. This is simply done using cmake. 
-If you want to use the C++-API only, run the following in your terminal
+## Building from source (Linux only)
+Independently of what API you may want to use, make sure that cmake is installed. 
+
+### Installing the C++-API
+Open a terminal and switch to the Ratatoskr root directory. Then run the following script:
 ```{r, engine='bash', count_lines}
-cd ratatoskr-master
-cmake ndec_cc
+cmake ratatoskr_cc
 cd build
 make
 ```
-This builds the C++-API as a shared library that has to be linked against only. For the additional Python-API exchange the cmake command to
+This builds the C++-API as a shared library to link against.
+
+### Installing the Python3-API
+Prerequiries:
+* pip
+* wheels
+* Boost.Python 1.64
+** Troubleshooting: Make sure Boost.Python is linked against python3 not python2. 
+  
+Open a terminal and switch to the Ratatoskr root directory. Then run the following script:
 ```{r, engine='bash', count_lines}
-cmake ndec_py
+cmake ratatoskr_py
 ```
-in order to build all extension modules. Afterwards, move in the python directory and install the ratatoskr package:
+This builds the c++ library and all extension models. Now, move into the python directory and install the ratatoskr packages:
 ```{r, engine='bash', count_lines}
 cd python
 python3 setup.py bdist_wheel
 cd dist
 pip install ratatoskr_wheel_file.whl
 ```
-## A simple example (TBA) 
