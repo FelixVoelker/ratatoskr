@@ -2,7 +2,7 @@
 #define RATATOSKR_GENETICALGORITHM_H
 
 
-#include "../../../../core/old/EvolutionarySystem.h"
+#include "../../core/EvolutionarySystem.h"
 #include "../representation/vector/Vector.h"
 #include "../representation/vector/binary/RandomBinaryVectorBuilder.h"
 #include "../representation/vector/binary/BinaryVectorMutation.h"

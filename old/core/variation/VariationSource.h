@@ -5,8 +5,8 @@
 #include <vector>
 #include <stdexcept>
 #include "../util/Singleton.h"
-#include "../../state/Population.h"
-#include "../../util/Thread.h"
+#include "../../../core/state/Population.h"
+#include "../../../core/util/Thread.h"
 
 /**
  * The abstract base class for all variation sources that form the nodes of a variation tree, i.e. a structure that

@@ -3,8 +3,8 @@
 
 
 #include <vector>
-#include "../../state/Individual.h"
-#include "../../util/Thread.h"
+#include "../../../core/state/Individual.h"
+#include "../../../core/util/Thread.h"
 
 class ReplayMemory : public Prototype {
 

@@ -21,7 +21,7 @@ set(CC_SOURCES
         cc/representation/integer/RandomBitInitialization.cpp cc/representation/integer/RandomBitInitialization.h
         cc/representation/integer/BitFlipMutation.cpp cc/representation/integer/BitFlipMutation.h
         cc/representation/integer/PointCrossover.cpp cc/representation/integer/PointCrossover.h
-        cc/representation/integer/UniformCrossover.cpp cc/representation/integer/UniformCrossover.h)
+        cc/representation/integer/UniformCrossover.cpp cc/representation/integer/UniformCrossover.h cc/representation/tree/Node.cpp cc/representation/tree/Node.h)
 
 add_library(ratatoskr_cc SHARED ${CORE_SOURCES} ${CC_SOURCES})
 

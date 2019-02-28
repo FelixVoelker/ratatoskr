@@ -2,7 +2,7 @@
 #define RATATOSKR_BINARYVECTORMUTATION_H
 
 
-#include "../../../../../../core/representation/MutationOperator.h"
+#include "../../../../../core/representation/MutationOperator.h"
 
 /**
  * @todo: change comment

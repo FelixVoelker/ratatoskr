@@ -10,8 +10,8 @@
 #include "wrapper/VariationSourceWrapper.h"
 #include "../../core/Problem.h"
 #include "../../../core/statistics/Statistics.h"
-#include "../../../../core/old/EvolutionarySystem.h"
-#include "../../../../core/old/Session.h"
+#include "../../../../old/core/EvolutionarySystem.h"
+#include "../../../../old/core/Session.h"
 
 using namespace boost::python;
 using namespace core;

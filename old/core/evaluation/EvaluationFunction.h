@@ -2,8 +2,8 @@
 #define RATATOSKR_EVALUATIONFUNCTION_H
 
 
-#include "../../representation/Genotype.h"
-#include "../../util/Thread.h"
+#include "../../../core/representation/Genotype.h"
+#include "../../../core/util/Thread.h"
 
 /**
  * @todo change comment

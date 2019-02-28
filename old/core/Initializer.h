@@ -3,8 +3,8 @@
 
 
 #include "../representation/Builder.h"
-#include "../state/Population.h"
-#include "../util/Thread.h"
+#include "../../core/state/Population.h"
+#include "../../core/util/Thread.h"
 
 /**
  * @todo: check comments

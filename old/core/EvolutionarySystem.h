@@ -5,7 +5,7 @@
 #include "evaluation/Evaluator.h"
 #include "experience/Replayer.h"
 #include "Initializer.h"
-#include "../state/Population.h"
+#include "../../core/state/Population.h"
 #include "statistics/Statistics.h"
 #include "variation/Breeder.h"
 

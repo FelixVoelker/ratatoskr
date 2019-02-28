@@ -4,7 +4,7 @@
 
 #include <vector>
 #include "Individual.h"
-#include "../old/EvolutionarySystem.h"
+#include "../../old/core/EvolutionarySystem.h"
 
 /**
  * Represents the population as the state of an evolutionary system. Accordingly, the class incorporates a set of

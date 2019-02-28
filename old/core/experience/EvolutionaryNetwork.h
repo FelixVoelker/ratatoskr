@@ -2,7 +2,7 @@
 #define RATATOSKR_EVOLUTIONARYNETWORK_H
 
 
-#include "../../state/Population.h"
+#include "../../../core/state/Population.h"
 
 /**
  * TODO: Comments

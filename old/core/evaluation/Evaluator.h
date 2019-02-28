@@ -4,8 +4,8 @@
 
 #include <functional>
 #include "../../experience/EvolutionaryNetwork.h"
-#include "../../state/Population.h"
-#include "../../util/Thread.h"
+#include "../../../core/state/Population.h"
+#include "../../../core/util/Thread.h"
 #include "EvaluationFunction.h"
 
 /**
