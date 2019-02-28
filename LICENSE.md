@@ -1,4 +1,4 @@
-Copyright &copy; 2017, Felix Völker, All rights reserved.
+Copyright &copy; 2019, Felix Völker, All rights reserved.
 
 #### BSD 3-clause "New" or "Revised" License
 
