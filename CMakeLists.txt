@@ -9,19 +9,23 @@ set(CORE_SOURCES
         core/representation/InitializationOperator.h
         core/representation/MutationOperator.cpp core/representation/MutationOperator.h
         core/representation/RecombinationOperator.cpp core/representation/RecombinationOperator.h
-        core/representation/VariationOperator.h
+        core/representation/VariationOperator.h core/representation/VariationOperator.cpp
         core/state/Individual.cpp core/state/Individual.h
         core/state/Population.cpp core/state/Population.h
         core/state/Relevance.cpp core/state/Relevance.h
         core/util/Clonable.h
-        core/util/Thread.cpp core/util/Thread.h)
+        core/util/RandomChoice.cpp core/util/RandomChoice.h
+        core/util/Thread.cpp core/util/Thread.h
+        core/EvolutionarySystem.cpp core/EvolutionarySystem.h
+        core/Representation.cpp core/Representation.h
+        core/Session.cpp core/Session.h)
 
 # CC api
-set(CC_SOURCES
-        cc/representation/integer/RandomBitInitialization.cpp cc/representation/integer/RandomBitInitialization.h
-        cc/representation/integer/BitFlipMutation.cpp cc/representation/integer/BitFlipMutation.h
-        cc/representation/integer/PointCrossover.cpp cc/representation/integer/PointCrossover.h
-        cc/representation/integer/UniformCrossover.cpp cc/representation/integer/UniformCrossover.h cc/representation/tree/Node.cpp cc/representation/tree/Node.h)
+set(CC_SOURCES )
+        #cc/representation/integer/RandomBitInitialization.cpp cc/representation/integer/RandomBitInitialization.h
+        #cc/representation/integer/BitFlipMutation.cpp cc/representation/integer/BitFlipMutation.h
+        #cc/representation/integer/PointCrossover.cpp cc/representation/integer/PointCrossover.h
+        #cc/representation/integer/UniformCrossover.cpp cc/representation/integer/UniformCrossover.h cc/representation/tree/Node.cpp cc/representation/tree/Node.h)
 
 add_library(ratatoskr_cc SHARED ${CORE_SOURCES} ${CC_SOURCES})
 

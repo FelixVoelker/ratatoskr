@@ -6,12 +6,12 @@
 #include "Genotype.h"
 
 /**
- * The abstract base class for any initialization procedure of an individual's genotype. This functor is called during the initialization phase of 
- * an evolutionary algorithm and works on the genetic level, i.e. on the given individual. 
+ * The abstract base class for any initialization procedure of an individual's genotype. This functor is called during
+ * the initialization phase of an evolutionary algorithm and thus works on the genetic level.
  *
  * @author  Felix Voelker
  * @version 0.1.1
- * @since   12.10.2018
+ * @since   5.3.2019
  */
 class InitializationOperator : public Clonable {
 

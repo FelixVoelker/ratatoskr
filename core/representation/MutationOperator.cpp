@@ -8,7 +8,7 @@ unsigned int MutationOperator::numOffspring() const {
 	return 1;
 }
 
-std::vector<Genotype *> MutationOperator::operator()(std::vector<Genotype *> &parents, Thread &thread) const {
-	this->operator()(parents.at(0), thread);
-	return parents;
+std::vector<Genotype *> MutationOperator::vary(std::vector<Genotype *> &genotypes, Thread &thread) const {
+	this->operator()(*genotypes.at(0), thread);
+	return genotypes;
 }

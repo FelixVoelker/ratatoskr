@@ -4,7 +4,7 @@
 
 #include <vector>
 #include "Individual.h"
-#include "../../old/core/EvolutionarySystem.h"
+#include "../Representation.h"
 
 /**
  * Represents the population as the state of an evolutionary system. Accordingly, the class incorporates a set of
@@ -12,17 +12,16 @@
  *
  * @author  Felix Voelker
  * @version 0.1.1
- * @since   15.7.2018
+ * @since   7.3.2019
  */
 class Population {
 
 public:
-    explicit Population(const EvolutionarySystem &system, unsigned int popsize);
+    explicit Population(Representation &representation, unsigned int popsize);
+    Population(const Population &obj);
 
     /**
      * Finds the individual with the best relevance value within the population.
-     * @param fraction Decimal number within the interval [0,1] with 0 being fitness only and 1 being cost only.
-     * Out of scope numbers are projected on the boundary of the interval.
      */
     const Individual bestIndividual() const;
 
@@ -33,12 +32,10 @@ public:
 
     /**
      * Finds the individual with the worst relevance value within the population.
-     * @param fraction Decimal number within the interval [0,1] with 0 being fitness only and 1 being cost only.
-     * Out of scope numbers are projected on the boundary of the interval.
      */
-    const Individual & worstIndividual() const;
+    const Individual worstIndividual() const;
 
-    std::vector<Individual> & getIndividuals();
+    std::vector<Individual>& getIndividuals();
 
 private:
     std::vector<Individual> individuals;

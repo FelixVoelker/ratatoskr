@@ -3,7 +3,7 @@
 
 
 #include "EvolutionarySystem.h"
-#include "TerminationCondition.h"
+#include "../old/core/TerminationCondition.h"
 
 
 /**
@@ -15,7 +15,7 @@
  *
  * @author  FelixVoelker
  * @version 0.1.1
- * @since   14.7.2018
+ * @since   7.3.2019
  */
 
 class Session {
@@ -34,14 +34,12 @@ public:
      */
     void run(TerminationCondition &condition);
 
-    Statistics & getStatistics();
+    //Statistics & getStatistics();
 
 private:
     const EvolutionarySystem &system;
 
-    Statistics statistics;
-
-    std::vector<Thread> buildThreads(unsigned int n_threads);
+    //Statistics statistics;
 
 };
 

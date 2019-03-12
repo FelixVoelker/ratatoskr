@@ -5,15 +5,14 @@
 #include "../util/Clonable.h"
 
 /**
- * @todo change comment
- * The standard class for the conventional measure of an individual's relevance in a Neuro-Dynamic Evolutionary
- * Algorithm (NDEA), i.e. an alignment strategy between the standarized fitness as described in "John R. Koza. Genetic
- * Programming: On the Programming of Computers by Means of Natural Selection (1992)" and the cost-to-go as described
- * in "Dimitri P. Bertsekas, John Tsitsiklis. Neuro-Dynamic Programming (1996)".
+ * The standard class for an individual's relevance in a Actor-Critic Evolutionary Algorithm (ACEA), i.e. an alignment
+ * strategy between the standarized fitness as described in "John R. Koza. Genetic Programming: On the Programming of
+ * Computers by Means of Natural Selection (1992)" and the cost-to-go as described in "Dimitri P. Bertsekas,
+ * John Tsitsiklis. Neuro-Dynamic Programming (1996)".
  *
  * @author  Felix Voelker
- * @version 0.1.0
- * @since   25.1.2018
+ * @version 0.1.1
+ * @since   7.3.2019
  */
 class Relevance : public Clonable {
 
@@ -21,12 +20,8 @@ public:
     Relevance();
 
     /**
-     * Estimates if the current fitness fulfills the termination criteria of a conventional NDEA, i.e.
-     * the individual has a fitness of zero.
-     * @return True if individual has ideal fitness, false otherwise.
+     * Computes the relevance of an individual.
      */
-    virtual bool isIdeal() const;
-
     float compute() const;
 
     /**
@@ -43,14 +38,14 @@ public:
 
     Relevance * clone() const override;
 
-    float getCriticism() const;
+    float getCritic() const;
     float getFitness() const;
-    void  setCriticism(float criticism);
+    void  setCritic(float critic);
     void  setFitness(float fitness);
 
 protected:
     float fitness;
-    float criticism;
+    float critic;
 
     Relevance(const Relevance &obj);
 };

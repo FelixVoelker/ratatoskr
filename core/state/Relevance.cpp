@@ -1,20 +1,16 @@
 #include "Relevance.h"
 
 Relevance::Relevance() : Clonable() {
-    this->criticism = 0;
+    this->critic = 0;
     this->fitness = 0;
 }
 
-bool Relevance::isIdeal() const {
-    return fitness == 0;
-}
-
 float Relevance::compute() const {
-    return fitness + criticism;
+    return fitness + critic;
 }
 
 float Relevance::adjustedRelevance() const {
-    return 1 / (1 + fitness + criticism);
+    return 1 / (1 + fitness + critic);
 }
 
 bool Relevance::operator<(const Relevance &other) const {
@@ -45,16 +41,16 @@ Relevance* Relevance::clone() const {
     return new Relevance(*this);
 }
 
-float Relevance::getCriticism() const {
-    return criticism;
+float Relevance::getCritic() const {
+    return critic;
 }
 
 float Relevance::getFitness() const {
     return fitness;
 }
 
-void Relevance::setCriticism(float criticism) {
-    this->criticism = criticism;
+void Relevance::setCritic(float critic) {
+    this->critic = critic;
 }
 
 void Relevance::setFitness(float fitness) {
@@ -62,6 +58,6 @@ void Relevance::setFitness(float fitness) {
 }
 
 Relevance::Relevance(const Relevance &obj) : Clonable(obj) {
-    this->criticism = obj.criticism;
+    this->critic = obj.critic;
     this->fitness = obj.fitness;
 }

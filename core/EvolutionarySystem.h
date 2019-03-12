@@ -2,14 +2,12 @@
 #define RATATOSKR_EVOLUTIONARYSYSTEM_H
 
 
-#include "evaluation/Evaluator.h"
-#include "experience/Replayer.h"
-#include "Initializer.h"
-#include "../../core/state/Population.h"
-#include "statistics/Statistics.h"
-#include "variation/Breeder.h"
+#include "Representation.h"
+#include "state/Population.h"
+#include "util/Thread.h"
 
 /**
+ * TODO: Change comments
  * The core system that runs a Neuro-Dynamic Evolutionary Algorithm (NDEA), i.e. it evolves its evolutionary system
  * either over a total number of generations or until an ideal individual has been acquired. Each evolution forms here
  * a simulation that is called an episode of the algorithm. In Neuro-Dynamic Evolutionary Computation (NDEC), a neural
@@ -18,32 +16,25 @@
  * self-contained in regard of the problem to be solved and the session to run.
  *
  * @author  Felix Voelker
- * @version 0.1.0
- * @since   25.1.2018
+ * @version 0.1.1
+ * @since   7.3.2019
  */
 class EvolutionarySystem {
 
 public:
-    explicit EvolutionarySystem(Initializer &initializer,
-                                Evaluator &evaluator,
-                                Breeder &breeder);
+    Representation &representation;
 
-    ~EvolutionarySystem();
-
-    Genotype & getGenotype() const;
-
-private:
-
-    /** Components */
-    Genotype    genotype;
-    Initializer initializer;
-    Evaluator   evaluator;
-    Breeder     breeder;
+    explicit EvolutionarySystem(Representation &representation);
 
     /**
-     * Evolves the evolutionary system over a number of generations or until an ideal individual has been found.
+     * Initializes the population by performing the Initialization Operator on each individual concurrently.
+     * @param pop     Population or state of the evolutionary system.
+     * @param threads The initializing threads.
      */
-    void evolutionaryCycle(Population &population);
+    void initialize(Population &pop, std::vector<Thread> &threads) const;
+
+    void evaluate(Population &pop, std::vector<Thread> &threads);
+    void vary(Population &pop, std::vector<Thread> &threads);
 
 };
 

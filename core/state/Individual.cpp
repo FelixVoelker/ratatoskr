@@ -1,9 +1,9 @@
 #include "Individual.h"
 
-Individual::Individual(Genotype &genotype, Relevance &relevance)
+Individual::Individual(Representation &representation)
 {
-    this->genotype = dynamic_cast<Genotype *>(genotype.clone());
-    this->relevance = relevance.clone();
+    this->genotype = dynamic_cast<Genotype *>(representation.getGenotype().clone());
+    this->relevance = new Relevance();
 }
 
 Individual::Individual(const Individual &obj) {

@@ -8,7 +8,7 @@ unsigned int RecombinationOperator::numOffspring() const {
     return 2;
 }
 
-std::vector<Genotype *> RecombinationOperator::operator()(std::vector<Genotype *> &parents, Thread &thread) const {
-    this->operator()(parents.at(0), parents.at(1), thread);
-    return parents;
+std::vector<Genotype *> RecombinationOperator::vary(std::vector<Genotype *> &genotypes, Thread &thread) const {
+    this->operator()(*genotypes.at(0), *genotypes.at(1), thread);
+    return genotypes;
 }

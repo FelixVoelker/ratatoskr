@@ -3,11 +3,11 @@
 
 
 /**
- * Represents the interface for all polymorphic classes.
+ * Interface for all polymorphic classes.
  *
  * @author  Felix Voelker
  * @version 0.1.1
- * @since   12.10.2018
+ * @since   2.3.2019
  */
 class Clonable {
 
